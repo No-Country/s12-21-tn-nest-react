@@ -1,0 +1,35 @@
+.container-header {
+  width: 100vw;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.4rem;
+  background-color: rgb(0, 174, 255);
+  margin: 0 auto;
+  border-radius: 0 0 2rem 2rem;
+}
+
+.header-img {
+  width: 10rem;
+  margin-right: 20rem;
+}
+
+.header-list {
+  display: flex;
+  gap: 8rem;
+}
+
+.header-list__item {
+  height: 4rem;
+}
+
+.header-list__item :first-child {
+  text-decoration: none;
+  color: rgb(3, 16, 59);
+  font-weight: 800;
+  transition: 0.8s;
+  &:hover {
+    background-color: rgba(0, 255, 255, 0.877);
+  }
+}
