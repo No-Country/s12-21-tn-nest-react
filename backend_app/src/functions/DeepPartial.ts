@@ -16,6 +16,9 @@ export const create_object_category_update = async (
   if (categories.name) {
     object_categories['name'] = categories.name;
   }
+  if (categories.name) {
+    object_categories['name'] = categories.name;
+  }
 
   const category: DeepPartial<Category> = object_categories;
   return category;
