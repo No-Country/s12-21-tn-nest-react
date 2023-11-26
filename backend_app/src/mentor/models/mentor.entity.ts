@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { MentorCategory } from './mentorCategories.entity';
+import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 
 @Entity({ name: 'mentor' })
 export class Mentor {
@@ -23,4 +24,10 @@ export class Mentor {
     (MentorCategory) => MentorCategory.mentorJoin,
   )
   public MentorsCategorys: MentorCategory[];
+
+  @OneToMany(
+    () => AlumnHireMentor,
+    (AlumnHireMentor) => AlumnHireMentor.mentorJoin,
+  )
+  public AlumnHireMentors: AlumnHireMentor[];
 }
