@@ -16,6 +16,8 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -23,6 +25,7 @@ const SignUp = () => {
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
     const switchShow = () => setShow(!show);
     const switchshowRepeatPassword = () => setShowRepeatPassword(!showRepeatPassword);
+    const defaultTheme = createTheme();
 
     const [errors, setErrors] = useState({
         password: "",
@@ -31,6 +34,7 @@ const SignUp = () => {
         userName: "",
         userLastName: "",
         userNumber: "",
+        userType: "",
     });
 
     const [newUser, setNewUser] = useState({
@@ -39,9 +43,10 @@ const SignUp = () => {
         userEmail: "",
         userNumber: "",
         userPassword: "",
-        userRepeatPassword: ""
+        userRepeatPassword: "",
+        userType: "",
     })
-    const { userName, userLastName, userEmail, userNumber, userPassword, userRepeatPassword } = newUser
+    const { userName, userLastName, userEmail, userNumber, userPassword, userRepeatPassword, userType } = newUser
     const handleChange = (event) => {
         const { name, value } = event.target;
         setNewUser({
@@ -53,6 +58,14 @@ const SignUp = () => {
             [name]: "",
         });
     };
+
+    const handleTypeChange = (_, newType) => {
+        // Cambié el nombre de la función y el manejo del valor
+        setNewUser({
+          ...newUser,
+          userType: newType,
+        });
+      };
 
     function Copyright(props) {
         return (
@@ -67,8 +80,6 @@ const SignUp = () => {
         );
       }
     
-      const defaultTheme = createTheme();
-
       const submit = (e) => {
         e.preventDefault();
         setErrors((prevErrors) => ({
@@ -114,6 +125,22 @@ const SignUp = () => {
                 repeatPassword: "Las contraseñas no coinciden",
             }));
             return;
+        }
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            userType: "",
+        }));
+        if (!userType) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                userType: "Por favor, selecciona si quieres ser Mentor o Estudiante",
+            }));
+            return;
+        }
+        if (userType === 'mentor') {
+            navigate('/mentorForm');
+        } else if (userType === 'student') {
+            navigate('/studentForm');
         }
     };
 
@@ -247,6 +274,25 @@ const SignUp = () => {
                     </Grid>
                     {errors.repeatPassword && <p style={{ color: "red" }}>{errors.repeatPassword}</p>}
                 </Grid>
+                <ToggleButtonGroup
+                value={userType}
+                color="primary"
+                exclusive
+                onChange={handleTypeChange}
+                aria-label="Platform"
+                >
+                <ToggleButton 
+                value="mentor"  
+                sx={{ backgroundColor: userType === 'mentor' ? '#4CAF50' : '#FFFFFF' }}>
+                    Quiero ser Mentor
+                </ToggleButton>
+                <ToggleButton 
+                value="student"
+                sx={{ backgroundColor: userType === 'student' ? '#4CAF50' : '#FFFFFF' }}>
+                    Quiero ser Estudiante
+                </ToggleButton>
+                </ToggleButtonGroup>
+                {errors.userType && <p style={{ color: "red" }}>{errors.userType}</p>}
                 <Button
                 type="submit"
                 fullWidth
