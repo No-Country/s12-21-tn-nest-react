@@ -1,18 +1,20 @@
-import { IsString, IsDate, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsDateString } from 'class-validator';
 
 export class updateMentor {
   @IsString()
   @IsOptional()
-  mentorDescription: string;
+  mentorDescription?: string;
   @IsString()
   @IsOptional()
-  price: string;
+  price?: string;
   @IsString()
   @IsOptional()
-  aboutMe: string;
+  aboutMe?: string;
   @IsOptional()
-  @IsDate()
-  birthdate: Date;
+  @IsDateString()
+  birthdate?: Date;
   @IsOptional()
-  idCategories: string[];
+  categories?: string[];
+  @IsOptional()
+  speciality?: string;
 }
