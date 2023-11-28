@@ -1,6 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { MentorCategory } from './mentorCategories.entity';
-
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Mentor } from './mentor.entity';
 @Entity({ name: 'category' })
 export class Category {
   @PrimaryGeneratedColumn('uuid')
@@ -9,9 +8,6 @@ export class Category {
   name: string;
   @Column()
   image: string;
-  @OneToMany(
-    () => MentorCategory,
-    (MentorCategory) => MentorCategory.categoryJoin,
-  )
-  public MentorsCategorys: MentorCategory[];
+  @ManyToMany(() => Mentor, (mentor) => mentor.categories)
+  mentors: Mentor[];
 }

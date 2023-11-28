@@ -4,10 +4,10 @@ import { MentorService } from './mentor.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './models/categories.entity';
 import { Mentor } from './models/mentor.entity';
-import { MentorCategory } from './models/mentorCategories.entity';
+import { Speciality } from './models/especializaciones';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category, Mentor, MentorCategory])],
+  imports: [TypeOrmModule.forFeature([Category, Mentor, Speciality])],
   controllers: [MentorController],
   providers: [MentorService],
 })
