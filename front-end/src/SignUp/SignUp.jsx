@@ -19,7 +19,7 @@ import IconButton from '@mui/material/IconButton';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-const SignUp = () => {
+const SignUp = ({ onUserTypeSelection }) => {
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -60,11 +60,11 @@ const SignUp = () => {
     };
 
     const handleTypeChange = (_, newType) => {
-        // Cambié el nombre de la función y el manejo del valor
         setNewUser({
           ...newUser,
           userType: newType,
         });
+        onUserTypeSelection(newType);
       };
 
     function Copyright(props) {
@@ -138,10 +138,10 @@ const SignUp = () => {
             return;
         }
         if (userType === 'mentor') {
-            navigate('/mentorForm');
-        } else if (userType === 'student') {
-            navigate('/studentForm');
-        }
+            onUserTypeSelection('mentor');
+          } else if (userType === 'student') {
+            onUserTypeSelection('student');
+          }
     };
 
     const validatePassword = () => {
