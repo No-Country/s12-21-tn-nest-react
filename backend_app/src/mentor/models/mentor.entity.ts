@@ -1,6 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { MentorCategory } from './mentorCategories.entity';
 import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  JoinTable,
+  ManyToMany,
+  CreateDateColumn,
+  DeleteDateColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { Category } from './categories.entity';
+import { Speciality } from './especializaciones';
 
 @Entity({ name: 'mentor' })
 export class Mentor {
@@ -30,4 +42,26 @@ export class Mentor {
     (AlumnHireMentor) => AlumnHireMentor.mentorJoin,
   )
   public AlumnHireMentors: AlumnHireMentor[];
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  created_at: Date;
+
+  @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  deleted_at: Date;
+  @ManyToMany(() => Category, (category) => category.mentors)
+  @JoinTable({
+    name: 'mentors_categories',
+    joinColumn: {
+      name: 'mentors_id',
+    },
+    inverseJoinColumn: {
+      name: 'categories_id',
+    },
+  })
+  categories: Category[];
+
+  @ManyToOne(() => Speciality, (speciality) => speciality.mentor)
+  speciality: Speciality;
 }
