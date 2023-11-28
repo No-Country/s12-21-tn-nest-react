@@ -1,3 +1,4 @@
+import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,6 +8,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Category } from './categories.entity';
 import { Speciality } from './especializaciones';
@@ -28,6 +30,13 @@ export class Mentor {
   aboutMe: string;
   @Column()
   birthdate: Date;
+
+  @OneToMany(
+    () => AlumnHireMentor,
+    (AlumnHireMentor) => AlumnHireMentor.mentorJoin,
+  )
+  public AlumnHireMentors: AlumnHireMentor[];
+
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
