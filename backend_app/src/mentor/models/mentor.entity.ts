@@ -1,4 +1,3 @@
-import { MentorCategory } from './mentorCategories.entity';
 import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 import {
   Entity,
@@ -31,17 +30,13 @@ export class Mentor {
   aboutMe: string;
   @Column()
   birthdate: Date;
-  @OneToMany(
-    () => MentorCategory,
-    (MentorCategory) => MentorCategory.mentorJoin,
-  )
-  public MentorsCategorys: MentorCategory[];
 
   @OneToMany(
     () => AlumnHireMentor,
     (AlumnHireMentor) => AlumnHireMentor.mentorJoin,
   )
   public AlumnHireMentors: AlumnHireMentor[];
+
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',

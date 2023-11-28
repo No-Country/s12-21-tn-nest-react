@@ -1,20 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class AlunmCreateRequestDto {
+export class hireMentorRequestDto {
   @IsNotEmpty()
   @ApiProperty()
-  userId: string;
+  alumnId: string;
 
   @IsNotEmpty()
   @ApiProperty()
-  categoriesId?: string[];
-}
+  mentorId: string;
 
-export class AlunmCreateResponseDto {
+  @IsNotEmpty()
   @ApiProperty()
-  id: string;
-
-  @ApiProperty()
-  userId: string;
+  categoryId: string;
 }

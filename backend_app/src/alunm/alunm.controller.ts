@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -13,6 +15,8 @@ import { AlunmService } from './alunm.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AlunmCreateRequestDto } from './dtos/alunmCreateRequest.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { hireMentorRequestDto } from './dtos/hireMentor.dto';
+import { CalificationDto } from './dtos/calification.dto';
 
 @Controller('alumn')
 @ApiTags('Alumn')
@@ -25,7 +29,12 @@ export class AlunmController {
     @Body() request: AlunmCreateRequestDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.alunmService.create(request, file);
+    try {
+      return this.alunmService.create(request, file);
+    } catch (error) {
+      console.log(error);
+      return new HttpException('Error creating alumn', 400);
+    }
   }
 
   @Get('/')
@@ -48,6 +57,16 @@ export class AlunmController {
     return this.alunmService.remove(id);
   }
 
+  @Post('/calificate')
+  async calificate(@Body() request: CalificationDto) {
+    return this.alunmService.calificateMentor(request.id, request.calification);
+  }
+
+  @Patch('/restore/:id')
+  async restore(@Param('id') id: string) {
+    return this.alunmService.restore(id);
+  }
+
   @Patch('/:id')
   async update(
     @Body() request: AlunmCreateRequestDto,
@@ -55,5 +74,23 @@ export class AlunmController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.alunmService.update(request, file, id);
+  }
+
+  @Post('/hire-mentor')
+  async hireMentor(@Body() request: hireMentorRequestDto) {
+    try {
+      return this.alunmService.hireMentor(
+        request.alumnId,
+        request.mentorId,
+        request.categoryId,
+      );
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Patch('/finish-mentory/:id')
+  async finishMentory(@Param('id') id: string) {
+    return this.alunmService.finishMentory(id);
   }
 }

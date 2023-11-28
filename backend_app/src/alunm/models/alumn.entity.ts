@@ -3,11 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { AlumnHireMentor } from './alumnHireMentor.entity';
+import { Category } from 'src/mentor/models/categories.entity';
 
 @Entity({ name: 'alumn' })
 export class Alumn {
@@ -39,4 +42,16 @@ export class Alumn {
 
   @DeleteDateColumn({ default: null })
   deletedAt: Date;
+
+  @ManyToMany(() => Category, (category) => category)
+  @JoinTable({
+    name: 'alumns_categories',
+    joinColumn: {
+      name: 'alumn_id',
+    },
+    inverseJoinColumn: {
+      name: 'categories_id',
+    },
+  })
+  categories: Category[];
 }
