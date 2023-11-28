@@ -5,6 +5,8 @@ import Login from "./Login/Login";
 import Header from "./components/Header";
 import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
+import StepperForm  from "./components/StepperForm";
+import Category from "./components/Category";
 import "./App.css";
 
 function App() {
@@ -17,9 +19,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/signUp" element={<SignUp />} />
-              <Route path="/mentorForm" element={<MentorForm />} />
-              <Route path="/studentForm" element={<StudentForm />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/stepperForm" element={<StepperForm />} />
             </Routes>
           </div>
         </BrowserRouter>

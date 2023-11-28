@@ -24,6 +24,9 @@ const Header = () => {
           <li className="header-list__item">
             <Link to="/login">Login</Link>
           </li>
+          <li className="header-list__item">
+            <Link to="/stepperForm">Registrate</Link>
+          </li>
         </ul>
       </nav>
     </div>
