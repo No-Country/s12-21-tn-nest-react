@@ -10,9 +10,12 @@ import {
   DeleteDateColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Category } from './categories.entity';
 import { Speciality } from './especializaciones';
+import { User } from 'src/auth/user/entities/user.entity';
 
 @Entity({ name: 'mentor' })
 export class Mentor extends BaseEntity {
@@ -58,4 +61,11 @@ export class Mentor extends BaseEntity {
 
   @ManyToOne(() => Speciality, (speciality) => speciality.mentor)
   speciality: Speciality;
+
+  @OneToOne(() => User, (user) => user.mentor)
+    @JoinColumn({
+        name: 'user',
+    })
+    user: User;
+
 }

@@ -1,6 +1,7 @@
 import { BaseEntity } from "../../../common/base/entity";
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { Role } from "../../../auth/role/entities/role.entity";
+import { Mentor } from "src/mentor/models/mentor.entity";
 
 
 
@@ -41,4 +42,10 @@ export class User extends BaseEntity {
     })
     role: string;
     
+    @OneToOne(() => Mentor, (mentor) => mentor.user)
+    @JoinColumn({
+        name: 'mentor',
+    })
+    mentor: Mentor;
+
 }
