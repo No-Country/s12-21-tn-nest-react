@@ -266,9 +266,9 @@ export class MentorService {
       },
     });
 
-    if (updateProfile.categories.length > 0) {
+    if (updateProfile.Categories.length > 0) {
       const categoriesSearch = await this.categoriesRepository.find({
-        where: { id: In(updateProfile.categories) },
+        where: { id: In(updateProfile.Categories) },
       });
       let newCategoriesToadd: Array<any>;
       if (categoriesSearch.length > 0) {
