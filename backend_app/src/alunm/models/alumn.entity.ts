@@ -1,29 +1,19 @@
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { AlumnHireMentor } from './alumnHireMentor.entity';
-import { Category } from 'src/mentor/models/categories.entity';
-import { User } from 'src/auth/user/entities/user.entity';
+import { Category } from '../../mentor/models/categories.entity';
+import { User } from '../../auth/user/entities/user.entity';
+import { BaseEntity } from '../../common/base/entity';
 
 @Entity({ name: 'alumn' })
-export class Alumn {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  // for the moment we are going to use a string
-  //TODO: change this to a relation
-  @Column()
-  userId: string;
+export class Alumn extends BaseEntity {
 
   @Column({
     default:
@@ -36,15 +26,6 @@ export class Alumn {
     (AlumnHireMentor) => AlumnHireMentor.alumnJoin,
   )
   AlumnHireMentors: AlumnHireMentor[];
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn({ default: null })
-  deletedAt: Date;
 
   @ManyToMany(() => Category, (category) => category)
   @JoinTable({

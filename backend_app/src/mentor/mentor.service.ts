@@ -292,7 +292,6 @@ export class MentorService {
   async desactive_profile(id: string) {
     const searchMentor = await this.mentorRepository.findOne({ where: { id } });
     if (searchMentor) {
-      searchMentor.deleted_at = new Date();
       this.mentorRepository.save(searchMentor);
       return {
         status: HttpStatus.ACCEPTED,
@@ -312,8 +311,8 @@ export class MentorService {
       where: { id },
     });
 
-    if (mentors.length && mentors[0].deleted_at !== null) {
-      mentors[0].deleted_at = null;
+    if (mentors.length && mentors[0].deletedAt !== null) {
+      mentors[0].deletedAt = null;
       this.mentorRepository.save(mentors);
       return {
         status: HttpStatus.ACCEPTED,

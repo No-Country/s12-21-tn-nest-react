@@ -20,7 +20,7 @@ import { User } from 'src/auth/user/entities/user.entity';
 @Entity({ name: 'mentor' })
 export class Mentor extends BaseEntity {
   @Column({ type: 'text', nullable: true })
-  description: string;
+  mentorDescription: string;
   @Column({
     default:
       'https://s3.ppllstatics.com/elnortedecastilla/www/pre2017/multimedia/noticias/201501/12/media/cortadas/facebook-profile-picture-no-pic-avatar--575x323.jpg',
@@ -39,14 +39,6 @@ export class Mentor extends BaseEntity {
   )
   public AlumnHireMentors: AlumnHireMentor[];
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
-  })
-  created_at: Date;
-
-  @DeleteDateColumn({ type: 'timestamp', nullable: true })
-  deleted_at: Date;
   @ManyToMany(() => Category, (category) => category.mentors)
   @JoinTable({
     name: 'mentors_categories',
