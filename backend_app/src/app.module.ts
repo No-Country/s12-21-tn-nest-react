@@ -22,6 +22,7 @@ import { GatewayModule } from './gateway/gateway.module';
         database: configService.get('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
       }),
     }),
     JwtModule.registerAsync({
