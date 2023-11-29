@@ -42,7 +42,7 @@ export class createMentor {
   @ApiProperty({
     description: 'Mentor birthdate',
     nullable: false,
-    example: '2023-08-23T03:02:06.086Z',
+    example: '1995-08-23T03:02:06.086Z',
   })
   @IsDateString()
   birthdate: Date;
@@ -51,7 +51,7 @@ export class createMentor {
     description: 'Initiative Categories IDs',
     nullable: false,
     example:
-      "['4c2b2245-6bf2-4d33-a102-0704657f8b02', '4c2b2245-6bf2-4d33-a102-0704657f8b02']",
+      '["dafa3a53-8e51-11ee-8680-fcaa14c77543", "ec5cb9d7-8e51-11ee-8680-fcaa14c77543"]',
   })
   @IsArray()
   Categories: string[];
@@ -59,9 +59,16 @@ export class createMentor {
   @ApiProperty({
     description: 'Mentor Speciality ID',
     nullable: false,
-    example: '4c2b2245-6bf2-4d33-a102-0704657f8b02',
+    example: '0af348af-8e52-11ee-8680-fcaa14c77543',
   })
   @IsString()
   @IsNotEmpty()
   idSpeciality: string;
+
+  @ApiProperty({
+    description: 'Mentor photo',
+    type: 'string',
+    format: 'binary',
+  })
+  file: any;
 }
