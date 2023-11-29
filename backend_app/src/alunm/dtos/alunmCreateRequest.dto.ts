@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { User } from 'src/auth/user/entities/user.entity';
 
 export class AlunmCreateRequestDto {
-  @IsNotEmpty()
-  @ApiProperty()
-  userId: string;
+  
+  user: User;
 
   @IsNotEmpty()
   @ApiProperty()

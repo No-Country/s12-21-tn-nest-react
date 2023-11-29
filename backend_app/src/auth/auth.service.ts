@@ -7,37 +7,36 @@ import { JwtService } from '@nestjs/jwt';
 import { JWT_SECRET, SALT_ROUNDS } from '../common/constants';
 import { ErrorManager } from 'src/Config/error.manager';
 import { MentorService } from 'src/mentor/mentor.service';
+import { AlumnService } from 'src/alunm/alunm.service';
 
 @Injectable()
 export class AuthService {
     constructor(
             private readonly userService: UserService,
             private jwtService: JwtService,
-            private readonly mentorService: MentorService
+            private readonly mentorService: MentorService,
+            private readonly alumnService: AlumnService
             ) {}
 
-    async studentRegister(registerDto: RegisterDto, file?: Express.Multer.File){
+    async studentRegister({ password, email, firstName, lastName, role, phone,  }: RegisterDto, file?: Express.Multer.File){
 
         try {
-            const verifyUser = await this.userService.findByEmailExistent(registerDto.email);
+            const verifyUser = await this.userService.findByEmailExistent(email);
 
             if (verifyUser) throw new BadRequestException(`This Email is already registered`);
 
-            const encriptedPass = await bcrypt.hash(registerDto.password, SALT_ROUNDS);
+            const encriptedPass = await bcrypt.hash(password, SALT_ROUNDS);
             
-            const newUser = await this.userService.createStudent({ ...registerDto, password: encriptedPass});
+            const newUser = await this.userService.createStudent({ firstName, lastName, phone, email, role, password: encriptedPass });
 
-            const mentor = await this.mentorService.post_create_mentor({
-                mentorDescription: registerDto.mentorDescription,
-                price: registerDto.price,
-                aboutMe: registerDto.aboutMe,
-                birthdate: new Date(registerDto.birthDate),
-                Categories: registerDto.categories,
-                idSpeciality: registerDto.speciality,
-            }
-                , file)
+            const mentor = await this.alumnService.create({
+                user: newUser
+            }, file)
 
-            return newUser;
+            return {
+                user: newUser,
+                mentor: mentor,
+            };
 
         } catch (error) {
 
@@ -75,12 +74,28 @@ export class AuthService {
         }
     }
 
-    async mentorRegister( { password, firstName, lastName, email, phone, role, mentorDescription, categories, price, aboutMe, birthDate } : RegisterDto, file: Express.Multer.File){
+    async mentorRegister( { password, firstName, lastName, email, phone, role, mentorDescription, categories, price, aboutMe, birthDate, speciality } : RegisterDto, file: Express.Multer.File){
         try {
 
             const encriptedPass = await bcrypt.hash(password, SALT_ROUNDS);
             
-            const newUser = await this.userService.createMentor({ firstName, lastName, phone, email, role, password: encriptedPass}, file);
+            const newUser = await this.userService.createMentor({ firstName, lastName, phone, email, role, password: encriptedPass});
+
+            const mentor = await this.mentorService.post_create_mentor({
+                mentorDescription,
+                price,
+                aboutMe,
+                birthdate: new Date(birthDate),
+                Categories: categories,
+                idSpeciality: speciality,
+                user: newUser
+            }, file)
+
+            return {
+                user: newUser,
+                mentor: mentor,
+            };
+
 
             return newUser;
 

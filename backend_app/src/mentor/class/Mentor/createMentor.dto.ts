@@ -4,7 +4,9 @@ import {
   MaxLength,
   IsDateString,
   IsArray,
+  IsObject,
 } from 'class-validator';
+import { User } from 'src/auth/user/entities/user.entity';
 
 export class createMentor {
   @IsNotEmpty()
@@ -25,4 +27,5 @@ export class createMentor {
   @IsString()
   @IsNotEmpty()
   idSpeciality: string;
+  user: User;
 }
