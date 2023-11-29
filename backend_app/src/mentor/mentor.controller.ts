@@ -17,7 +17,10 @@ import { createCategories } from './class/Categories/createCategories.dto';
 import { updateCategories } from './class/Categories/updateCategories.dto';
 import { createMentor } from './class/Mentor/createMentor.dto';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('Mentors')
 @Controller('mentor')
 export class MentorController {
   constructor(private mentorService: MentorService) {}
