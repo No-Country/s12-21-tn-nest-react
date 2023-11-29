@@ -3,9 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MentorModule } from './mentor/mentor.module';
+import { UserModule } from './auth/user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 
-const feactureModule = [MentorModule, AlunmModule];
+const feactureModule = [MentorModule, UserModule, AuthModule, RoleModule, AlunmModule];
+
 @Module({
   imports: [
     ConfigModule.forRoot({

@@ -9,7 +9,7 @@ import { Category } from 'src/mentor/models/categories.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
 
 @Injectable()
-export class AlunmService {
+export class AlumnService {
   constructor(
     @InjectRepository(Alumn) private alumnRepository: Repository<Alumn>,
     @InjectRepository(Mentor) private mentorRepsitory: Repository<Mentor>,
