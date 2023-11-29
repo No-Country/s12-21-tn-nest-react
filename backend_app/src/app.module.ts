@@ -4,8 +4,9 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MentorModule } from './mentor/mentor.module';
 import { AlunmModule } from './alunm/alunm.module';
+import { UserModule } from './user/user.module';
 
-const feactureModule = [MentorModule, AlunmModule];
+const feactureModule = [MentorModule, AlunmModule, UserModule];
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -38,6 +39,7 @@ const feactureModule = [MentorModule, AlunmModule];
       inject: [ConfigService],
     }),
     ...feactureModule,
+    UserModule,
   ],
   providers: [JwtService],
 })

@@ -1,9 +1,12 @@
+import { encrypt } from 'src/Config/encryptor';
 import { uploadCloudinary } from 'src/Config/upload';
 import { updateCategories } from 'src/mentor/class/Categories/updateCategories.dto';
 import { createMentor } from 'src/mentor/class/Mentor/createMentor.dto';
 import { updateMentor } from 'src/mentor/class/Mentor/updateMentor.dto';
 import { Category } from 'src/mentor/models/categories.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
+import { CreateUser } from 'src/user/class/createUser.dto';
+import { User } from 'src/user/models/user.entity';
 import { DeepPartial } from 'typeorm';
 
 export const create_object_category_update = async (
@@ -22,16 +25,8 @@ export const create_object_category_update = async (
   return category;
 };
 
-export const create_object_mentor = async (
-  post: createMentor,
-  file: Express.Multer.File,
-) => {
-  let uploadImage: any;
-  if (file) {
-    uploadImage = await uploadCloudinary(file);
-  }
+export const create_object_mentor = async (post: createMentor) => {
   const mentor: DeepPartial<Mentor> = {
-    image: uploadImage['url'],
     birthdate: post['birthdate'],
     price: post['price'],
     mentorDescription: post['mentorDescription'],
@@ -39,6 +34,18 @@ export const create_object_mentor = async (
     speciality: { id: post['idSpeciality'] },
   };
   return mentor;
+};
+
+export const create_object_user = async (post: CreateUser) => {
+  const encrptPassword = await encrypt(post['password']);
+  const user: DeepPartial<User> = {
+    name: post['name'],
+    lastName: post['price'],
+    correo: post['correo'],
+    password: encrptPassword,
+    rolId: { id: post['rolId'] },
+  };
+  return user;
 };
 
 export const update_object_mentor = async (

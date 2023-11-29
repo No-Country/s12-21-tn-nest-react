@@ -11,7 +11,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Category } from './categories.entity';
-import { Speciality } from './especializaciones';
+import { Speciality } from './especializaciones.entity';
 
 @Entity({ name: 'mentor' })
 export class Mentor {

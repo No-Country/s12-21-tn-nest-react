@@ -13,7 +13,7 @@ import {
 import { createMentor } from './class/Mentor/createMentor.dto';
 import { verify_ages } from 'src/functions/general';
 import { Mentor } from './models/mentor.entity';
-import { Speciality } from './models/especializaciones';
+import { Speciality } from './models/especializaciones.entity';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
 
 @Injectable()
@@ -97,10 +97,6 @@ export class MentorService {
 
   async post_create_mentor(post: createMentor, file: Express.Multer.File) {
     try {
-      if (file) {
-        const upload = await uploadCloudinary(file);
-        post['image'] = upload['url'];
-      }
       if (!post.birthdate) {
         return {
           status: HttpStatus.NOT_FOUND,
@@ -114,7 +110,13 @@ export class MentorService {
           message: 'You cannot register as a mentor because you are a minor',
         };
       }
-      const object_mentor = await create_object_mentor(post, file);
+      const object_mentor = await create_object_mentor(post);
+      if (file) {
+        console.log('llegue');
+        const upload = await uploadCloudinary(file);
+        console.log(upload);
+        object_mentor['image'] = upload['url'];
+      }
       if (post.Categories.length == 0) {
         return {
           status: HttpStatus.NOT_FOUND,
