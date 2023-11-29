@@ -7,7 +7,9 @@ import { UserModule } from './auth/user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './auth/role/role.module';
 
-const feactureModule = [MentorModule, UserModule, AuthModule, RoleModule];
+const feactureModule = [MentorModule, UserModule, AuthModule, RoleModule, AlunmModule];
+import { AlunmModule } from './alunm/alunm.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
