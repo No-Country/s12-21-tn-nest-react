@@ -31,4 +31,7 @@ export default class RegisterDto extends CreateUserDto {
     @IsNotEmpty()
     categories?: string[]; 
 
+    @IsString()
+    speciality?: string;
+
 }

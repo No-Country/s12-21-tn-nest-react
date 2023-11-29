@@ -9,17 +9,23 @@ import { JwtService } from '@nestjs/jwt';
 import { RoleModule } from './role/role.module';
 import { Role } from './role/entities/role.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
+import { MentorService } from 'src/mentor/mentor.service';
+import { MentorModule } from 'src/mentor/mentor.module';
+import { Category } from 'src/mentor/models/categories.entity';
+import { Speciality } from 'src/mentor/models/especializaciones';
 
 @Module({
   imports: [
-  TypeOrmModule.forFeature([User, Role, Mentor]),
+  TypeOrmModule.forFeature([User, Role, Mentor, Category, Speciality]),
   UserModule,
   RoleModule,
+  MentorModule
   ],
   controllers: [AuthController],
   providers: [AuthService,
               UserService,
-              JwtService,],
+              JwtService,
+              MentorService],
 
 })
 export class AuthModule {}

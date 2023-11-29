@@ -6,12 +6,14 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { JWT_SECRET, SALT_ROUNDS } from '../common/constants';
 import { ErrorManager } from 'src/Config/error.manager';
+import { MentorService } from 'src/mentor/mentor.service';
 
 @Injectable()
 export class AuthService {
     constructor(
             private readonly userService: UserService,
             private jwtService: JwtService,
+            private readonly mentorService: MentorService
             ) {}
 
     async studentRegister(registerDto: RegisterDto, file?: Express.Multer.File){
@@ -25,10 +27,20 @@ export class AuthService {
             
             const newUser = await this.userService.createStudent({ ...registerDto, password: encriptedPass});
 
+            const mentor = await this.mentorService.post_create_mentor({
+                mentorDescription: registerDto.mentorDescription,
+                price: registerDto.price,
+                aboutMe: registerDto.aboutMe,
+                birthdate: new Date(registerDto.birthDate),
+                Categories: registerDto.categories,
+                idSpeciality: registerDto.speciality,
+            }
+                , file)
+
             return newUser;
 
         } catch (error) {
-            
+
             if (error) {
                 throw new ErrorManager().errorHandler(error);
             };
