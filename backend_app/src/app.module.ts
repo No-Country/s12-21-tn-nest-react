@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GatewayModule } from './gateway/gateway.module';
+import { MentorModule } from './mentor/mentor.module';
+import { AlunmModule } from './alunm/alunm.module';
+
+const feactureModule = [MentorModule, AlunmModule];
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,13 +21,13 @@ import { GatewayModule } from './gateway/gateway.module';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASS'),
         database: configService.get('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
         synchronize: true,
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
       }),
     }),
     JwtModule.registerAsync({
-      imports: [ConfigModule, GatewayModule],
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         global: true,
@@ -36,8 +37,8 @@ import { GatewayModule } from './gateway/gateway.module';
       }),
       inject: [ConfigService],
     }),
+    ...feactureModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, JwtService],
+  providers: [JwtService],
 })
 export class AppModule {}
