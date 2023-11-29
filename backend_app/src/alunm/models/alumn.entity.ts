@@ -58,7 +58,7 @@ export class Alumn {
   })
   categories: Category[];
 
-  @OneToOne(() => User, (user) => user.alumn)
+  @OneToOne(() => User, (user) => user.alumn, { eager: true })
     @JoinColumn({
         name: 'user',
     })

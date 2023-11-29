@@ -62,7 +62,7 @@ export class Mentor extends BaseEntity {
   @ManyToOne(() => Speciality, (speciality) => speciality.mentor)
   speciality: Speciality;
 
-  @OneToOne(() => User, (user) => user.mentor)
+  @OneToOne(() => User, (user) => user.mentor, { eager: true })
     @JoinColumn({
         name: 'user',
     })
