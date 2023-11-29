@@ -2,7 +2,6 @@ import { BaseEntity } from "../../../common/base/entity";
 import { Entity, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { Role } from "../../../auth/role/entities/role.entity";
 import { Mentor } from "src/mentor/models/mentor.entity";
-import { Alumn } from "src/alunm/models/alumn.entity";
 
 
 
@@ -48,11 +47,5 @@ export class User extends BaseEntity {
         name: 'mentor',
     })
     mentor: Mentor;
-    
-    @OneToOne(() => Alumn, (alumn) => alumn.user)
-    @JoinColumn({
-        name: 'alumn',
-    })
-    alumn: Alumn;
 
 }
