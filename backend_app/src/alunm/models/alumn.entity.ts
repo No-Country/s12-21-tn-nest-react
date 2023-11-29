@@ -3,14 +3,17 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { AlumnHireMentor } from './alumnHireMentor.entity';
 import { Category } from 'src/mentor/models/categories.entity';
+import { User } from 'src/auth/user/entities/user.entity';
 
 @Entity({ name: 'alumn' })
 export class Alumn {
@@ -54,4 +57,11 @@ export class Alumn {
     },
   })
   categories: Category[];
+
+  @OneToOne(() => User, (user) => user.alumn)
+    @JoinColumn({
+        name: 'user',
+    })
+    user: User;
+    
 }
