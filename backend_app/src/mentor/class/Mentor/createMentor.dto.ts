@@ -4,9 +4,7 @@ import {
   MaxLength,
   IsDateString,
   IsArray,
-  IsObject,
 } from 'class-validator';
-import { User } from 'src/auth/user/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class createMentor {
@@ -66,13 +64,13 @@ export class createMentor {
   @IsString()
   @IsNotEmpty()
   idSpeciality: string;
-  
-  user: User;
 
   @ApiProperty({
-    description: 'Mentor photo',
-    type: 'string',
-    format: 'binary',
+    description: 'User ID',
+    nullable: false,
+    example: '0af348af-8e52-11ee-8680-fcaa14c77543',
   })
-  file: any;
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 }

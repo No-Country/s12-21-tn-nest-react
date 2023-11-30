@@ -11,7 +11,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { AlunmService } from './alunm.service';
+import { AlumnService } from './alunm.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AlunmCreateRequestDto } from './dtos/alunmCreateRequest.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -21,7 +21,7 @@ import { CalificationDto } from './dtos/calification.dto';
 @Controller('alumn')
 @ApiTags('Alumn')
 export class AlunmController {
-  constructor(private alunmService: AlunmService) {}
+  constructor(private alunmService: AlumnService) {}
 
   @Post('/')
   @UseInterceptors(FileInterceptor('file'))
@@ -32,7 +32,6 @@ export class AlunmController {
     try {
       return this.alunmService.create(request, file);
     } catch (error) {
-      console.log(error);
       return new HttpException('Error creating alumn', 400);
     }
   }

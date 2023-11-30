@@ -42,7 +42,6 @@ export class AlumnService {
       });
       return await this.alumnRepository.save(alumn);
     } catch (error) {
-      console.log(error);
       throw 'Error creating alumn';
     }
   }
@@ -79,7 +78,6 @@ export class AlumnService {
         ],
       });
     } catch (error) {
-      console.log(error);
       throw 'Error finding alumn';
     }
   }
@@ -100,7 +98,6 @@ export class AlumnService {
       });
       this.alumnRepository.restore(find.id);
     } catch (error) {
-      console.log(error);
       throw 'Error restoring alumn';
     }
   }
@@ -126,7 +123,6 @@ export class AlumnService {
       alumn.profileImg = profileImg;
       return await this.alumnRepository.save(alumn);
     } catch (error) {
-      console.log(error);
       throw 'Error updating alumn';
     }
   }
@@ -140,7 +136,6 @@ export class AlumnService {
       );
       return await this.saveMentorHire(alumn, mentor, category);
     } catch (error) {
-      console.log(error);
       throw new Error('Error hiring mentor');
     }
   }
@@ -155,13 +150,11 @@ export class AlumnService {
         relations: ['categories'],
       });
       if (!mentor) throw new Error('Mentor not found');
-      console.log(mentor.categories);
       const category = mentor.categories.find((c) => c.id === idC);
       if (!category) throw new Error('Mentor does not have this category');
 
       return { alumn, mentor, category };
     } catch (error) {
-      console.log(error);
       throw new Error('Error preparing alumn hire mentor');
     }
   }
@@ -177,7 +170,6 @@ export class AlumnService {
 
       return await this.alumnHireMentorRepository.save(alumnHireMentor);
     } catch (error) {
-      console.log(error);
       throw new Error('Error saving mentor hire');
     }
   }

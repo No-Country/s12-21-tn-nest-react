@@ -3,9 +3,7 @@ import { IsNotEmpty } from 'class-validator';
 import { User } from 'src/auth/user/entities/user.entity';
 
 export class AlunmCreateRequestDto {
-  
   user: User;
-
   @IsNotEmpty()
   @ApiProperty()
   categoriesId?: string[];

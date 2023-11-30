@@ -1,30 +1,34 @@
-import { IsString, MinLength, IsEmail, IsEnum, MaxLength, IsDateString } from "class-validator";
+import {
+  IsString,
+  MinLength,
+  IsEmail,
+  IsEnum,
+  MaxLength,
+} from 'class-validator';
 
-import { ERole } from "../../../common/enum";
+import { ERole } from '../../../common/enum';
 
 export class CreateUserDto {
+  @IsString()
+  @MinLength(3)
+  @MaxLength(25)
+  firstName: string;
 
-    @IsString()
-    @MinLength(3)
-    @MaxLength(25)
-    firstName: string;
+  @IsString()
+  @MinLength(3)
+  @MaxLength(25)
+  lastName: string;
 
-    @IsString()
-    @MinLength(3)
-    @MaxLength(25)
-    lastName: string;
+  @IsEmail()
+  email: string;
 
-    @IsEmail()
-    email:string;
+  @IsString()
+  @MinLength(6)
+  password: string;
 
-    @IsString()
-    @MinLength(6)
-    password: string;
+  @IsString()
+  phone?: string;
 
-    @IsString()
-    phone?: string;
-
-    @IsEnum(ERole)
-    role: ERole;
-
+  @IsEnum(ERole)
+  role: ERole;
 }

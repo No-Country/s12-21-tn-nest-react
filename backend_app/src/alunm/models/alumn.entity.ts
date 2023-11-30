@@ -14,7 +14,6 @@ import { BaseEntity } from '../../common/base/entity';
 
 @Entity({ name: 'alumn' })
 export class Alumn extends BaseEntity {
-
   @Column({
     default:
       'https://s3.ppllstatics.com/elnortedecastilla/www/pre2017/multimedia/noticias/201501/12/media/cortadas/facebook-profile-picture-no-pic-avatar--575x323.jpg',
@@ -40,9 +39,8 @@ export class Alumn extends BaseEntity {
   categories: Category[];
 
   @OneToOne(() => User, (user) => user.alumn, { eager: true })
-    @JoinColumn({
-        name: 'user',
-    })
-    user: User;
-    
+  @JoinColumn({
+    name: 'user',
+  })
+  user: User;
 }
