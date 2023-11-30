@@ -10,5 +10,6 @@ import { Speciality } from './models/especializaciones';
   imports: [TypeOrmModule.forFeature([Category, Mentor, Speciality])],
   controllers: [MentorController],
   providers: [MentorService],
+  exports: [MentorService],
 })
 export class MentorModule {}

@@ -1,5 +1,5 @@
 export enum ERole {
-    ADMIN = 'admin',
-    STUDENT = 'student',
-    MENTOR = 'mentor',
+  ADMIN = 'admin',
+  STUDENT = 'student',
+  MENTOR = 'mentor',
 }

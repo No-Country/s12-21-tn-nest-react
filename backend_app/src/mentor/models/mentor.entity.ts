@@ -2,12 +2,9 @@ import { BaseEntity } from '../../common/base/entity';
 import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   JoinTable,
   ManyToMany,
-  CreateDateColumn,
-  DeleteDateColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -55,9 +52,8 @@ export class Mentor extends BaseEntity {
   speciality: Speciality;
 
   @OneToOne(() => User, (user) => user.mentor, { eager: true })
-    @JoinColumn({
-        name: 'user',
-    })
-    user: User;
-
+  @JoinColumn({
+    name: 'user',
+  })
+  userId: User;
 }

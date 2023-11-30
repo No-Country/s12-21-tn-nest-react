@@ -37,6 +37,7 @@ export const create_object_mentor = async (
     mentorDescription: post['mentorDescription'],
     aboutMe: post['aboutMe'],
     speciality: { id: post['idSpeciality'] },
+    // userId: { id: post['userId'] },
   };
   return mentor;
 };

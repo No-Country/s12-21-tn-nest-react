@@ -8,7 +8,13 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 
-const feactureModule = [MentorModule, UserModule, AuthModule, RoleModule, AlunmModule];
+const feactureModule = [
+  MentorModule,
+  UserModule,
+  AuthModule,
+  RoleModule,
+  AlunmModule,
+];
 
 @Module({
   imports: [

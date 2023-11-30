@@ -2,7 +2,7 @@
 /dist
 /node_modules
 /.yarn
-
+.env
 # local env files
 .env*.local
 
