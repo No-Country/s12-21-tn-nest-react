@@ -4,8 +4,9 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MentorModule } from './mentor/mentor.module';
 import { AlunmModule } from './alunm/alunm.module';
+import { GatewayModule } from './gateway/gateway.module';
 
-const feactureModule = [MentorModule, AlunmModule];
+const feactureModule = [MentorModule, AlunmModule, GatewayModule];
 @Module({
   imports: [
     ConfigModule.forRoot({

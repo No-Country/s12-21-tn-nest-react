@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { Category } from './categories.entity';
 import { Speciality } from './especializaciones';
+import { Message } from 'src/gateway/models/gateway.entity';
 
 @Entity({ name: 'mentor' })
 export class Mentor {
@@ -59,4 +60,7 @@ export class Mentor {
 
   @ManyToOne(() => Speciality, (speciality) => speciality.mentor)
   speciality: Speciality;
+
+  @OneToMany(() => Message, (message) => message.alunm)
+  message: Message;
 }

@@ -26,12 +26,7 @@ export const create_object_mentor = async (
   post: createMentor,
   file: Express.Multer.File,
 ) => {
-  let uploadImage: any;
-  if (file) {
-    uploadImage = await uploadCloudinary(file);
-  }
   const mentor: DeepPartial<Mentor> = {
-    image: uploadImage['url'],
     birthdate: post['birthdate'],
     price: post['price'],
     mentorDescription: post['mentorDescription'],

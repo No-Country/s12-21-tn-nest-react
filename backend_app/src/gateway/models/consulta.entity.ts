@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Message } from './gateway.entity';
 
 @Entity('consulta')
 export class Consulta {
@@ -10,4 +11,7 @@ export class Consulta {
 
   @Column({ type: 'boolean', default: false })
   status: boolean;
+
+  @OneToMany(() => Message, (message) => message.consulta)
+  messages: Message[];
 }

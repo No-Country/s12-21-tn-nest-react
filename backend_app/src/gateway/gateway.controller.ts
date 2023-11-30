@@ -28,6 +28,14 @@ export class MessagesController {
   deleteMessage(@Param('id', ParseIntPipe) id: number) {
     return this.messageService.deleteMessage(id);
   }
+
+  @Post(':id1/send/:id2')
+  sendMessage(@Param() params: { id1: string; id2: string }) {
+    const { id1, id2 } = params;
+    console.log(`Enviando mensaje desde ${id1} a ${id2}`);
+    return this.messageService.sendMessage(id1, id2);
+  }
+
   @Post()
   createMessage(@Body() newMessage: CreateMessageDto) {
     return this.messageService.createMessage(newMessage);
