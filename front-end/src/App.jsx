@@ -8,6 +8,7 @@ import StudentForm from "./components/StudentForm";
 import StepperForm  from "./components/StepperForm";
 import Category from "./components/Category";
 import "./App.css";
+import { MentoresPage } from "./MentoresPage/MentoresPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/Mentores" element={<MentoresPage />} />
               <Route path="/signUp" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/stepperForm" element={<StepperForm />} />
