@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Paper, Box, Button, Menu, MenuItem } from '@mui/material'
 import dataCategoriesJson from '../MentoresPage/categoriesData.json'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 
-export const FilterBar = () => {
+export const ProfileFilter = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (e) => {
@@ -22,10 +23,15 @@ export const FilterBar = () => {
                     color="primary"
                     onClick={handleClick}
                     sx={{
-                        width: '11vw'
+                        width: '15rem',
+                        justifyContent: 'space-between',
+                        display: 'flex',
+                        alignItems: 'center',
                     }}
                 >
-                    Categorías</Button>
+                    Categorías
+                    <ArrowDropDownIcon />
+                </Button>
                 <Menu
                     id='category-menu'
                     anchorEl={anchorEl}

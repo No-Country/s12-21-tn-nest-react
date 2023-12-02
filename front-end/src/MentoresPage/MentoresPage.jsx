@@ -1,7 +1,8 @@
 import { Box, Typography, Paper } from '@mui/material'
 import React from 'react'
-import { FilterBar } from '../components/FilterBar'
+import { ProfileFilter } from '../components/ProfileFilter'
 import { PriceFilter } from '../components/PriceFilter'
+import { MentorCardRenderer } from '../components/MentorCardRenderer'
 
 export const MentoresPage = () => {
     return (
@@ -32,9 +33,10 @@ export const MentoresPage = () => {
                         gap: '3rem'
                     }}
                 >
-                    <FilterBar />
+                    <ProfileFilter />
                     <PriceFilter />
                 </Paper>
+                <MentorCardRenderer />
             </Box>
         </Box>
     )
