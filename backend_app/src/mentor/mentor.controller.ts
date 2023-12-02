@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { MentorService } from './mentor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -89,8 +90,16 @@ export class MentorController {
   }
 
   @Get('filter')
-  async filer_mentor() {
-    return this.mentorService.filer_mentor();
+  async filer_mentor(
+    @Query('categoryName') categoryName: string[],
+    @Query('order') order?: 'asc' | 'desc' | 'ascAlf' | 'descAlf',
+  ) {
+    return this.mentorService.filer_mentor(categoryName, order);
+  }
+
+  @Get('filter/:id')
+  async filer_mentor_id(@Param('id') id: string) {
+    return this.mentorService.mentor_find(id);
   }
   @Get('speciality/filter')
   async filter_speciality() {

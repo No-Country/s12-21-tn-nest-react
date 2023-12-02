@@ -9,6 +9,7 @@ import { Mentor } from 'src/mentor/models/mentor.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([User, Mentor]), JwtModule],
   controllers: [UserController],
-  providers: [UserService]
+  providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}
