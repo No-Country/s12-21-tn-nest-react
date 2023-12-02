@@ -15,7 +15,9 @@ import { verify_ages } from 'src/functions/general';
 import { Mentor } from './models/mentor.entity';
 import { Speciality } from './models/especializaciones';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
-
+import * as bcrypt from 'bcryptjs';
+import { SALT_ROUNDS } from '../common/constants';
+import { UserService } from 'src/auth/user/user.service';
 @Injectable()
 export class MentorService {
   constructor(
@@ -24,6 +26,7 @@ export class MentorService {
     @InjectRepository(Mentor) private mentorRepository: Repository<Mentor>,
     @InjectRepository(Speciality)
     private specialityRepository: Repository<Speciality>,
+    private readonly userService: UserService,
   ) {}
   async get_categories_all() {
     try {
@@ -136,14 +139,42 @@ export class MentorService {
     }
   }
 
-  async filer_mentor() {
+  async filer_mentor(
+    categoryName: string[],
+    order?: 'asc' | 'desc' | 'ascAlf' | 'descAlf',
+  ) {
     try {
-      return await this.mentorRepository.find({
+      let mentors = await this.mentorRepository.find({
         relations: {
           categories: true,
           speciality: true,
+          userId: true,
         },
       });
+
+      if (categoryName && categoryName.length > 0) {
+        mentors = mentors.filter((mentor) =>
+          mentor.categories.some((c) => categoryName.includes(c.name)),
+        );
+      }
+
+      switch (order) {
+        case 'asc':
+          return mentors.sort((a, b) => Number(a.price) - Number(b.price));
+        case 'desc':
+          return mentors.sort((a, b) => Number(b.price) - Number(a.price));
+        case 'ascAlf':
+          return mentors.sort((a, b) =>
+            a.userId.firstName.localeCompare(b.userId.firstName),
+          );
+          console.log(mentors);
+        case 'descAlf':
+          return mentors.sort((a, b) =>
+            b.userId.firstName.localeCompare(a.userId.firstName),
+          );
+        default:
+          return mentors;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -201,6 +232,7 @@ export class MentorService {
       relations: {
         categories: true,
         speciality: true,
+        userId: true,
       },
     });
   }
@@ -263,12 +295,42 @@ export class MentorService {
       relations: {
         categories: true,
         speciality: true,
+        userId: true,
       },
     });
+    const object_user_actualiazar = {};
+    if (updateProfile.firstName) {
+      object_user_actualiazar['firstName'] = updateProfile.firstName;
+    }
 
-    if (updateProfile.Categories.length > 0) {
+    if (updateProfile.lastName) {
+      object_user_actualiazar['lastName'] = updateProfile.lastName;
+    }
+
+    if (updateProfile.password) {
+      object_user_actualiazar['password'] = await bcrypt.hash(
+        updateProfile.password,
+        SALT_ROUNDS,
+      );
+    }
+    if (updateProfile.phone) {
+      object_user_actualiazar['phone'] = updateProfile.phone;
+    }
+
+    if (updateProfile.lastName) {
+      object_user_actualiazar['lastName'] = updateProfile.lastName;
+    }
+
+    if (Object.keys(object_user_actualiazar).length > 0) {
+      await this.userService.update(
+        searchMentor.userId.id,
+        object_user_actualiazar,
+      );
+    }
+
+    if (updateProfile.categories.length > 0) {
       const categoriesSearch = await this.categoriesRepository.find({
-        where: { id: In(updateProfile.Categories) },
+        where: { id: In(updateProfile.categories) },
       });
       let newCategoriesToadd: Array<any>;
       if (categoriesSearch.length > 0) {
