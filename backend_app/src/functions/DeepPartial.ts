@@ -37,7 +37,7 @@ export const create_object_mentor = async (
     mentorDescription: post['mentorDescription'],
     aboutMe: post['aboutMe'],
     speciality: { id: post['idSpeciality'] },
-    // userId: { id: post['userId'] },
+    userId: { id: post['userId'] },
   };
   return mentor;
 };
@@ -57,7 +57,14 @@ export const update_object_mentor = async (
       if (key === 'speciality') {
         object_update[key] = { id: put[key] };
       } else {
-        if (key !== 'categories') {
+        if (
+          key !== 'categories' &&
+          key != 'firstName' &&
+          key !== 'lastName' &&
+          key !== 'phone' &&
+          key !== 'birthday' &&
+          key !== 'password'
+        ) {
           object_update[key] = put[key];
         }
       }
