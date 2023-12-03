@@ -41,7 +41,7 @@ export class CreatePaypalOrderDto {
   @ApiProperty({
     description: 'Mentorship or mentor id/profile',
     nullable: false,
-    example: 'A database id or profile link',
+    example: 'http://localhost:8080/api/paypal',
   })
   @IsNotEmpty({ message: 'cancel_url is required' })
   @IsString()
