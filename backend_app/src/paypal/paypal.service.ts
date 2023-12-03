@@ -35,7 +35,7 @@ export class PaypalService {
         brand_name: createPaypalOrderDto.brand_name,
         landing_page: 'NO_PREFERENCE',
         user_action: 'PAY_NOW',
-        return_url: 'http://localhost:8080/api/paypal/accepted',
+        return_url: `http://localhost:${process.env.PORT}/api/paypal/accepted`,
         cancel_url: createPaypalOrderDto.cancel_url,
       },
     });
