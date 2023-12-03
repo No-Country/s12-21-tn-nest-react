@@ -1,14 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import {
-  PayPalHttpClient,
-  LiveEnvironment,
-  SandboxEnvironment,
-} from '@paypal/checkout-server-sdk';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 const paypal = require('@paypal/checkout-server-sdk');
-import { CreatePaypalDto } from './dto/create-paypal.dto';
-import { UpdatePaypalDto } from './dto/update-paypal.dto';
+import { CreatePaypalOrderDto } from './dto/create-paypal.dto';
+import { Paypal } from './entities/paypal.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
-// This sample uses SandboxEnvironment. In production, use LiveEnvironment
 const environment = new paypal.core.SandboxEnvironment(
   process.env.PAYPAL_CLIENT_ID,
   process.env.PAYPAL_CLIENT_SECRET,
@@ -18,27 +14,28 @@ const client = new paypal.core.PayPalHttpClient(environment);
 
 @Injectable()
 export class PaypalService {
-  private payPalClient: PayPalHttpClient;
-  constructor() {}
-  async create(createPaypalDto: CreatePaypalDto) {
+  constructor(
+    @InjectRepository(Paypal) private paypalRepository: Repository<Paypal>,
+  ) {}
+  async create(createPaypalOrderDto: CreatePaypalOrderDto) {
     const request = new paypal.orders.OrdersCreateRequest();
     request.requestBody({
       intent: 'CAPTURE',
       purchase_units: [
         {
-          reference_id: 'd9f80740-38f0-11e8-b467-0ed5f89f718b',
+          reference_id: createPaypalOrderDto.reference_id,
           amount: {
-            currency_code: 'USD',
-            value: '20.00',
+            currency_code: createPaypalOrderDto.currency_code,
+            value: createPaypalOrderDto.value,
           },
         },
       ],
       application_context: {
-        brand_name: 'MentorSphere Mentorship',
+        brand_name: createPaypalOrderDto.brand_name,
         landing_page: 'NO_PREFERENCE',
         user_action: 'PAY_NOW',
         return_url: 'http://localhost:8080/api/paypal/accepted',
-        cancel_url: 'http://localhost:8080/api/paypal',
+        cancel_url: createPaypalOrderDto.cancel_url,
       },
     });
 
@@ -47,18 +44,33 @@ export class PaypalService {
   }
 
   findAll() {
-    return `This action returns all paypal`;
+    throw new HttpException(
+      `#You can only generate an order and save a new payment`,
+      HttpStatus.FORBIDDEN,
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} paypal`;
+  async findOne(token: string) {
+    const request = new paypal.orders.OrdersCaptureRequest(token);
+    request.requestBody({});
+    const response = await client.execute(request);
+    //console.log(`Response: ${JSON.stringify(response)}`);
+    //console.log(`Capture: ${JSON.stringify(response.result)}`);
+    //await this.paypalRepository.insert()
+    return response.result;
   }
 
-  update(id: number, updatePaypalDto: UpdatePaypalDto) {
-    return `This action updates a #${id} paypal`;
+  update(id: number) {
+    throw new HttpException(
+      `#${id}: You can't update any payment`,
+      HttpStatus.FORBIDDEN,
+    );
   }
 
   remove(id: number) {
-    return `This action removes a #${id} paypal`;
+    throw new HttpException(
+      `#${id}: You can't delete any payment`,
+      HttpStatus.FORBIDDEN,
+    );
   }
 }

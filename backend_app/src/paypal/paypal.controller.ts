@@ -9,33 +9,50 @@ import {
   Query,
 } from '@nestjs/common';
 import { PaypalService } from './paypal.service';
-import { CreatePaypalDto } from './dto/create-paypal.dto';
-import { UpdatePaypalDto } from './dto/update-paypal.dto';
+import { CreatePaypalOrderDto } from './dto/create-paypal.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiForbiddenResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('PayPal')
 @Controller('paypal')
 export class PaypalController {
   constructor(private readonly paypalService: PaypalService) {}
 
   @Post()
-  create(@Body() createPaypalDto: CreatePaypalDto) {
-    return this.paypalService.create(createPaypalDto);
+  @ApiOperation({
+    description: 'Crear una orden de pago con PayPal',
+  })
+  @ApiBody({
+    type: CreatePaypalOrderDto,
+  })
+  create(@Body() createPaypalOrderDto: CreatePaypalOrderDto) {
+    return this.paypalService.create(createPaypalOrderDto);
   }
 
   @Get('accepted')
-  findAll(@Query('token') token: string, @Query('PayerID') PayerID: string) {
-    return `Order was payer by: ${token} -- ${PayerID}`;
+  findAll(@Query('token') token: string) {
+    return this.paypalService.findOne(token);
   }
 
+  @ApiForbiddenResponse()
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.paypalService.findOne(+id);
+    return this.paypalService.findOne(id);
   }
 
+  @ApiForbiddenResponse()
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaypalDto: UpdatePaypalDto) {
-    return this.paypalService.update(+id, updatePaypalDto);
+  update(@Param('id') id: string) {
+    return this.paypalService.update(+id);
   }
 
+  @ApiForbiddenResponse()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.paypalService.remove(+id);
