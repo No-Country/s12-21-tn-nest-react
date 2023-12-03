@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreatePaypalOrderDto {
+export class SavePaypalOrderDto {
   @ApiProperty({
     description: 'paypal_id id',
     nullable: false,
@@ -28,5 +28,4 @@ export class CreatePaypalOrderDto {
   @IsNotEmpty({ message: 'mentorship ID is required' })
   @IsString()
   mentorship: string;
-
 }

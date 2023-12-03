@@ -4,6 +4,7 @@ import { CreatePaypalOrderDto } from './dto/create-paypal.dto';
 import { Paypal } from './entities/paypal.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { SavePaypalOrderDto } from './dto/save-paypal.dto';
 
 const environment = new paypal.core.SandboxEnvironment(
   process.env.PAYPAL_CLIENT_ID,
@@ -17,7 +18,7 @@ export class PaypalService {
   constructor(
     @InjectRepository(Paypal) private paypalRepository: Repository<Paypal>,
   ) {}
-  async create(createPaypalOrderDto: CreatePaypalOrderDto) {
+  async createOrder(createPaypalOrderDto: CreatePaypalOrderDto) {
     const request = new paypal.orders.OrdersCreateRequest();
     request.requestBody({
       intent: 'CAPTURE',
@@ -50,14 +51,24 @@ export class PaypalService {
     );
   }
 
-  async findOne(token: string) {
+  async captureOrder(token: string) {
     const request = new paypal.orders.OrdersCaptureRequest(token);
     request.requestBody({});
     const response = await client.execute(request);
-    //console.log(`Response: ${JSON.stringify(response)}`);
-    //console.log(`Capture: ${JSON.stringify(response.result)}`);
-    //await this.paypalRepository.insert()
+    const newOrder = {
+      paypal_id: response.result.id,
+      status: response.result.status,
+      mentorship: response.result.purchase_units[0].reference_id,
+    };
+    await this.saveOrder(newOrder);
     return response.result;
+  }
+
+  private async saveOrder(order: SavePaypalOrderDto) {
+    const newOrder = this.paypalRepository.create({
+      ...order,
+    });
+    await this.paypalRepository.insert(newOrder);
   }
 
   update(id: number) {

@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { PaypalService } from './paypal.service';
 import { CreatePaypalOrderDto } from './dto/create-paypal.dto';
@@ -32,18 +34,21 @@ export class PaypalController {
     type: CreatePaypalOrderDto,
   })
   create(@Body() createPaypalOrderDto: CreatePaypalOrderDto) {
-    return this.paypalService.create(createPaypalOrderDto);
+    return this.paypalService.createOrder(createPaypalOrderDto);
   }
 
   @Get('accepted')
   findAll(@Query('token') token: string) {
-    return this.paypalService.findOne(token);
+    return this.paypalService.captureOrder(token);
   }
 
   @ApiForbiddenResponse()
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.paypalService.findOne(id);
+    throw new HttpException(
+      `#You can only generate an order and save a new payment`,
+      HttpStatus.FORBIDDEN,
+    );
   }
 
   @ApiForbiddenResponse()

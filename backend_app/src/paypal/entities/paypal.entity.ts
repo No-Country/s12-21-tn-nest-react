@@ -13,5 +13,6 @@ export class Paypal extends BaseEntity {
       name: 'mentorship',
     })
   */
+  @Column({ type: 'text', nullable: false })
   mentorship: string;
 }
