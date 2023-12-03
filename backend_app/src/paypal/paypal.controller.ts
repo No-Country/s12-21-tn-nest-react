@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PaypalService } from './paypal.service';
 import { CreatePaypalDto } from './dto/create-paypal.dto';
@@ -20,9 +21,9 @@ export class PaypalController {
     return this.paypalService.create(createPaypalDto);
   }
 
-  @Get()
-  findAll() {
-    return this.paypalService.findAll();
+  @Get('accepted')
+  findAll(@Query('token') token: string, @Query('PayerID') PayerID: string) {
+    return `Order was payer by: ${token} -- ${PayerID}`;
   }
 
   @Get(':id')
