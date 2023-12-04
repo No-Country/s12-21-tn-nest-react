@@ -5,6 +5,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -43,12 +44,20 @@ export class AlunmController {
 
   @Get('by-mentor/:id')
   async findByMentor(@Param('id') id: string) {
-    return this.alunmService.findByMentor(id);
+    try {
+      return this.alunmService.findByMentor(id);
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   @Get('/:id')
   async findOne(@Param('id') id: string) {
-    return this.alunmService.findOne(id);
+    try {
+      return this.alunmService.findOne(id);
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   @Delete('/:id')
@@ -72,7 +81,11 @@ export class AlunmController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.alunmService.update(request, file, id);
+    try {
+      return this.alunmService.update(request, file, id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Post('/hire-mentor')
@@ -90,6 +103,10 @@ export class AlunmController {
 
   @Patch('/finish-mentory/:id')
   async finishMentory(@Param('id') id: string) {
-    return this.alunmService.finishMentory(id);
+    try {
+      return this.alunmService.finishMentory(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

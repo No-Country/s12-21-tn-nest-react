@@ -42,7 +42,7 @@ export class AlumnService {
       });
       return await this.alumnRepository.save(alumn);
     } catch (error) {
-      throw 'Error creating alumn';
+      throw new Error('Error creating alumn');
     }
   }
 
@@ -78,7 +78,7 @@ export class AlumnService {
         ],
       });
     } catch (error) {
-      throw 'Error finding alumn';
+      throw new Error('Error finding alumn');
     }
   }
 
@@ -86,7 +86,7 @@ export class AlumnService {
     try {
       this.alumnRepository.softDelete(id);
     } catch (error) {
-      throw 'Error deleting alumn';
+      throw new Error('Error deleting alumn');
     }
   }
 
@@ -98,7 +98,7 @@ export class AlumnService {
       });
       this.alumnRepository.restore(find.id);
     } catch (error) {
-      throw 'Error restoring alumn';
+      throw new Error('Error restoring alumn');
     }
   }
 
@@ -109,7 +109,7 @@ export class AlumnService {
   ) {
     try {
       const alumn = await this.alumnRepository.findOne({ where: { id } });
-      if (!alumn) throw 'Alumn not found';
+      if (!alumn) throw new Error('Alumn not found');
 
       const categories = await this.categoryRepository.findByIds(
         request.categoriesId,
@@ -123,7 +123,7 @@ export class AlumnService {
       alumn.profileImg = profileImg;
       return await this.alumnRepository.save(alumn);
     } catch (error) {
-      throw 'Error updating alumn';
+      throw new Error('Error updating alumn');
     }
   }
 
@@ -150,6 +150,7 @@ export class AlumnService {
         relations: ['categories'],
       });
       if (!mentor) throw new Error('Mentor not found');
+
       const category = mentor.categories.find((c) => c.id === idC);
       if (!category) throw new Error('Mentor does not have this category');
 
@@ -178,13 +179,13 @@ export class AlumnService {
     const find = await this.alumnHireMentorRepository.findOne({
       where: { id },
     });
-    if (!find) throw 'Hire not found';
+    if (!find) throw new Error('Hire not found');
 
     try {
       find.finished = true;
       return await this.alumnHireMentorRepository.save(find);
     } catch (error) {
-      throw 'Error finishing mentor hire';
+      throw new Error('Error finishing mentor hire');
     }
   }
 
