@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { AlumnHireMentor } from './alumnHireMentor.entity';
 import { Category } from 'src/mentor/models/categories.entity';
-import { Message } from 'src/gateway/models/gateway.entity';
+import { Message } from 'src/messages/models/gateway.entity';
 
 @Entity({ name: 'alumn' })
 export class Alumn {

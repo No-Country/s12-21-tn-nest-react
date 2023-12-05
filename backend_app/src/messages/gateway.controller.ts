@@ -30,10 +30,13 @@ export class MessagesController {
   }
 
   @Post(':id1/send/:id2')
-  sendMessage(@Param() params: { id1: string; id2: string }) {
+  sendMessage(
+    @Param() params: { id1: string; id2: string },
+    @Body() newMessage: CreateMessageDto,
+  ) {
     const { id1, id2 } = params;
     console.log(`Enviando mensaje desde ${id1} a ${id2}`);
-    return this.messageService.sendMessage(id1, id2);
+    return this.messageService.sendMessage(id1, id2, newMessage);
   }
 
   @Post()

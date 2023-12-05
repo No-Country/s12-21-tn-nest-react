@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 import { Category } from './categories.entity';
 import { Speciality } from './especializaciones';
-import { Message } from 'src/gateway/models/gateway.entity';
+import { Message } from 'src/messages/models/gateway.entity';
 
 @Entity({ name: 'mentor' })
 export class Mentor {

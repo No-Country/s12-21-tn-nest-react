@@ -37,20 +37,4 @@ export class Message {
   @ManyToOne(() => Consulta)
   @JoinColumn()
   consulta: Consulta;
-
-  constructor(
-    id: number,
-    message: string,
-    sender: string,
-    receiver: string,
-    date: Date,
-    status: string,
-  ) {
-    this.id = id;
-    this.message = message;
-    this.sender = sender;
-    this.receiver = receiver;
-    this.date = date;
-    this.status = status;
-  }
 }

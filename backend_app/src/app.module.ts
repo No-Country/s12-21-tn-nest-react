@@ -4,7 +4,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MentorModule } from './mentor/mentor.module';
 import { AlunmModule } from './alunm/alunm.module';
-import { GatewayModule } from './gateway/gateway.module';
+import { GatewayModule } from './messages/gateway.module';
 
 const feactureModule = [MentorModule, AlunmModule, GatewayModule];
 @Module({

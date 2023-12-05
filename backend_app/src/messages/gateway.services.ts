@@ -43,27 +43,42 @@ export class MessagesService {
     if (!messageFound) {
       throw new HttpException('Message not found', HttpStatus.NOT_FOUND);
     }
-    
+
     const newConsult = this.consultaRepository.create(consulta);
     const savedConsult = await this.consultaRepository.save(newConsult);
     messageFound.consulta = savedConsult;
 
     return this.messageRepository.save(messageFound);
   }
-  async sendMessage(id1: string, id2: string) {
+  async sendMessage(id1: string, id2: string, newMessage: CreateMessageDto) {
     const alumnFound = await this.alumnRepository.findOne({
       where: { id: id1 },
     });
-    if (!alumnFound) {
-      throw new HttpException('Alumn not found', HttpStatus.NOT_FOUND);
-    }
     const mentorFound = await this.mentorRepository.findOne({
       where: { id: id2 },
     });
-    if (!mentorFound) {
-      throw new HttpException('Mentor not found', HttpStatus.NOT_FOUND);
+
+    if (!alumnFound || !mentorFound) {
+      throw new HttpException(
+        'Alumn or Mentor not found',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
-    return `Enviando mensaje desde ${id1} a ${id2}`;
+    const consulta = new Consulta();
+    consulta.status = false; // O el valor que prefieras
+    await this.consultaRepository.save(consulta);
+
+    const message = new Message();
+    message.message = newMessage.message;
+    message.sender = id1;
+    message.receiver = id2;
+    message.date = new Date();
+    message.status = 'unread';
+    message.consulta = consulta;
+
+    await this.messageRepository.save(message);
+
+    return `Mensaje enviado desde ${id1} a ${id2}`;
   }
 }
