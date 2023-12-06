@@ -25,7 +25,7 @@ const Header = () => {
             <Link to="/login">Login</Link>
           </li>
           <li className="header-list__item">
-            <Link to="/stepperForm">Registrate</Link>
+            <Link to="/signup">Registrate</Link>
           </li>
         </ul>
       </nav>

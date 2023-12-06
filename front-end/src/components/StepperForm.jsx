@@ -1,4 +1,5 @@
 import React from 'react';
+import Submit from './Submit';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -8,28 +9,45 @@ import Typography from '@mui/material/Typography';
 import SignUp from '../SignUp/SignUp'; 
 import MentorForm from './MentorForm';
 import StudentForm from './StudentForm';
-import Category from './Category';
+import Mentorship from './Mentorship';
+import { useState } from "react";
 
-const steps = ['SignUp', 'MentorForm', 'Category']; 
+const steps = ['SignUp', 'MentorForm', 'Mentorship']; 
 
 const StepperForm = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [userTypeSelection, setUserTypeSelection] = React.useState(null);
+  const [user, setUser] = useState(null);
+  const [mentor, setMentor] = useState(null);
+  const [mentorship, setMentorship] = useState(null);
+
 
   const isStepOptional = (step) => {
-    return false; // No step is optional
+    return false;
   };
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
+    }
+
+    if (activeStep === steps.length - 1) {
+      console.log("presubmit");
+      console.log(user);
+
+      try {
+        await Submit(user, mentor, mentorship);
+        console.log("postsubmit");
+      } catch (error) {
+        console.error("Error submitting data:", error);
+      }
     }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -40,19 +58,6 @@ const StepperForm = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
-
   const handleUserTypeSelection = (selectedType) => {
     setUserTypeSelection(selectedType);
   };
@@ -60,11 +65,11 @@ const StepperForm = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 0:
-        return <SignUp onUserTypeSelection={handleUserTypeSelection} />;
+        return <SignUp onUserTypeSelection={handleUserTypeSelection} user={user}/>;
       case 1:
-        return userTypeSelection === 'mentor' ? <MentorForm /> : <StudentForm />;
+        return userTypeSelection === 'mentor' ? <MentorForm mentor={mentor}/> : <StudentForm />;
       case 2:
-        return <Category />;
+        return <Mentorship mentorship={mentorship}/>;
       default:
         return null;
     }
@@ -115,15 +120,12 @@ const StepperForm = () => {
           Back
         </Button>
         <Box sx={{ flex: '1 1 auto' }} />
-        {isStepOptional(activeStep) && (
-          <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-            Skip
-          </Button>
-        )}
 
-        <Button onClick={activeStep === steps.length - 1 ? null : handleNext}>
+        <Button onClick={activeStep === steps.length - 1 ? handleNext : handleNext}>
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
         </Button>
+
+
       </Box>
     </Box>
   );
