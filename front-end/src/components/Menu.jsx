@@ -8,16 +8,17 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
 import logo from '../images/logo-page.png'
+import { NavLink } from 'react-router-dom';
 
-const navLinks = [
+/* const navLinks = [
   { title: 'Home', path: '#', icon: <HomeIcon /> },
   { title: 'Mentores', path: '#mentores', icon: <GroupAddIcon /> },
   { title: 'Mentorias', path: '#mentorias', icon: <SchoolIcon /> },
   { title: 'Login', path: '#login', icon: <LoginIcon /> },
   { title: 'Register', path: '#register', icon: <HowToRegIcon /> }
-]
+] */
 
-export default function Menu() {
+export default function Menu({navLinksArray}) {
   const [open, setOpen] = useState(false);
   return (
     <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }}>
@@ -32,7 +33,7 @@ export default function Menu() {
             </Box>
             <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
               {
-                navLinks.map(item => (
+                navLinksArray.map(item => (
                   <Button color='inherit' component='a' key={item.title} href={item.path}>
                     {item.title}
                   </Button>
@@ -42,7 +43,7 @@ export default function Menu() {
           </Toolbar>
         </AppBar>
         <Drawer open={open} anchor='left' onClose={() => setOpen(false)} sx={{ display: { sm: 'flex', md: 'none' } }}>
-          <MenuListDrawer navLinks={navLinks} />
+          <MenuListDrawer navLinksArray={navLinksArray} NavLink={NavLink} setOpen={setOpen} />
         </Drawer>
       </Container>
     </Box>

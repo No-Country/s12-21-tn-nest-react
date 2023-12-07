@@ -5,15 +5,15 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 
-export default function MenuListDrawer({ navLinks }) {
+export default function MenuListDrawer({ navLinksArray, NavLink, setOpen  }) {
   return (
     <Box sx={{ width: 250, px: 2, height: '100%', bgcolor: '#202C33', color: '#fff' }}>
       <nav>
         <List >
           {
-            navLinks.map((item) => (
+            navLinksArray.map((item) => (
               <ListItem disablePadding key={item.path}>
-                <ListItemButton component='a' href={item.title}>
+                <ListItemButton component={NavLink} to={item.path} onClick={() => setOpen(false)}>
                   <ListItemIcon sx={{ color: '#fff' }}>
                     {item.icon}
                   </ListItemIcon>
