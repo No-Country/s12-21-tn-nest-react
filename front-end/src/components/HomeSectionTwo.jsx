@@ -6,12 +6,14 @@ export default function HomeSectionTwo() {
   return (
     <Container >
       <Box>
-        <Typography component='h3' variant="h4">Encuentra mentorias!</Typography>
+        <Typography component='h4' variant="h4" sx={{ color: '#FFFFFF', mb: 2 }}>
+          Encuentra mentorias
+        </Typography>
         <Grid container spacing={2}>
           {mentoriaJson.slice(0, 6).map(item =>
             <Grid item xs={12} sm={4} md={4} key={item.name}>
               <Box sx={{ border: '2px solid #25D366', p: 2, textAlign: 'center', borderRadius: '5px' }}>
-                <Typography>
+                <Typography sx={{ color: '#FFFFFF' }}>
                   {item.name.toUpperCase()}
                 </Typography>
               </Box>
