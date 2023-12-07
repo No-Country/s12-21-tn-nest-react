@@ -32,7 +32,7 @@ const Mentorship = ({ location }) => {
   const fetchSpecialities = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/mentor/speciality/filter");
-      setSpecialities(response.data); // Almacenar las especialidades en el estado
+      setSpecialities(response.data); 
     } catch (error) {
       console.error("Error al obtener las especialidades:", error);
     }
@@ -40,13 +40,12 @@ const Mentorship = ({ location }) => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/mentor/categories/filter");
-      setCategories(response.data); // Almacenar las especialidades en el estado
+      setCategories(response.data); 
     } catch (error) {
       console.error("Error al obtener las categorias:", error);
     }
   };
 
-  // Usar useEffect para llamar a fetchSpecialities al cargar el componente
   useEffect(() => {
     fetchSpecialities();
     fetchCategories();
@@ -72,8 +71,7 @@ const Mentorship = ({ location }) => {
         password: newUser.password,
         role: newUser.role,
   
-/*         file: newMentor.mentorImage, 
- */        mentorDescription: newMentor.mentorDescription,
+        mentorDescription: newMentor.mentorDescription,
         aboutMe: newMentor.mentorAboutMe,
         birthDate: newMentor.mentorDate,
         price: newMentor.mentorPrice,

@@ -11,6 +11,7 @@ import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
 import Profile from "./components/Profile";
+import UpdateMentorProfile from "./components/UpdateMentorProfile";
 
 
 function App() {
@@ -29,6 +30,8 @@ function App() {
               <Route path="/mentorForm" element={<MentorForm />} />
               <Route path="/mentorshipForm" element={<Mentorship />} />
               <Route path="/studentForm" element={<StudentForm />} />
+              <Route path="/mentorProfile/:id" element={<Profile />} />
+              <Route path="/updateProfile/:id" element={<UpdateMentorProfile />} />
               </Routes>
             </div>
           </BrowserRouter>

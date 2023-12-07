@@ -28,7 +28,7 @@ const Header = () => {
             <Link to="/signup">Registrate</Link>
           </li>
           <li className="header-list__item">
-            <Link to="/mentor/:id">Perfil</Link>
+            <Link to="/mentorProfile/:id">Perfil</Link>
           </li>
         </ul>
       </nav>
