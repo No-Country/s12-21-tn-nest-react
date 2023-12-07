@@ -7,13 +7,13 @@
 body{
     background-color: var(--verydark-color);
 }
-main{
+/* main{
     width: 90%;
     max-width: 1400px;
     background-color:var(--dark-color);
     margin: 0 auto;
-}
-h1{
+} */
+/* h1{
     font-size: 8rem;
     line-height: .8;
     color: var(--textTitle-color);
@@ -24,10 +24,9 @@ h1{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: aquamarine; */
 }
 .home__image{
-    /* width: 50%; */
+    width: 100%;
     max-width: 600px;
     max-width: 600px;
     border-radius: 20px;
@@ -35,7 +34,6 @@ h1{
 .home__description{
     width: 40%;
     gap: 10px;
-    /* background-color: cadetblue; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,4 +43,4 @@ h1{
 .home__texto{
     font-size: 1.8rem;
     color:var(--textMinTitle)
-}
+} */
