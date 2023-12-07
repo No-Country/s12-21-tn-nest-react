@@ -21,7 +21,7 @@ export default function HomeMainSection({ foto, title, description }) {
       <Grid container>
         <Grid item md={6}>
           <Box sx={{ position: 'relative', p: { xs: 3, md: 6 }, pr: { md: 0 } }}>
-            <Typography component="h1" variant="h2" color="inherit" gutterBottom sx={{ color: "#007FFF", fontWeight: 'bold', fontSize: { xs: '2.8rem', sm: '4rem' } }}>
+            <Typography component="h1" variant="h2" color="inherit" gutterBottom sx={{ color: '#25D366', fontWeight: 'bold', fontSize: { xs: '2.8rem', sm: '4rem' } }}>
               {title}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
