@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import Home from "./Home/Home";
 import SignUp from "./SignUp/SignUp";
 import Login from "./Login/Login";
@@ -15,11 +16,12 @@ import Profile from "./components/Profile";
 function App() {
   return (
     <>
-      <div id="App" className="AppContainer">
-        <BrowserRouter>
-          <div className="main_app">
-            <Header />
-            <Routes>
+      <AuthProvider>
+        <div id="App" className="AppContainer">
+          <BrowserRouter>
+            <div className="main_app">
+              <Header />
+              <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Mentores" element={<MentoresPage />} />
               <Route path="/signUp" element={<SignUp />} />
@@ -27,11 +29,11 @@ function App() {
               <Route path="/mentorForm" element={<MentorForm />} />
               <Route path="/mentorshipForm" element={<Mentorship />} />
               <Route path="/studentForm" element={<StudentForm />} />
-              <Route path="/mentor/:id" element={<Profile />} />
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </div>
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </div>
+      </AuthProvider>
     </>
   );
 }
