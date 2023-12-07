@@ -100,10 +100,6 @@ export class MentorService {
 
   async post_create_mentor(post: createMentor, file: Express.Multer.File) {
     try {
-      if (file) {
-        const upload = await uploadCloudinary(file);
-        post['image'] = upload['url'];
-      }
       if (!post.birthdate) {
         return {
           status: HttpStatus.NOT_FOUND,
@@ -117,7 +113,7 @@ export class MentorService {
           message: 'You cannot register as a mentor because you are a minor',
         };
       }
-      const object_mentor = await create_object_mentor(post, file);
+      const object_mentor = await create_object_mentor(post);
       if (post.Categories.length == 0) {
         return {
           status: HttpStatus.NOT_FOUND,
@@ -128,6 +124,11 @@ export class MentorService {
         post.Categories,
       );
       const mentor_add = this.mentorRepository.create(object_mentor);
+
+      if (file) {
+        const upload = await uploadCloudinary(file);
+        mentor_add['image'] = upload['url'];
+      }
       mentor_add.categories = categoriesSearch;
       await this.mentorRepository.save(mentor_add);
       return {
