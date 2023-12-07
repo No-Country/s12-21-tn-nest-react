@@ -1,10 +1,16 @@
 import { Box, Typography, Paper } from '@mui/material'
-import React from 'react'
-import { ProfileFilter } from '../components/ProfileFilter'
-import { PriceFilter } from '../components/PriceFilter'
+import React, { useState } from 'react'
+import { SpecialityFilter } from '../components/SpecialityFilter'
+import { OrderFilter } from '../components/OrderFilter'
 import { MentorCardRenderer } from '../components/MentorCardRenderer'
 
 export const MentoresPage = () => {
+    const [selectedSpeciality, setSelectedSpeciality] = useState('');
+
+    const handleSpecialityChange = (selected) => {
+        setSelectedSpeciality(selected);
+    };
+
     return (
         <Box sx={{
             width: '90%',
@@ -28,15 +34,16 @@ export const MentoresPage = () => {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         padding: '1rem',
-                        margin: '1rem 0',
+                        margin: '2rem 0',
                         backgroundColor: '#111B21',
-                        gap: '3rem'
+                        gap: '3rem',
                     }}
                 >
-                    <ProfileFilter />
-                    <PriceFilter />
+                    <SpecialityFilter onSelectSpeciality={handleSpecialityChange} />
+                    <OrderFilter />
                 </Paper>
-                <MentorCardRenderer />
+                {/* Pasamos la especialidad seleccionada al componente MentorCardRenderer */}
+                <MentorCardRenderer selectedSpeciality={selectedSpeciality} />
             </Box>
         </Box>
     )

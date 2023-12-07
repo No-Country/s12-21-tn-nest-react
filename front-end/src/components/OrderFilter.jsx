@@ -3,8 +3,8 @@ import { ButtonGroup, Button, Popper, Grow, ClickAwayListener, MenuList, MenuIte
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 
 
-export const PriceFilter = () => {
-  const options = ['Filtrar por precio', '$0-$50', '$50-$100', '$100-$150', '$150-$200']
+export const OrderFilter = () => {
+  const options = ['Ordenar por:', 'Menor Precio', 'Mayor precio', 'A-Z', 'Z-A']
 
   const [open, setOpen] = useState(false)
   const anchorRef = useRef(null)

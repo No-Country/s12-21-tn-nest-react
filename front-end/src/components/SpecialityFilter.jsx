@@ -1,10 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Paper, Box, Button, Menu, MenuItem } from '@mui/material'
-import dataCategoriesJson from '../MentoresPage/categoriesData.json'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import { urlApi } from '../../config/axios';
 
-export const ProfileFilter = () => {
+export const SpecialityFilter = () => {
+    const [specialities, setSpecialities] = useState([])
     const [anchorEl, setAnchorEl] = useState(null);
+
+    useEffect(() => {
+        const fetchSpecialities = async () => {
+            try {
+                const response = await urlApi.get('/mentor/speciality/filter');
+                setSpecialities(response.data);
+                console.log('Datos de especialidades:', response.data);
+            } catch (error) {
+                console.error('Error fetching especialities:', error);
+            }
+        };
+
+        fetchSpecialities();
+    }, [])
+
+
     const open = Boolean(anchorEl);
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget);
@@ -13,7 +30,7 @@ export const ProfileFilter = () => {
         setAnchorEl(null)
     }
 
-    const ITEM_HEIGHT = 48;
+    const ITEM_HEIGHT = 60;
 
     return (
         <Paper>
@@ -29,7 +46,7 @@ export const ProfileFilter = () => {
                         alignItems: 'center',
                     }}
                 >
-                    Categorías
+                    Especialidades
                     <ArrowDropDownIcon />
                 </Button>
                 <Menu
@@ -43,9 +60,9 @@ export const ProfileFilter = () => {
                             width: '11vw'
                         }
                     }}
-                >    {dataCategoriesJson.map((categoria) => (
-                    <MenuItem key={categoria.id} selected={categoria.nombre === 'Frontend'} onClick={handleClose}>
-                        {categoria.nombre}
+                >    {specialities.map((speciality) => (
+                    <MenuItem key={speciality.id} selected={speciality.name === 'Frontend'} onClick={handleClose}>
+                        {speciality.name}
                     </MenuItem>
                 ))}
                 </Menu>
