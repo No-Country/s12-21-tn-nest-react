@@ -20,24 +20,8 @@ export class StripeService {
     const convertAmount = createStripeIntentDto.amount * 100;
     try {
       /*
-      const existingUser = await this.prisma.user.findUnique({
-        where: { id: createStripeIntentDto.reference_id },
-      });
-      if (!existingUser){
-        throw new ConflictException('User ID no found');
-      }
-      console.log('estoy aqui')
-      if(isMongoId(createStripeIntentDto.initiativeId)){
-        const existingInitiative = await this.prisma.initiative.findUnique({
-          where: {id: createStripeIntentDto.initiativeId}
-        })
-        if (!existingInitiative){
-          throw new ConflictException('Initiative ID no found');
-        }
-      }else if (createStripeIntentDto.initiativeId != 'globalDonation'){
-        throw new ConflictException('Initiative ID invalid');
-      }
-*/
+        database ops
+      */
       const session = await stripe.checkout.sessions.create({
         line_items: [
           {
