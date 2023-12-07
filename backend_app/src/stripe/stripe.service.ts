@@ -56,8 +56,8 @@ export class StripeService {
         cancel_url: `${cancelUrl}/cancel`,
         payment_intent_data: {
           metadata: {
-            userId: createStripeIntentDto.reference_id,
-            //initiativeId: createStripeIntentDto.initiativeId,
+            mentorship: createStripeIntentDto.reference_id,
+            //pupil: createStripeIntentDto.pupil_id,
           },
         },
       });
