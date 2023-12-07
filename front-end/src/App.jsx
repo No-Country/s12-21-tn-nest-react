@@ -11,6 +11,19 @@ import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
 
+import Menu from "./components/Menu";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import LoginIcon from '@mui/icons-material/Login';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import HomeIcon from '@mui/icons-material/Home';
+import SchoolIcon from '@mui/icons-material/School';
+const navLinksArray = [
+  { title: 'Home', path: '/', icon: <HomeIcon /> },
+  { title: 'Mentores', path: '/mentores', icon: <GroupAddIcon /> },
+  { title: 'Mentorias', path: '#mentorias', icon: <SchoolIcon /> },
+  { title: 'Login', path: '/login', icon: <LoginIcon /> },
+  { title: 'Register', path: '/signup', icon: <HowToRegIcon /> }
+]
 
 function App() {
   return (
@@ -19,7 +32,8 @@ function App() {
         <div id="App" className="AppContainer">
           <BrowserRouter>
             <div className="main_app">
-              <Header />
+              {/* <Header /> */}
+              <Menu navLinksArray={navLinksArray}/>
               <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Mentores" element={<MentoresPage />} />
