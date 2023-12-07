@@ -9,6 +9,7 @@ import { MentoresPage } from "./MentoresPage/MentoresPage";
 import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
+import Profile from "./components/Profile";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
               <Route path="/mentorForm" element={<MentorForm />} />
               <Route path="/mentorshipForm" element={<Mentorship />} />
               <Route path="/studentForm" element={<StudentForm />} />
+              <Route path="/mentor/:id" element={<Profile />} />
             </Routes>
           </div>
         </BrowserRouter>
