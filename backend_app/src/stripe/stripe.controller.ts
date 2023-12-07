@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Res,
 } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { CreateStripeIntentDto } from './dto/create-stripe-intent.dto';
@@ -20,9 +21,9 @@ export class StripeController {
     return this.stripeService.createPaymentIntent(createStripeIntentDto);
   }
 
-  @Get()
-  findAll() {
-    return this.stripeService.findAll();
+  @Get('/success')
+  async findSuccess(@Res({ passthrough: true }) res): Promise<any> {
+    return this.stripeService.successPayment(res.req.query.session_id);
   }
 
   @Get(':id')

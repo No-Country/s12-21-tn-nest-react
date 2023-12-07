@@ -36,7 +36,7 @@ export class StripeService {
           },
         ],
         mode: 'payment',
-        success_url: `${successUrl}/success`,
+        success_url: `${successUrl}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${cancelUrl}/cancel`,
         payment_intent_data: {
           metadata: {
@@ -45,12 +45,20 @@ export class StripeService {
           },
         },
       });
-      console.log(session);
       return session.url;
     } catch (error) {
-      console.log(error);
       throw error;
     }
+  }
+
+  async successPayment(session_id: any): Promise<any> {
+    const billing_detail = await stripe.checkout.sessions.listLineItems(
+      session_id,
+      { limit: 5 },
+    );
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    /**Database ops */
+    console.log(session);
   }
 
   findAll() {
