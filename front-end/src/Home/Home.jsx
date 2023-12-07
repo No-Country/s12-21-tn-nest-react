@@ -9,8 +9,6 @@ import CardHomeText from "../components/CardHomeText";
 const Home = () => {
   return (
     <main>
-      <div>Home</div>
-      <Link to={'/signUp'}><button>Registro</button></Link>
       
       <Container>
         <Grid container spacing={5} style={{ marginTop: "8rem", marginBottom: "8rem" }}>
@@ -24,7 +22,7 @@ const Home = () => {
               </Typography>
             </Box>
             <Box sx={{ typography: 'body2' }} style={{fontSize:"2rem", color:"#F9F9F9"}}>
-              Descubre NombreApp, el lugar perfecto para encontrar menotres con horarios flexibles y convertirte en uno. Explora las próximas mentorías, clases con notificaciones y calificaciones de los mentores.
+              Descubre MentorSphere, el lugar perfecto para encontrar menotres con horarios flexibles y convertirte en uno. Explora las próximas mentorías, clases con notificaciones y calificaciones de los mentores.
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={6}>
