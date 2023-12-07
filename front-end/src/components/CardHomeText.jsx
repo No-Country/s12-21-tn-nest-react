@@ -8,7 +8,7 @@ import Container from '@mui/material/Container';
 export default function CardHomeText({ picture, title, description }) {
   return (
     <Container>
-      <Card sx={{ maxWidth: 345, border: '1px solid #00A884' }}>
+      <Card sx={{ maxWidth: 300, border: '1px solid #00A884' }}>
         <CardMedia
           sx={{ height: 180 }}
           image={picture}
