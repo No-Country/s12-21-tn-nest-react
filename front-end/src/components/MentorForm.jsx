@@ -1,22 +1,30 @@
 import * as React from 'react';
+import axios from "axios";
 import { useState } from "react";
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { Container, Grid, Typography } from '@mui/material';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useLocation, Link , useNavigate} from "react-router-dom";
 
-const MentorForm = () => {
+const MentorForm = ({ location }) => {
+  const navigate = useNavigate();
+  const newUser = useLocation().state || {};
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [imagePreview, setImagePreview] = React.useState(null);
   const [newMentor, setNewMentor] = useState({
-    mentorImage: "",
+    mentorImage: null,
     mentorDescription: "",
     mentorAboutMe: "",
+    mentorDate: "",
     mentorPrice: "",
   })
-  const { mentorImage, mentorDescription, mentorAboutMe, mentorPrice} = newMentor
+  const { mentorImage, mentorDescription, mentorAboutMe, mentorDate, mentorPrice} = newMentor
   const handleChange = (event) => {
       const { name, value } = event.target;
       setNewMentor({
@@ -29,20 +37,23 @@ const MentorForm = () => {
     const file = event.target.files[0];
 
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-
       setSelectedFile(file);
+      setNewMentor({
+        ...newMentor,
+        mentorImage: file,
+      });
     }
   };
 
   const submit = (e) => {
     e.preventDefault();
+    console.log(mentorDate);
     console.log(newMentor);
+    console.log('Información de newUser en MentorForm:', newUser);
+    navigate('/mentorshipForm', { state: { newUser, newMentor } });
   }
+
+
 
   return (
     <Container>
@@ -68,24 +79,23 @@ const MentorForm = () => {
                     >
                         Subí tu foto!
                         <input
-                          value={mentorImage}
                           onChange={handleFileChange}
                           type="file"
                           hidden
                         />
                     </Button>
                     {selectedFile && (
-                        <div style={{width: "200px" , margin: "auto"}}>
-                            <p>Archivo: {selectedFile.name}</p>
-                            <Box
-                            sx={{
-                                margin: 'auto',
-                                overflow: 'hidden',
-                            }}
-                            >
-                            <img src={imagePreview} alt="Vista previa de la imagen" style={{ width: '100%', height: '100%' }} />
-                            </Box>
-                        </div>
+                      <div style={{ width: "200px", margin: "auto" }}>
+                        <p>Archivo: {selectedFile.name}</p>
+                        <Box
+                          sx={{
+                            margin: 'auto',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          <img src={URL.createObjectURL(selectedFile)} alt="Vista previa de la imagen" style={{ width: '100%', height: '100%' }} />
+                        </Box>
+                      </div>
                     )}
                 </Grid>
                 <Grid item sx={{ mt: 3, mb: 2 }}>
@@ -113,6 +123,27 @@ const MentorForm = () => {
                       multiline
                       rows={10}
                       variant="filled"
+                      required
+                    />
+                </Grid>
+                <Grid item sx={{ mt: 3, mb: 2 }}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['DatePicker']}>
+                        <DatePicker label="Basic date picker" value={mentorDate}
+                    onChange={(date) => setNewMentor({ ...newMentor, mentorDate: date.toISOString() })}/>
+                      </DemoContainer>
+                    </LocalizationProvider>
+                </Grid>
+                <Grid item sx={{ mt: 3, mb: 2 }}>
+                    <TextField
+                      value={mentorPrice}
+                      onChange={handleChange}
+                      fullWidth
+                      id="outlined-basic"
+                      name='mentorPrice'
+                      label="Precio"
+                      type='number'
+                      variant="outlined" 
                       required
                     />
                 </Grid>

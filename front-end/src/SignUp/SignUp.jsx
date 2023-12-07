@@ -1,16 +1,16 @@
 import * as React from 'react';
+import axios from "axios";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import { useState } from "react";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -18,8 +18,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import "./SignUp.css"
+import MentorForm from '../components/MentorForm';
+import StudentForm from '../components/StudentForm';
 
-const SignUp = ({ onUserTypeSelection }) => {
+const SignUp = () => {
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -28,9 +31,9 @@ const SignUp = ({ onUserTypeSelection }) => {
     const defaultTheme = createTheme();
 
     const [errors, setErrors] = useState({
-        password: "",
+        passwordError: "",
         repeatPassword: "",
-        email: "",
+        emailError: "",
         userName: "",
         userLastName: "",
         userNumber: "",
@@ -38,15 +41,15 @@ const SignUp = ({ onUserTypeSelection }) => {
     });
 
     const [newUser, setNewUser] = useState({
-        userName: "",
-        userLastName: "",
-        userEmail: "",
-        userNumber: "",
-        userPassword: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        password: "",
         userRepeatPassword: "",
-        userType: "",
+        role: "",
     })
-    const { userName, userLastName, userEmail, userNumber, userPassword, userRepeatPassword, userType } = newUser
+    const { firstName, lastName, email, phone, password, userRepeatPassword, role } = newUser
     const handleChange = (event) => {
         const { name, value } = event.target;
         setNewUser({
@@ -62,34 +65,20 @@ const SignUp = ({ onUserTypeSelection }) => {
     const handleTypeChange = (_, newType) => {
         setNewUser({
           ...newUser,
-          userType: newType,
+          role: newType,
         });
-        onUserTypeSelection(newType);
-      };
-
-    function Copyright(props) {
-        return (
-          <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-              MentorSphere
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-          </Typography>
-        );
-      }
+    };
     
       const submit = (e) => {
         e.preventDefault();
         setErrors((prevErrors) => ({
             ...prevErrors,
-            email: "",
+            emailError: "",
         }));
         if (!validateEmail()) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
-                email: "Correo electrónico inválido",
+                emailError: "Correo electrónico inválido",
             }));
             return;
         }
@@ -97,7 +86,7 @@ const SignUp = ({ onUserTypeSelection }) => {
             ...prevErrors,
             userNumber: "",
         }));
-        if (userNumber.length < 10) {
+        if (phone.length < 10) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 userNumber: "El número ingresado es inválido",
@@ -106,12 +95,12 @@ const SignUp = ({ onUserTypeSelection }) => {
         }
         setErrors((prevErrors) => ({
             ...prevErrors,
-            password: "",
+            passwordError: "",
         }));
         if (!validatePassword()) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
-                password: "Contraseña inválida. Requisitos: 8 a 20 caracteres, incluir 1 mayúscula, 1 minúscula y 1 número",
+                passwordError: "Contraseña inválida. Requisitos: 8 a 20 caracteres, incluir 1 mayúscula, 1 minúscula y 1 número",
             }));
             return;
         }
@@ -119,7 +108,7 @@ const SignUp = ({ onUserTypeSelection }) => {
             ...prevErrors,
             repeatPassword: "",
         }));
-        if (userPassword !== userRepeatPassword) {
+        if (password !== userRepeatPassword) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 repeatPassword: "Las contraseñas no coinciden",
@@ -130,27 +119,38 @@ const SignUp = ({ onUserTypeSelection }) => {
             ...prevErrors,
             userType: "",
         }));
-        if (!userType) {
+        if (role === 'mentor') {
+            setNewUser((prevUser) => {
+              return {
+                ...prevUser,
+                role: 'mentor', 
+              };
+            });
+            console.log("Información del usuario en SignUp:", newUser);
+            navigate('/mentorForm', { state:  newUser  });
+          } else if (role === 'student') {
+            setNewUser((prevUser) => {
+              return {
+                ...prevUser,
+                role: 'student',
+              };
+            });
+            navigate('/studentForm', { state: { newUser } });
+          } else {
             setErrors((prevErrors) => ({
-                ...prevErrors,
-                userType: "Por favor, selecciona si quieres ser Mentor o Estudiante",
+              ...prevErrors,
+              userType: "Por favor, selecciona si quieres ser Mentor o Estudiante",
             }));
-            return;
-        }
-        if (userType === 'mentor') {
-            onUserTypeSelection('mentor');
-          } else if (userType === 'student') {
-            onUserTypeSelection('student');
           }
     };
 
     const validatePassword = () => {
         let validate_password = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
-        return validate_password.test(userPassword);
+        return validate_password.test(password);
       };
       const validateEmail = () => {
         const validate_email = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-        return validate_email.test(userEmail);
+        return validate_email.test(email);
     };
 
 
@@ -181,11 +181,21 @@ const SignUp = ({ onUserTypeSelection }) => {
                         fullWidth
                         id="userName"
                         label="Nombre"
-                        name="userName"
-                        value={userName}
+                        name="firstName"
+                        value={firstName}
                         onChange={handleChange}
                         autoComplete="name"
                         autoFocus
+                        inputProps={{
+                            minLength: 3, 
+                          }}
+                          InputProps={{
+                            endAdornment: (
+                              <span style={{ color: 'red' }}>
+                                {firstName.length > 0 && firstName.length < 3 && 'Mínimo 3 caracteres'}
+                              </span>
+                            ),
+                          }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -194,17 +204,27 @@ const SignUp = ({ onUserTypeSelection }) => {
                         fullWidth
                         id="userLastName"
                         label="Apellido"
-                        name="userLastName"
-                        value={userLastName}
+                        name="lastName"
+                        value={lastName}
                         onChange={handleChange}
                         autoComplete="family-name"
+                        inputProps={{
+                            minLength: 3, 
+                          }}
+                          InputProps={{
+                            endAdornment: (
+                              <span style={{ color: 'red' }}>
+                                {lastName.length > 0 && lastName.length < 3 && 'Mínimo 3 caracteres'}
+                              </span>
+                            ),
+                          }}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
                         autoComplete="userEmail"
-                        name="userEmail"
-                        value={userEmail}
+                        name="email"
+                        value={email}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -212,13 +232,13 @@ const SignUp = ({ onUserTypeSelection }) => {
                         label="E-mail"
                         />
                     </Grid>
-                    {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
+                    {errors.emailError && <p style={{ color: "red" }}>{errors.emailError}</p>}
                     <Grid item xs={12}>
                         <TextField
                         autoComplete="userNumber"
                         type='number'
-                        name="userNumber"
-                        value={userNumber}
+                        name="phone"
+                        value={phone}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -231,11 +251,11 @@ const SignUp = ({ onUserTypeSelection }) => {
                         <TextField
                         required
                         fullWidth
-                        name="userPassword"
+                        name="password"
                         label="Contraseña"
                         type={show ? "text" : "password"}
-                        id="userPassword"
-                        value={userPassword}
+                        id="password"
+                        value={password}
                         onChange={handleChange}
                         autoComplete="new-password"
                         InputProps={{
@@ -249,7 +269,7 @@ const SignUp = ({ onUserTypeSelection }) => {
                         }}
                         />
                     </Grid>
-                    {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
+                    {errors.passwordError && <p style={{ color: "red" }}>{errors.passwordError}</p>}
                     <Grid item xs={12}>
                         <TextField
                         required
@@ -275,7 +295,7 @@ const SignUp = ({ onUserTypeSelection }) => {
                     {errors.repeatPassword && <p style={{ color: "red" }}>{errors.repeatPassword}</p>}
                 </Grid>
                 <ToggleButtonGroup
-                value={userType}
+                value={role}
                 color="primary"
                 exclusive
                 onChange={handleTypeChange}
@@ -283,34 +303,35 @@ const SignUp = ({ onUserTypeSelection }) => {
                 >
                 <ToggleButton 
                 value="mentor"  
-                sx={{ backgroundColor: userType === 'mentor' ? '#4CAF50' : '#FFFFFF' }}>
+                sx={{ backgroundColor: role === 'mentor' ? '#4CAF50' : '#FFFFFF' }}>
                     Quiero ser Mentor
                 </ToggleButton>
                 <ToggleButton 
                 value="student"
-                sx={{ backgroundColor: userType === 'student' ? '#4CAF50' : '#FFFFFF' }}>
+                sx={{ backgroundColor: role === 'student' ? '#4CAF50' : '#FFFFFF' }}>
                     Quiero ser Estudiante
                 </ToggleButton>
                 </ToggleButtonGroup>
                 {errors.userType && <p style={{ color: "red" }}>{errors.userType}</p>}
-                <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                >
-                Registrarme
-                </Button>
+                
+                    <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    >
+                    Siguiente
+                    </Button>
+                
                 <Grid container justifyContent="flex-end">
                 <Grid item>
-                    <Link href="./login" variant="body2">
+                    <Link to="./login">
                     ¿Ya tenes una cuenta? Ingresá!
                     </Link>
                 </Grid>
                 </Grid>
             </Box>
             </Box>
-            <Copyright sx={{ mt: 5 }} />
         </Container>
     </ThemeProvider>
         </>
