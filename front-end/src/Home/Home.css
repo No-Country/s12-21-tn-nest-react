@@ -1,0 +1,9 @@
+:root{
+    --verydark-color:#0B141A;
+    --dark-color:#111B21;
+    --textTitle-color:#25D366;
+    --textMinTitle:#FFFFFF;
+}
+body{
+    background-color: var(--verydark-color);
+}

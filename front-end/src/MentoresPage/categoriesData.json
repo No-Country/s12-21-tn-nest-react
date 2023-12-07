@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "nombre": "Frontend"
+    },
+    {
+        "id": 2,
+        "nombre": "Backend"
+    },
+    {
+        "id": 3,
+        "nombre": "DevOps"
+    },
+    {
+        "id": 4,
+        "nombre": "FullStack"
+    },
+    {
+        "id": 5,
+        "nombre": "Mobile"
+    },
+    {
+        "id": 6,
+        "nombre": "AI and DataScientist"
+    },
+    {
+        "id": 7,
+        "nombre": "Blockchain"
+    },
+    {
+        "id": 8,
+        "nombre": "QA"
+    },
+    {
+        "id": 9,
+        "nombre": "Cybersecurity"
+    },
+    {
+        "id": 10,
+        "nombre": "UX/UI design"
+    },
+    {
+        "id": 11,
+        "nombre": "Game Developer"
+    },
+    {
+        "id": 12,
+        "nombre": "Software Architect"
+    }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "picture":"/src/images/home/picture1.jpg",
+    "title": "Aprende de Expertos en tu campo",
+    "description": "Encontraras mentores con experiencia y conocimientos que pueden guiarte en tu camino hacia el exito."
+  },
+  {
+    "picture":"/src/images/home/picture3.jpg",
+    "title": "Comparte tu experiencia y conocimientos",
+    "description": "Si tienes experiencia en tu campo especifico puedes convertirte en mentor y compartir tus conocimientos con futuros alumnos."
+  },
+  
+  {
+    "picture":"/src/images/home/picture2.jpg",
+    "title": "Mejora tus Habilidades y conocimientos",
+    "description": "Tanto si eres mentor como alumno, tendras la oportunidad de crecer y aprender en un ambiente de apoyo y colaboración."
+  },
+  {
+    "picture":"/src/images/home/picture6.jpg",
+    "title": "Horarios Flexibles",
+    "description": "Puedes encontrar mentores que se ajusten a tus horarios. Ya no tienes que preocuparte por la falta de tiempo."
+  },
+  {
+    "picture":"/src/images/home/picture4.jpg",
+    "title": "Notificaciones de clases",
+    "description": "Recibe notificaciones para no perderte una sesión de mentoría."
+  },
+  {
+    "picture":"/src/images/home/picture5.jpg",
+    "title": "Comunicación directa",
+    "description": "A través del chat de MentorSphere, podras comunicarte directamente con tus mentores."
+  }
+]
