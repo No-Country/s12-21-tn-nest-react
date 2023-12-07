@@ -3,15 +3,16 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import * as cors from 'cors';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: {
-      origin: '*',
-      methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    },
-  });
+  const app = await NestFactory.create(AppModule);
+  const corsOptions = {
+    credentials: true,
+    origin: ['http://localhost:5173'],
+  };
 
+  app.use(cors(corsOptions));
   const configservice = app.get<ConfigService>(ConfigService);
   const port = configservice.get('PORT');
 
