@@ -24,7 +24,8 @@ const navLinksArray = [
   { title: 'Mentores', path: '/mentores', icon: <GroupAddIcon /> },
   { title: 'Mentorias', path: '#mentorias', icon: <SchoolIcon /> },
   { title: 'Login', path: '/login', icon: <LoginIcon /> },
-  { title: 'Register', path: '/signup', icon: <HowToRegIcon /> }
+  { title: 'Register', path: '/signup', icon: <HowToRegIcon /> },
+  { title: 'Profile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
 ]
 
 function App() {

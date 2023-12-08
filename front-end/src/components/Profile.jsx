@@ -26,6 +26,17 @@ const Profile = () => {
   navigate(`/updateProfile/${mentorId}`, { state: { mentorInfo } });
  }
 
+ const customTheme = createTheme({
+  palette: {
+    background: {
+      default: '#FFFFFF', // Fondo blanco
+    },
+    text: {
+      primary: '#000000', // Texto negro
+    },
+  },
+});
+
 
   useEffect(() => {
     const fetchMentorInfo = async () => {
@@ -43,7 +54,7 @@ const Profile = () => {
   return (
     <>
     <div className="profileContainer">
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider theme={customTheme}>
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
