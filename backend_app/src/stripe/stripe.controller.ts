@@ -23,12 +23,17 @@ export class StripeController {
 
   @Get('/success')
   async findSuccess(@Res({ passthrough: true }) res): Promise<any> {
-    return this.stripeService.successPayment(res.req.query.session_id);
+    return this.stripeService.catchPayment(res.req.query.session_id);
+  }
+
+  @Get('/cancel')
+  async findCancel(@Res({ passthrough: true }) res): Promise<any> {
+    return this.stripeService.catchPayment(res.req.query.session_id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.stripeService.findOne(+id);
+    return this.stripeService.findOne(id);
   }
 
   @Patch(':id')

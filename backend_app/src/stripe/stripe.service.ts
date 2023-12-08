@@ -1,7 +1,16 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateStripeIntentDto } from './dto/create-stripe-intent.dto';
 import { UpdateStripeDto } from './dto/update-stripe.dto';
 import Stripe from 'stripe';
+import { Stripe as StripeEntity } from './entities/stripe.entity';
+import { StripeIntentSaveDto } from './dto/stripe-intent-save.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 const stripeApiKey = process.env.STRIPE_SECRET_KEY;
 //const stripeCliKey = process.env.STRIPE_WEBHOOK_SECRET;
@@ -14,6 +23,10 @@ const cancelUrl = process.env.STRIPE_CANCEL_URL;
 
 @Injectable()
 export class StripeService {
+  constructor(
+    @InjectRepository(StripeEntity)
+    private stripeRepository: Repository<StripeEntity>,
+  ) {}
   async createPaymentIntent(
     createStripeIntentDto: CreateStripeIntentDto,
   ): Promise<any> {
@@ -37,11 +50,14 @@ export class StripeService {
         ],
         mode: 'payment',
         success_url: `${successUrl}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${cancelUrl}/cancel`,
+        cancel_url: `${cancelUrl}/api/stripe/cancel?session_id={CHECKOUT_SESSION_ID}`,
+        metadata: {
+          mentorship: createStripeIntentDto.reference_id,
+          //pupil: createStripeIntentDto.pupil_id, d9f80740-38f0-11e8-b467-0ed5f89f718b
+        },
         payment_intent_data: {
           metadata: {
-            mentorship: createStripeIntentDto.reference_id,
-            //pupil: createStripeIntentDto.pupil_id,
+            //mentorship: createStripeIntentDto.reference_id,
           },
         },
       });
@@ -51,29 +67,86 @@ export class StripeService {
     }
   }
 
-  async successPayment(session_id: any): Promise<any> {
-    const billing_detail = await stripe.checkout.sessions.listLineItems(
-      session_id,
-      { limit: 5 },
-    );
-    const session = await stripe.checkout.sessions.retrieve(session_id);
-    /**Database ops */
-    console.log(session);
+  async catchPayment(session_id: any): Promise<any> {
+    try {
+      const session = await stripe.checkout.sessions.retrieve(session_id);
+      if (!session) {
+        throw new BadRequestException(
+          'You must provide a valid Stripe session_id.',
+        );
+      }
+      const newOrder: StripeIntentSaveDto = {
+        stripe_session_id: session.id,
+        mentorship: session.metadata.mentorship,
+        payment_status: session.payment_status,
+        status: session.status,
+        url: session.url,
+      };
+      await this.createOrUpdateOrder(newOrder);
+    } catch (error) {
+      throw new HttpException(
+        `Can't proccess ${session_id} payment.`,
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: new Error(error.message),
+        },
+      );
+    }
+  }
+
+  private async createOrUpdateOrder(order: StripeIntentSaveDto) {
+    try {
+      const existingOrder = await this.stripeRepository.findOne({
+        where: {
+          stripe_session_id: order.stripe_session_id,
+        },
+      });
+      if (existingOrder) {
+        this.stripeRepository.merge(existingOrder, order);
+        return this.stripeRepository.save(existingOrder);
+      } else {
+        const newOrder = this.stripeRepository.create({
+          ...order,
+        });
+        await this.stripeRepository.insert(newOrder);
+      }
+    } catch (error) {
+      throw new HttpException(
+        `Can't save or update order`,
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: new Error(error.message),
+        },
+      );
+    }
   }
 
   findAll() {
-    return `This action returns all stripe`;
+    throw new HttpException(
+      `Only admins can perform this action`,
+      HttpStatus.FORBIDDEN,
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} stripe`;
+  async findOne(id: string) {
+    return await this.stripeRepository.findOne({
+      where: {
+        stripe_session_id: id,
+      },
+    });
   }
 
-  update(id: number, updateStripeDto: UpdateStripeDto) {
-    return `This action updates a #${id} stripe`;
+  update(_id: number, _updateStripeDto: UpdateStripeDto) {
+    throw new HttpException(
+      `Only admins can perform this action`,
+      HttpStatus.FORBIDDEN,
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} stripe`;
+  remove(_id: number) {
+    throw new HttpException(
+      `Only admins can perform this action`,
+      HttpStatus.FORBIDDEN,
+    );
   }
 }
