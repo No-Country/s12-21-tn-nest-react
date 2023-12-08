@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 import { PaypalModule } from './paypal/paypal.module';
+import { StripeModule } from './stripe/stripe.module';
 
 const feactureModule = [
   MentorModule,
@@ -50,6 +51,7 @@ const feactureModule = [
     }),
     ...feactureModule,
     PaypalModule,
+    StripeModule,
   ],
   providers: [JwtService],
 })
