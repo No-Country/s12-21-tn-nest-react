@@ -28,4 +28,13 @@ export class SavePaypalOrderDto {
   @IsNotEmpty({ message: 'mentorship ID is required' })
   @IsString()
   mentorship: string;
+
+  @ApiProperty({
+    description: 'paypal payment url',
+    nullable: true,
+    example: 'https://www.sandbox.paypal.com/checkoutnow?token=...',
+  })
+  @IsNotEmpty({ message: 'url is required' })
+  @IsString()
+  url?: string;
 }

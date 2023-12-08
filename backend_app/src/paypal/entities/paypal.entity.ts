@@ -15,4 +15,6 @@ export class Paypal extends BaseEntity {
   */
   @Column({ type: 'text', nullable: false })
   mentorship: string;
+  @Column({ type: 'text', nullable: true })
+  url: string;
 }

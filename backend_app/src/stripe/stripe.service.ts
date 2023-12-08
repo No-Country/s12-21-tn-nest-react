@@ -13,13 +13,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 const stripeApiKey = process.env.STRIPE_SECRET_KEY;
-//const stripeCliKey = process.env.STRIPE_WEBHOOK_SECRET;
 const stripe = new Stripe(stripeApiKey, {
   apiVersion: '2023-10-16',
 });
 
-const successUrl = process.env.STRIPE_SUCCESS_URL;
-const cancelUrl = process.env.STRIPE_CANCEL_URL;
+const host = process.env.HOST;
 
 @Injectable()
 export class StripeService {
@@ -49,8 +47,8 @@ export class StripeService {
           },
         ],
         mode: 'payment',
-        success_url: `${successUrl}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${cancelUrl}/api/stripe/cancel?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${host}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${host}/api/stripe/cancel?session_id={CHECKOUT_SESSION_ID}`,
         metadata: {
           mentorship: createStripeIntentDto.reference_id,
           //pupil: createStripeIntentDto.pupil_id, d9f80740-38f0-11e8-b467-0ed5f89f718b
