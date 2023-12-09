@@ -1,8 +1,7 @@
-import React from 'react'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 
 export default function CardMentorSection({title,description,textButton}) {
   return (

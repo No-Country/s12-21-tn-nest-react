@@ -1,11 +1,10 @@
 import "./Home.css"
-import CardMentorSection from "../components/CardMentorSection";
+import Container from "@mui/material/Container";
 import HomeMainSection from "../components/HomeMainSection";
 import HomeSectionOne from "../components/HomeSectionOne";
-import fotoMain from '../images/home//home-picture.jpg'
-import Container from "@mui/material/Container";
 import HomeSectionTwo from "../components/HomeSectionTwo";
 import HomeSectionThree from "../components/HomeSectionThree";
+import fotoMain from '../images/home//home-picture.jpg'
 
 const Home = () => {
   return (

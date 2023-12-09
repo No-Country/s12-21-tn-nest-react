@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-import CardHomeText from './CardHomeText'
 import Typography from '@mui/material/Typography';
+import CardHomeText from './CardHomeText'
 import dataHomeJson from '../Home/homeData.json'
 
 export default function HomeSectionOne() {

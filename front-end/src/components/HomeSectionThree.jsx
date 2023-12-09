@@ -1,26 +1,19 @@
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import EmailIcon from '@mui/icons-material/Email';
-import { Box, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import CardMentorSection from './CardMentorSection';
 
 const sectionMentorHome = [
-  {
-    title: 'Cree su perfil',
-    description: 'Díganos qué enseña, qué educación tiene, cuál es su horario',
-    icon: <AppRegistrationIcon />
-  },
-  {
-    title: 'Elija solicitudes',
-    description: 'Vea solicitudes de nuevos estudiantes.',
-    icon: <NewspaperIcon />
-  },
-  {
-    title: 'Contacte al estudiante',
-    description: 'Programe el comienzo de las clases.',
-    icon: <EmailIcon />
-  }
-]
+  { title: 'Cree su perfil', description: 'Díganos qué enseña, qué educación tiene, cuál es su horario', icon: <AppRegistrationIcon /> },
+  { title: 'Elija solicitudes', description: 'Vea solicitudes de nuevos estudiantes.', icon: <NewspaperIcon /> },
+  { title: 'Contacte al estudiante', description: 'Programe el comienzo de las clases.', icon: <EmailIcon /> }
+];
 
 export default function HomeSectionThree() {
   return (
