@@ -91,10 +91,11 @@ export class MentorController {
 
   @Get('filter')
   async filer_mentor(
-    @Query('categoryName') categoryName: string[],
+    @Query('categoryName') categoryName?: string[],
     @Query('order') order?: 'asc' | 'desc' | 'ascAlf' | 'descAlf',
+    @Query('idSpeciality') idSpeciality?: string,
   ) {
-    return this.mentorService.filer_mentor(categoryName, order);
+    return this.mentorService.filer_mentor(categoryName, order, idSpeciality);
   }
 
   @Get('filter/:id')

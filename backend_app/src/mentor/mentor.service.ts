@@ -143,6 +143,7 @@ export class MentorService {
   async filer_mentor(
     categoryName: string[],
     order?: 'asc' | 'desc' | 'ascAlf' | 'descAlf',
+    idSpeciality?: string,
   ) {
     try {
       let mentors = await this.mentorRepository.find({
@@ -156,6 +157,12 @@ export class MentorService {
       if (categoryName && categoryName.length > 0) {
         mentors = mentors.filter((mentor) =>
           mentor.categories.some((c) => categoryName.includes(c.name)),
+        );
+      }
+
+      if (idSpeciality) {
+        mentors = mentors.filter(
+          (mentor) => mentor.speciality.id == idSpeciality,
         );
       }
 
