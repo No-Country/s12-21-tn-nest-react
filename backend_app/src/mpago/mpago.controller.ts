@@ -11,12 +11,21 @@ import {
 import { MpagoService } from './mpago.service';
 import { CreateMpagoDto } from './dto/create-mpago.dto';
 import { UpdateMpagoDto } from './dto/update-mpago.dto';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('MercadoPago')
 @Controller('mpago')
 export class MpagoController {
   constructor(private readonly mpagoService: MpagoService) {}
 
   @Post()
+  @ApiOperation({
+    description: 'Obtener un enlace de pago',
+  })
+  @ApiBody({
+    type: CreateMpagoDto,
+  })
   create(@Body() createMpagoDto: CreateMpagoDto) {
     return this.mpagoService.create(createMpagoDto);
   }

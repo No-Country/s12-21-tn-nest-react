@@ -134,6 +134,7 @@ export class StripeService {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(_id: number, _updateStripeDto: UpdateStripeDto) {
     throw new HttpException(
       `Only admins can perform this action`,
@@ -141,6 +142,7 @@ export class StripeService {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   remove(_id: number) {
     throw new HttpException(
       `Only admins can perform this action`,
