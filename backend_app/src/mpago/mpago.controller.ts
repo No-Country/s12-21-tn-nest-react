@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { MpagoService } from './mpago.service';
 import { CreateMpagoDto } from './dto/create-mpago.dto';
 import { UpdateMpagoDto } from './dto/update-mpago.dto';
@@ -12,9 +21,9 @@ export class MpagoController {
     return this.mpagoService.create(createMpagoDto);
   }
 
-  @Get()
-  findAll() {
-    return this.mpagoService.findAll();
+  @Get('success')
+  success(@Query('preference_id') id: string) {
+    return this.mpagoService.success(id);
   }
 
   @Get(':id')
