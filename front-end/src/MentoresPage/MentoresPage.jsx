@@ -1,5 +1,5 @@
-import { Box, Typography, Paper } from '@mui/material'
 import React, { useState } from 'react'
+import { Box, Typography, Paper } from '@mui/material'
 import { SpecialityFilter } from '../components/SpecialityFilter'
 import { OrderFilter } from '../components/OrderFilter'
 import { MentorCardRenderer } from '../components/MentorCardRenderer'
@@ -7,8 +7,8 @@ import { MentorCardRenderer } from '../components/MentorCardRenderer'
 export const MentoresPage = () => {
     const [selectedSpeciality, setSelectedSpeciality] = useState('');
 
-    const handleSpecialityChange = (selected) => {
-        setSelectedSpeciality(selected);
+    const handleSpecialityChange = (selectedId) => {
+        setSelectedSpeciality(selectedId);
     };
 
     return (
@@ -42,7 +42,6 @@ export const MentoresPage = () => {
                     <SpecialityFilter onSelectSpeciality={handleSpecialityChange} />
                     <OrderFilter />
                 </Paper>
-                {/* Pasamos la especialidad seleccionada al componente MentorCardRenderer */}
                 <MentorCardRenderer selectedSpeciality={selectedSpeciality} />
             </Box>
         </Box>

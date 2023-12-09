@@ -12,14 +12,15 @@ export const MentorCardRenderer = ({ selectedSpeciality }) => {
         // Consulta a la API según la especialidad seleccionada
         const response = await urlApi.get(`/mentor/filter?speciality=${selectedSpeciality}`);
         setMentorsData(response.data);
-        console.log('Datos de mentores filtrados por especialidad:', response.data);
+        
       } catch (error) {
         console.error('Error fetching mentors:', error);
       }
     };
-    
+
     fetchMentors();
   }, [selectedSpeciality]); // Ejecutar cuando selectedSpeciality cambie
+
 
 
   return (
