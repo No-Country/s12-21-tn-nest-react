@@ -1,31 +1,31 @@
 [
     {
-        "name": "Mentoring in Tech",
+        "name": "FrontEnd",
         "author": "John Doe",
         "year": "2015"
     },
     {
-        "name": "Tech Mentoring 101",
+        "name": "Diseño UX/UI",
         "author": "Jane Smith",
         "year": "2018"
     },
     {
-        "name": "The Art of Mentoring",
+        "name": "Analítica web",
         "author": "Michael Johnson",
         "year": "2012"
     },
     {
-        "name": "Tech Mentoring for Beginners",
+        "name": "BackEnd",
         "author": "Sarah Adams",
         "year": "2019"
     },
     {
-        "name": "Advanced Tech Mentoring",
+        "name": "Arquitectura de Software",
         "author": "Robert Brown",
         "year": "2017"
     },
     {
-        "name": "Mentoring in the Digital Age",
+        "name": "Data Science",
         "author": "Emily Davis",
         "year": "2016"
     },

@@ -9,15 +9,14 @@ import HomeSectionThree from "../components/HomeSectionThree";
 
 const Home = () => {
   return (
-    <Container>      
+    <Container>
       <HomeMainSection
         foto={fotoMain}
         title="Encuentra un mentor o conviértete en uno"
         description="Descubre MentorSphere, el lugar perfecto para encontrar mentores con horarios flexibles y convertirte en uno." />
-      <HomeSectionOne />   
-      <HomeSectionTwo/>   
-      <CardMentorSection />
-      <HomeSectionThree/>      
+      <HomeSectionOne />
+      <HomeSectionTwo />
+      <HomeSectionThree />
     </Container>
   )
 }

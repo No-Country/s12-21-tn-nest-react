@@ -2,6 +2,7 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import EmailIcon from '@mui/icons-material/Email';
 import { Box, Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import CardMentorSection from './CardMentorSection';
 
 const sectionMentorHome = [
   {
@@ -23,21 +24,26 @@ const sectionMentorHome = [
 
 export default function HomeSectionThree() {
   return (
-    <Container maxWidth='md' sx={{ py: 8 }}>
-      
-      <Grid container spacing={3}>
-        {sectionMentorHome.map(item =>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ border: '1px solid #00A884', p: 1 }}>
-              <CardContent>
-                <Box color='#00A884'>{item.icon}</Box>
-                <Typography component='h4' variant='h6'>{item.title}</Typography>
-                <Typography>{item.description}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        )}
-      </Grid>
+    <Container>
+      <CardMentorSection
+        title="Regístrese como mentor y gana!"
+        description="Publique su perfil de forma gratuita, establezca el precio de las clases y obtenga nuevos estudiantes"
+        textButton="Registrarse" />
+      <Container maxWidth='md' sx={{ py: 8 }}>
+        <Grid container spacing={3}>
+          {sectionMentorHome.map(item =>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card sx={{ height: '100%', color: '#fff', p: 1, backgroundColor: '#111B21' }}>
+                <CardContent>
+                  <Box color='#00A884'>{item.icon}</Box>
+                  <Typography component='h4' variant='h6' gutterBottom>{item.title}</Typography>
+                  <Typography>{item.description}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+        </Grid>
+      </Container>
     </Container>
   )
 }
