@@ -9,6 +9,7 @@ import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 import { PaypalModule } from './paypal/paypal.module';
 import { StripeModule } from './stripe/stripe.module';
+import { MpagoModule } from './mpago/mpago.module';
 
 const feactureModule = [
   MentorModule,
@@ -52,6 +53,7 @@ const feactureModule = [
     ...feactureModule,
     PaypalModule,
     StripeModule,
+    MpagoModule,
   ],
   providers: [JwtService],
 })
