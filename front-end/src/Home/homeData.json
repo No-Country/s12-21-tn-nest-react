@@ -2,32 +2,32 @@
   {
     "picture":"/src/images/home/picture1.jpg",
     "title": "Aprende de Expertos en tu campo",
-    "description": "Aprovecha la oportunidad de aprender de expertos en tu campo. Nuestros mentores son profesionales con experiencia y conocimientos que pueden guiarte en tu camino hacia el exito."
+    "description": "Encontraras mentores con experiencia y conocimientos que pueden guiarte en tu camino hacia el exito."
   },
   {
     "picture":"/src/images/home/picture3.jpg",
     "title": "Comparte tu experiencia y conocimientos",
-    "description": "Si tienes experiencia en tu campo especifico puedes convertirte en mentor y compartir tus conocimientos con futuros alumnos. Ayuda a otros a alcanzar sus metas y contribuye a su desarrollo personal y profesional."
+    "description": "Si tienes experiencia en tu campo especifico puedes convertirte en mentor y compartir tus conocimientos con futuros alumnos."
   },
   
   {
     "picture":"/src/images/home/picture2.jpg",
     "title": "Mejora tus Habilidades y conocimientos",
-    "description": "Conviertete en un mentor o encuentra uno y mejora tus habilidades y conocimientos. Tanto si eres mentor como alumno, tendras la oportunidad de crecer y aprender en un ambiente de apoyo y colaboracion."
+    "description": "Tanto si eres mentor como alumno, tendras la oportunidad de crecer y aprender en un ambiente de apoyo y colaboración."
   },
   {
     "picture":"/src/images/home/picture6.jpg",
     "title": "Horarios Flexibles",
-    "description": "Puedes encontrar mentores que se ajusten a tus horarios. Ya no tienes que preocuparte por la falta de tiempo, ya que nuestros mentores estan disponibles en horarios flexibles para adaptarse a tu agenda."
+    "description": "Puedes encontrar mentores que se ajusten a tus horarios. Ya no tienes que preocuparte por la falta de tiempo."
   },
   {
     "picture":"/src/images/home/picture4.jpg",
     "title": "Notificaciones de clases",
-    "description": "Recibe notificaciones de tus clases de mentorias para nunca te pierdas una sesion. Mantente al tanto de tus proximas mentorias y asegurate de aprovechar al máximo esta oportunidad de aprendizaje."
+    "description": "Recibe notificaciones para no perderte una sesión de mentoría."
   },
   {
     "picture":"/src/images/home/picture5.jpg",
     "title": "Comunicación directa",
-    "description": "A través del chat de NombreAPP, podras comunicarte directamente con tus mentores. Pregunta tus dudas, comparte tus inquietudes y obtén concejos personalizados para alcanzar tus metas académicas."
+    "description": "A través del chat de MentorSphere, podras comunicarte directamente con tus mentores."
   }
 ]
