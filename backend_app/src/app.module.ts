@@ -11,7 +11,6 @@ import { PaypalModule } from './paypal/paypal.module';
 
 const feactureModule = [
   MentorModule,
-  UserModule,
   AuthModule,
   RoleModule,
   AlunmModule,
@@ -49,6 +48,7 @@ const feactureModule = [
       inject: [ConfigService],
     }),
     ...feactureModule,
+    UserModule,
     PaypalModule,
   ],
   providers: [JwtService],
