@@ -100,26 +100,7 @@ export class MentorService {
 
   async post_create_mentor(post: createMentor, file: Express.Multer.File) {
     try {
-      if (!post.birthdate) {
-        return {
-          status: HttpStatus.NOT_FOUND,
-          message: 'enter date of birth',
-        };
-      }
-      const verify = verify_ages(post.birthdate);
-      if (!verify) {
-        return {
-          status: HttpStatus.NOT_FOUND,
-          message: 'You cannot register as a mentor because you are a minor',
-        };
-      }
       const object_mentor = await create_object_mentor(post);
-      if (post.Categories.length == 0) {
-        return {
-          status: HttpStatus.NOT_FOUND,
-          message: 'enter the project categories',
-        };
-      }
       const categoriesSearch = await this.categoriesRepository.findByIds(
         post.Categories,
       );
@@ -143,6 +124,7 @@ export class MentorService {
   async filer_mentor(
     categoryName: string[],
     order?: 'asc' | 'desc' | 'ascAlf' | 'descAlf',
+    idSpeciality?: string,
   ) {
     try {
       let mentors = await this.mentorRepository.find({
@@ -156,6 +138,12 @@ export class MentorService {
       if (categoryName && categoryName.length > 0) {
         mentors = mentors.filter((mentor) =>
           mentor.categories.some((c) => categoryName.includes(c.name)),
+        );
+      }
+
+      if (idSpeciality) {
+        mentors = mentors.filter(
+          (mentor) => mentor.speciality.id == idSpeciality,
         );
       }
 
