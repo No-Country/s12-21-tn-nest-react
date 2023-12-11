@@ -12,13 +12,15 @@ import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
 import Profile from "./components/Profile";
 import UpdateMentorProfile from "./components/UpdateMentorProfile";
-
 import Menu from "./components/Menu";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
+import ModifyMentorCategories from "./components/ModifyMentorCategories";
+import ModifyMentorSpecialities from "./components/ModifyMentorSpecialities";
+
 const navLinksArray = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
   { title: 'Mentores', path: '/mentores', icon: <GroupAddIcon /> },
@@ -47,6 +49,8 @@ function App() {
               <Route path="/studentForm" element={<StudentForm />} />
               <Route path="/mentorProfile/:id" element={<Profile />} />
               <Route path="/updateProfile/:id" element={<UpdateMentorProfile />} />
+              <Route path="/modifyMentorCategories" element={<ModifyMentorCategories />} />
+              <Route path="/modifyMentorSpeciality" element={<ModifyMentorSpecialities />} />
               </Routes>
             </div>
           </BrowserRouter>
