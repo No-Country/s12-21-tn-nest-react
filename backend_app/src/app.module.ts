@@ -3,10 +3,21 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MentorModule } from './mentor/mentor.module';
+import { UserModule } from './auth/user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 import { GatewayModule } from './messages/gateway.module';
+import { PaypalModule } from './paypal/paypal.module';
 
-const feactureModule = [MentorModule, AlunmModule, GatewayModule];
+const feactureModule = [
+  MentorModule,
+  AlunmModule,
+  GatewayModule,
+  AuthModule,
+  RoleModule,
+  UserModule,
+];
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -39,6 +50,7 @@ const feactureModule = [MentorModule, AlunmModule, GatewayModule];
       inject: [ConfigService],
     }),
     ...feactureModule,
+    PaypalModule,
   ],
   providers: [JwtService],
 })

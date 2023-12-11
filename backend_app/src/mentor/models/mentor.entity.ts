@@ -1,23 +1,22 @@
+import { BaseEntity } from '../../common/base/entity';
 import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   JoinTable,
   ManyToMany,
-  CreateDateColumn,
-  DeleteDateColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Category } from './categories.entity';
 import { Speciality } from './especializaciones';
+import { User } from 'src/auth/user/entities/user.entity';
 import { Message } from 'src/messages/models/gateway.entity';
 
 @Entity({ name: 'mentor' })
-export class Mentor {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Mentor extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   mentorDescription: string;
   @Column({
@@ -38,14 +37,6 @@ export class Mentor {
   )
   public AlumnHireMentors: AlumnHireMentor[];
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
-  })
-  created_at: Date;
-
-  @DeleteDateColumn({ type: 'timestamp', nullable: true })
-  deleted_at: Date;
   @ManyToMany(() => Category, (category) => category.mentors)
   @JoinTable({
     name: 'mentors_categories',
@@ -61,6 +52,12 @@ export class Mentor {
   @ManyToOne(() => Speciality, (speciality) => speciality.mentor)
   speciality: Speciality;
 
-  @OneToMany(() => Message, (message) => message.alunm)
+  @OneToMany(() => Message, (message) => message.alumn)
   message: Message;
+
+  @OneToOne(() => User, (user) => user.mentor, { eager: true })
+  @JoinColumn({
+    name: 'user',
+  })
+  userId: User;
 }

@@ -2,7 +2,6 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
@@ -11,21 +10,16 @@ import { Alumn } from 'src/alunm/models/alumn.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
 @Entity()
 export class Message {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   message: string;
 
-  @ManyToOne(() => Alumn, (alumn) => alumn.id)
+  @ManyToOne(() => Alumn, (alumn) => alumn.message)
   @JoinColumn()
-  alunm: Alumn;
-  //Alumno que envia el mensaje
-  @Column()
-  sender: string;
-  //Mentor que recibe el mensaje
-  @Column()
-  receiver: string;
+  alumn: Alumn;
+
   @ManyToOne(() => Mentor, (mentor) => mentor.id)
   mentor: Mentor;
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
@@ -34,7 +28,7 @@ export class Message {
   @Column({ nullable: true, default: 'unread' })
   status: string;
 
-  @ManyToOne(() => Consulta)
+  @ManyToOne(() => Consulta, (consulta) => consulta.messages)
   @JoinColumn()
-  consulta: Consulta;
+  consultaId: Consulta;
 }

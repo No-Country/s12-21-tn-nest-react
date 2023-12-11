@@ -15,7 +15,9 @@ import { verify_ages } from 'src/functions/general';
 import { Mentor } from './models/mentor.entity';
 import { Speciality } from './models/especializaciones';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
-
+import * as bcrypt from 'bcryptjs';
+import { SALT_ROUNDS } from '../common/constants';
+import { UserService } from 'src/auth/user/user.service';
 @Injectable()
 export class MentorService {
   constructor(
@@ -24,6 +26,7 @@ export class MentorService {
     @InjectRepository(Mentor) private mentorRepository: Repository<Mentor>,
     @InjectRepository(Speciality)
     private specialityRepository: Repository<Speciality>,
+    private readonly userService: UserService,
   ) {}
   async get_categories_all() {
     try {
@@ -97,10 +100,6 @@ export class MentorService {
 
   async post_create_mentor(post: createMentor, file: Express.Multer.File) {
     try {
-      if (file) {
-        const upload = await uploadCloudinary(file);
-        post['image'] = upload['url'];
-      }
       if (!post.birthdate) {
         return {
           status: HttpStatus.NOT_FOUND,
@@ -114,7 +113,7 @@ export class MentorService {
           message: 'You cannot register as a mentor because you are a minor',
         };
       }
-      const object_mentor = await create_object_mentor(post, file);
+      const object_mentor = await create_object_mentor(post);
       if (post.Categories.length == 0) {
         return {
           status: HttpStatus.NOT_FOUND,
@@ -125,6 +124,11 @@ export class MentorService {
         post.Categories,
       );
       const mentor_add = this.mentorRepository.create(object_mentor);
+
+      if (file) {
+        const upload = await uploadCloudinary(file);
+        mentor_add['image'] = upload['url'];
+      }
       mentor_add.categories = categoriesSearch;
       await this.mentorRepository.save(mentor_add);
       return {
@@ -136,14 +140,42 @@ export class MentorService {
     }
   }
 
-  async filer_mentor() {
+  async filer_mentor(
+    categoryName: string[],
+    order?: 'asc' | 'desc' | 'ascAlf' | 'descAlf',
+  ) {
     try {
-      return await this.mentorRepository.find({
+      let mentors = await this.mentorRepository.find({
         relations: {
           categories: true,
           speciality: true,
+          userId: true,
         },
       });
+
+      if (categoryName && categoryName.length > 0) {
+        mentors = mentors.filter((mentor) =>
+          mentor.categories.some((c) => categoryName.includes(c.name)),
+        );
+      }
+
+      switch (order) {
+        case 'asc':
+          return mentors.sort((a, b) => Number(a.price) - Number(b.price));
+        case 'desc':
+          return mentors.sort((a, b) => Number(b.price) - Number(a.price));
+        case 'ascAlf':
+          return mentors.sort((a, b) =>
+            a.userId.firstName.localeCompare(b.userId.firstName),
+          );
+          console.log(mentors);
+        case 'descAlf':
+          return mentors.sort((a, b) =>
+            b.userId.firstName.localeCompare(a.userId.firstName),
+          );
+        default:
+          return mentors;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -201,6 +233,7 @@ export class MentorService {
       relations: {
         categories: true,
         speciality: true,
+        userId: true,
       },
     });
   }
@@ -263,8 +296,38 @@ export class MentorService {
       relations: {
         categories: true,
         speciality: true,
+        userId: true,
       },
     });
+    const object_user_actualiazar = {};
+    if (updateProfile.firstName) {
+      object_user_actualiazar['firstName'] = updateProfile.firstName;
+    }
+
+    if (updateProfile.lastName) {
+      object_user_actualiazar['lastName'] = updateProfile.lastName;
+    }
+
+    if (updateProfile.password) {
+      object_user_actualiazar['password'] = await bcrypt.hash(
+        updateProfile.password,
+        SALT_ROUNDS,
+      );
+    }
+    if (updateProfile.phone) {
+      object_user_actualiazar['phone'] = updateProfile.phone;
+    }
+
+    if (updateProfile.lastName) {
+      object_user_actualiazar['lastName'] = updateProfile.lastName;
+    }
+
+    if (Object.keys(object_user_actualiazar).length > 0) {
+      await this.userService.update(
+        searchMentor.userId.id,
+        object_user_actualiazar,
+      );
+    }
 
     if (updateProfile.categories.length > 0) {
       const categoriesSearch = await this.categoriesRepository.find({
@@ -292,7 +355,6 @@ export class MentorService {
   async desactive_profile(id: string) {
     const searchMentor = await this.mentorRepository.findOne({ where: { id } });
     if (searchMentor) {
-      searchMentor.deleted_at = new Date();
       this.mentorRepository.save(searchMentor);
       return {
         status: HttpStatus.ACCEPTED,
@@ -312,8 +374,8 @@ export class MentorService {
       where: { id },
     });
 
-    if (mentors.length && mentors[0].deleted_at !== null) {
-      mentors[0].deleted_at = null;
+    if (mentors.length && mentors[0].deletedAt !== null) {
+      mentors[0].deletedAt = null;
       this.mentorRepository.save(mentors);
       return {
         status: HttpStatus.ACCEPTED,

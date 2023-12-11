@@ -12,9 +12,21 @@ export class updateMentor {
   aboutMe?: string;
   @IsOptional()
   @IsDateString()
-  birthdate?: Date;
+  birthdate?: string;
   @IsOptional()
   categories?: string[];
   @IsOptional()
   speciality?: string;
+  @IsOptional()
+  @IsString()
+  firstName?: string;
+  @IsOptional()
+  @IsString()
+  lastName?: string;
+  @IsString()
+  @IsOptional()
+  password?: string;
+  @IsString()
+  @IsOptional()
+  phone?: string;
 }

@@ -1,10 +1,11 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Alumn } from './alumn.entity';
-import { Mentor } from 'src/mentor/models/mentor.entity';
-import { Category } from 'src/mentor/models/categories.entity';
+import { Mentor } from '../../mentor/models/mentor.entity';
+import { Category } from '../../mentor/models/categories.entity';
+import { BaseEntity } from '../../common/base/entity';
 
 @Entity({ name: 'alumn_hire_mentor' })
-export class AlumnHireMentor {
+export class AlumnHireMentor extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

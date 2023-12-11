@@ -5,8 +5,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: process.env.GMAIL,
-    pass: process.env.PASS,
+    user: process.env.GMAIL_NODEMAILER,
+    pass: process.env.PASS_NODEMAILER,
   },
 });
 
@@ -19,9 +19,9 @@ transporter
 
 export const send = async (email: string) => {
   await transporter.sendMail({
-    from: 'legalhub284@gmail.com',
+    from: 'mentorspheresphere@gmail.com',
     to: email,
-    subject: 'LegalHub',
+    subject: 'MentorSphere',
     html: `<head>
       <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
@@ -95,9 +95,9 @@ export const sendappointment = async (
   link: string,
 ) => {
   await transporter.sendMail({
-    from: 'legalhub284@gmail.com',
+    from: 'mentorspheresphere@gmail.com',
     to: email,
-    subject: 'LegalHub',
+    subject: 'MentorSphere',
     html: `<head>
       <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');

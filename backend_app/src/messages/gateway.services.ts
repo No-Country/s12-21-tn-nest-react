@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from './models/gateway.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { createConsultaDto } from './dto/create-consulta.dto';
@@ -26,18 +26,18 @@ export class MessagesService {
     return this.messageRepository.find();
   }
   getMessage(id: number) {
-    return this.messageRepository.findOne({
+    /*     return this.messageRepository.findOne({
       where: { id: id },
-    });
+    }); */
   }
   deleteMessage(id: number) {
-    return this.messageRepository.delete({ id });
+    /* return this.messageRepository.delete({ id }); */
   }
   updateMessage(id: number, message: UpdateMessageDto) {
-    return this.messageRepository.update({ id }, message);
+    /* return this.messageRepository.update({ id }, message); */
   }
   async createConsulta(id: number, consulta: createConsultaDto) {
-    const messageFound = await this.messageRepository.findOne({
+    /*     const messageFound = await this.messageRepository.findOne({
       where: { id },
     });
     if (!messageFound) {
@@ -48,9 +48,12 @@ export class MessagesService {
     const savedConsult = await this.consultaRepository.save(newConsult);
     messageFound.consulta = savedConsult;
 
-    return this.messageRepository.save(messageFound);
+    return this.messageRepository.save(messageFound); */
   }
   async sendMessage(id1: string, id2: string, newMessage: CreateMessageDto) {
+    const consulta = this.consultaRepository.create();
+    await this.consultaRepository.save(consulta);
+
     const alumnFound = await this.alumnRepository.findOne({
       where: { id: id1 },
     });
@@ -58,26 +61,14 @@ export class MessagesService {
       where: { id: id2 },
     });
 
-    if (!alumnFound || !mentorFound) {
-      throw new HttpException(
-        'Alumn or Mentor not found',
-        HttpStatus.NOT_FOUND,
-      );
-    }
+    const messageNew: DeepPartial<Message> = {
+      message: newMessage.message,
+      alumn: alumnFound,
+      mentor: mentorFound,
+      consultaId: consulta,
+    };
 
-    const consulta = new Consulta();
-    consulta.status = false; // O el valor que prefieras
-    await this.consultaRepository.save(consulta);
-
-    const message = new Message();
-    message.message = newMessage.message;
-    message.sender = id1;
-    message.receiver = id2;
-    message.date = new Date();
-    message.status = 'unread';
-    message.consulta = consulta;
-
-    await this.messageRepository.save(message);
+    await this.messageRepository.save(messageNew);
 
     return `Mensaje enviado desde ${id1} a ${id2}`;
   }

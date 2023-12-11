@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { MentorService } from './mentor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -17,7 +18,19 @@ import { createCategories } from './class/Categories/createCategories.dto';
 import { updateCategories } from './class/Categories/updateCategories.dto';
 import { createMentor } from './class/Mentor/createMentor.dto';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { createdMentorResponse } from './class/Mentor/createdMentorResponse.dto';
 
+@ApiBearerAuth()
+@ApiTags('Mentors')
 @Controller('mentor')
 export class MentorController {
   constructor(private mentorService: MentorService) {}
@@ -26,6 +39,12 @@ export class MentorController {
     return this.mentorService.get_categories_all();
   }
   @Post('categories/create')
+  @ApiOperation({
+    description: 'Crear una categoría',
+  })
+  @ApiBody({
+    type: createCategories,
+  })
   @UseInterceptors(FileInterceptor('file'))
   async post_categories(
     @Body() categoriesPost: createCategories,
@@ -45,6 +64,24 @@ export class MentorController {
 
   @Post('create')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Archivo de imagen',
+    type: 'file',
+  })
+  @ApiOperation({
+    description: 'Crear un mentor',
+  })
+  @ApiBody({
+    type: createMentor,
+  })
+  @ApiCreatedResponse({
+    description: 'Mentor added successfully',
+    type: createdMentorResponse,
+  })
+  @ApiNotFoundResponse({
+    description: 'You cannot register as a mentor because you are a minor',
+  })
   async post_create_mentor(
     @Body() post: createMentor,
     @UploadedFile() file: Express.Multer.File,
@@ -53,8 +90,16 @@ export class MentorController {
   }
 
   @Get('filter')
-  async filer_mentor() {
-    return this.mentorService.filer_mentor();
+  async filer_mentor(
+    @Query('categoryName') categoryName: string[],
+    @Query('order') order?: 'asc' | 'desc' | 'ascAlf' | 'descAlf',
+  ) {
+    return this.mentorService.filer_mentor(categoryName, order);
+  }
+
+  @Get('filter/:id')
+  async filer_mentor_id(@Param('id') id: string) {
+    return this.mentorService.mentor_find(id);
   }
   @Get('speciality/filter')
   async filter_speciality() {

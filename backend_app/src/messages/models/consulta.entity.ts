@@ -3,8 +3,8 @@ import { Message } from './gateway.entity';
 
 @Entity('consulta')
 export class Consulta {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;
@@ -12,6 +12,6 @@ export class Consulta {
   @Column({ type: 'boolean', default: false })
   status: boolean;
 
-  @OneToMany(() => Message, (message) => message.consulta)
+  @OneToMany(() => Message, (message) => message.consultaId)
   messages: Message[];
 }

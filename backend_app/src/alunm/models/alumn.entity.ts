@@ -1,28 +1,20 @@
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { AlumnHireMentor } from './alumnHireMentor.entity';
 import { Category } from 'src/mentor/models/categories.entity';
 import { Message } from 'src/messages/models/gateway.entity';
+import { BaseEntity } from 'src/common/base/entity';
+import { User } from 'src/auth/user/entities/user.entity';
 
 @Entity({ name: 'alumn' })
-export class Alumn {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  // for the moment we are going to use a string
-  //TODO: change this to a relation
-  @Column()
-  userId: string;
-
+export class Alumn extends BaseEntity {
   @Column({
     default:
       'https://s3.ppllstatics.com/elnortedecastilla/www/pre2017/multimedia/noticias/201501/12/media/cortadas/facebook-profile-picture-no-pic-avatar--575x323.jpg',
@@ -35,15 +27,6 @@ export class Alumn {
   )
   AlumnHireMentors: AlumnHireMentor[];
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn({ default: null })
-  deletedAt: Date;
-
   @ManyToMany(() => Category, (category) => category)
   @JoinTable({
     name: 'alumns_categories',
@@ -55,6 +38,13 @@ export class Alumn {
     },
   })
   categories: Category[];
-  @OneToMany(() => Message, (message) => message.alunm)
-  message: Message;
+
+  @OneToMany(() => Message, (message) => message.alumn)
+  message: Message[];
+
+  @OneToOne(() => User, (user) => user.alumn, { eager: true })
+  @JoinColumn({
+    name: 'user',
+  })
+  user: User;
 }
