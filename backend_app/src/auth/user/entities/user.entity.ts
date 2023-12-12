@@ -9,7 +9,7 @@ export class User extends BaseEntity {
   @Column({
     nullable: false,
   })
-  firstName: string;
+  firstName: string = '';
 
   @Column({
     nullable: false,
