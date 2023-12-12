@@ -11,7 +11,6 @@ import {
   update_object_mentor,
 } from 'src/functions/DeepPartial';
 import { createMentor } from './class/Mentor/createMentor.dto';
-import { verify_ages } from 'src/functions/general';
 import { Mentor } from './models/mentor.entity';
 import { Speciality } from './models/especializaciones';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
