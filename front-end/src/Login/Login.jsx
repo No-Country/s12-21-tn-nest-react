@@ -19,6 +19,7 @@ import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, signIn, errors: loginErrors } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -34,14 +35,6 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const {
-    isAuthenticated,
-    signIn,
-    errors: loginErrors,
-    loginActive,
-    toggleLoginClass,
-  } = useAuth();
-
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
@@ -49,6 +42,7 @@ const Login = () => {
   }, [isAuthenticated]);
 
   const login = handleSubmit((data) => {
+    console.log(data);
     signIn(data);
   });
 
@@ -60,7 +54,6 @@ const Login = () => {
             background: "red",
             color: "white",
             textAlign: "center",
-            fontSize: "2.4rem",
           }}
           key={i}
         >
@@ -73,15 +66,15 @@ const Login = () => {
             sx={{
               display: "flex",
               alignItems: "flex-start",
-              margin: "0 0 3rem -2rem",
+              margin: "3rem 0 3rem 0",
             }}
           >
             <AccountCircle sx={{ color: "white", mr: 1, my: 0.5 }} />
             <div sx={{ display: "flex", flexDirection: "column" }}>
               <TextField
-                sx={{ width: "24rem" }}
+                sx={{ width: "19rem" }}
                 id="input-with-sx"
-                label="Username"
+                label="Email"
                 variant="standard"
                 className="input-username"
                 required
@@ -100,11 +93,7 @@ const Login = () => {
               )}
             </div>
           </Box>
-          <FormControl
-            sx={{ m: 1, width: "24rem" }}
-            variant="outlined"
-            //{...register("password", { required: true })}
-          >
+          <FormControl sx={{ m: 1, width: "20rem" }} variant="outlined">
             <InputLabel
               sx={{ fontSize: "1.8rem", marginBottom: "2rem", color: "white" }}
               htmlFor="outlined-adornment-password"
@@ -131,6 +120,7 @@ const Login = () => {
               inputProps={{
                 style: { color: "white" },
               }}
+              {...register("password", { required: true })}
             />
             {errors.password && (
               <p style={{ color: "#fa4444", fontSize: "1.8rem" }}>
