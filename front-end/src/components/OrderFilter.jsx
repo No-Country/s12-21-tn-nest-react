@@ -5,8 +5,8 @@ export const OrderFilter = ({ onOrderChange }) => {
     const options = [
         { label: 'Menor Precio', id: 'asc' },
         { label: 'Mayor Precio', id: 'desc' },
-        { label: 'A-Z', id: 'descAlf' },
-        { label: 'Z-A', id: 'ascAlf' }
+        { label: 'A-Z', id: 'ascAlf' },
+        { label: 'Z-A', id: 'descAlf' }
     ];
 
     const [selectedOption, setSelectedOption] = useState('');
@@ -15,8 +15,6 @@ export const OrderFilter = ({ onOrderChange }) => {
         if (event && event.target) {
             const selectedOrder = event.target.value;
             setSelectedOption(selectedOrder);
-            console.info(`You selected ${selectedOrder}`);
-
             onOrderChange(selectedOrder);
         }
     };

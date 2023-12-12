@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Typography, Paper, Button } from '@mui/material'
 import { SpecialityFilter } from '../components/SpecialityFilter'
 import { OrderFilter } from '../components/OrderFilter'
@@ -8,30 +8,46 @@ import { urlApi } from '../../config/axios'
 
 export const MentoresPage = () => {
     const [selectedSpeciality, setSelectedSpeciality] = useState('');
+    const [mentorsData, setMentorsData] = useState([])
     const [selectedOrder, setSelectedOrder] = useState('');
 
     //Filtro de especialidad:
     const handleSpecialityChange = (selectedSpeciality) => {
         setSelectedSpeciality(selectedSpeciality);
-        console.log(`Filtrando mentores con especialidad ${selectedSpeciality}`);
     };
 
     //Filtro de orden:
     const handleOrderChange = (selectedOrder) => {
         setSelectedOrder(selectedOrder);
+        console.log(`Ordenando mentores por ${selectedOrder}`);
     };
 
     const handleFilterClick = async () => {
         //Aqui vamos a crear la funcion para el llamado al backend.
         try {
-            let url = `mentor/filter?idSpeciality=${selectedSpeciality}`;
+            let url = `mentor/filter?idSpeciality=${selectedSpeciality}&order=${selectedOrder}`;
             const response = await urlApi.get(url);
-            console.log('Respuesta del backend: ', response.data);
+            setMentorsData(response.data);
+            console.log('Respuesta del backend:', response.data);
         } catch (error) {
             console.error('Error al filtrar mentores:', error);
         }
-        console.log(`Filtrando mentores con especialidad ${selectedSpeciality} y orden ${selectedOrder}`);
-    }
+    };
+
+    //Funcion para la primera carga de dataMentors:
+    useEffect(() => {
+        const fetchAllMentors = async () => {
+            try {
+                const response = await urlApi.get('mentor/filter');
+                setMentorsData(response.data);
+            } catch (error) {
+                console.error('Error fetching mentors:', error);
+            }
+        }
+
+        fetchAllMentors();
+    }, [])
+
 
     return (
         <Box sx={{
@@ -92,7 +108,7 @@ export const MentoresPage = () => {
                         Filtrar
                     </Button>
                 </Paper>
-                <MentorCardRenderer selectedSpeciality={selectedSpeciality} />
+                <MentorCardRenderer mentorsData={mentorsData} />
             </Box>
         </Box>
     )
