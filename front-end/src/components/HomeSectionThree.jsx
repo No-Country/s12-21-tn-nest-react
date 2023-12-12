@@ -25,7 +25,7 @@ export default function HomeSectionThree() {
       <Container maxWidth='md' sx={{ py: 8 }}>
         <Grid container spacing={3}>
           {sectionMentorHome.map(item =>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid key={item.title} item xs={12} sm={6} md={4}>
               <Card sx={{ height: '100%', color: '#fff', p: 1, backgroundColor: '#111B21' }}>
                 <CardContent>
                   <Box color='#00A884'>{item.icon}</Box>
