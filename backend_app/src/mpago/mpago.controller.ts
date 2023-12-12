@@ -31,7 +31,7 @@ export class MpagoController {
   }
 
   @Get('success')
-  success(@Query('preference_id') id: string) {
+  success(@Query('payment_id') id: string) {
     return this.mpagoService.success(id);
   }
 

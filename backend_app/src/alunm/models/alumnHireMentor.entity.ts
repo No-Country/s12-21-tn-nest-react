@@ -1,8 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Alumn } from './alumn.entity';
 import { Mentor } from '../../mentor/models/mentor.entity';
 import { Category } from '../../mentor/models/categories.entity';
 import { BaseEntity } from '../../common/base/entity';
+import { Mpago } from 'src/mpago/entities/mpago.entity';
+import { Stripe } from 'src/stripe/entities/stripe.entity';
+import { Paypal } from 'src/paypal/entities/paypal.entity';
 
 @Entity({ name: 'alumn_hire_mentor' })
 export class AlumnHireMentor extends BaseEntity {
@@ -26,4 +29,18 @@ export class AlumnHireMentor extends BaseEntity {
 
   @ManyToOne(() => Category, (Category) => Category.AlumnHireMentors)
   categoryjoin: Category;
+
+  @OneToOne(() => Mpago, (payment) => payment.mentorship)
+  @JoinColumn({
+    name: 'payment',
+  })
+  @OneToOne(() => Stripe, (payment) => payment.mentorship)
+  @JoinColumn({
+    name: 'payment',
+  })
+  @OneToOne(() => Paypal, (payment) => payment.mentorship)
+  @JoinColumn({
+    name: 'payment',
+  })
+  payment: string;
 }
