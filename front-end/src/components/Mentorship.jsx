@@ -32,7 +32,7 @@ const Mentorship = ({ location }) => {
   const fetchSpecialities = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/mentor/speciality/filter");
-      setSpecialities(response.data); // Almacenar las especialidades en el estado
+      setSpecialities(response.data); 
     } catch (error) {
       console.error("Error al obtener las especialidades:", error);
     }
@@ -40,13 +40,12 @@ const Mentorship = ({ location }) => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/mentor/categories/filter");
-      setCategories(response.data); // Almacenar las especialidades en el estado
+      setCategories(response.data); 
     } catch (error) {
       console.error("Error al obtener las categorias:", error);
     }
   };
 
-  // Usar useEffect para llamar a fetchSpecialities al cargar el componente
   useEffect(() => {
     fetchSpecialities();
     fetchCategories();
@@ -64,7 +63,6 @@ const Mentorship = ({ location }) => {
   
     try {
       const response = await axios.post('http://localhost:8080/api/Auth/register/mentor', {
-  
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         email: newUser.email,
@@ -72,8 +70,7 @@ const Mentorship = ({ location }) => {
         password: newUser.password,
         role: newUser.role,
   
-/*         file: newMentor.mentorImage, 
- */        mentorDescription: newMentor.mentorDescription,
+        mentorDescription: newMentor.mentorDescription,
         aboutMe: newMentor.mentorAboutMe,
         birthDate: newMentor.mentorDate,
         price: newMentor.mentorPrice,
@@ -107,7 +104,6 @@ const Mentorship = ({ location }) => {
         <MenuItem value="">
             <em>None</em>
         </MenuItem>
-          {/* Mapear las especialidades desde el estado */}
         {specialities.map((speciality) => (
             <MenuItem key={speciality.id} value={speciality.name}>
               {speciality.name}
@@ -129,7 +125,6 @@ const Mentorship = ({ location }) => {
         <MenuItem value="">
             <em>None</em>
         </MenuItem>
-          {/* Mapear las especialidades desde el estado */}
         {categories.map((category) => (
             <MenuItem key={category.id} value={category.name}>
               {category.name}
@@ -138,16 +133,16 @@ const Mentorship = ({ location }) => {
         </Select>
       </FormControl>
       <Grid item>
-                    <Button
-                      type="submit"
-                      onClick={submit} 
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                       Siguiente
-                    </Button>
-                </Grid>
+        <Button
+          type="submit"
+          onClick={submit} 
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Siguiente
+        </Button>
+      </Grid>
    
     </div>
   );

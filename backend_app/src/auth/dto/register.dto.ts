@@ -28,7 +28,7 @@ export default class RegisterDto extends CreateUserDto {
 
   @IsOptional()
   @IsDateString()
-  birthDate?: string;
+  birthDate?: Date;
 
   @IsOptional()
   @IsArray()
