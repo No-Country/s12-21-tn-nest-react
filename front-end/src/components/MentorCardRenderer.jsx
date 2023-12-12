@@ -12,7 +12,6 @@ export const MentorCardRenderer = ({ selectedSpeciality }) => {
         // Consulta a la API según la especialidad seleccionada
         const response = await urlApi.get(`/mentor/filter?speciality=${selectedSpeciality}`);
         setMentorsData(response.data);
-        
       } catch (error) {
         console.error('Error fetching mentors:', error);
       }
@@ -25,7 +24,7 @@ export const MentorCardRenderer = ({ selectedSpeciality }) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '10rem ' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '6rem' }}>
         <Grid container spacing={3} sx={{ gap: 8, justifyContent: 'center' }} >
           {mentorsData.map((mentor) => (
             <MentorCard

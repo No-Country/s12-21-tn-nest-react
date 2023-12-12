@@ -1,81 +1,85 @@
-import { useRef, useState } from 'react'
-import { ButtonGroup, Button, Popper, Grow, ClickAwayListener, MenuList, MenuItem, Paper } from '@mui/material'
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import React, { useState } from 'react';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+
+export const OrderFilter = ({ onOrderChange }) => {
+    const options = [
+        { label: 'Menor Precio', id: 'asc' },
+        { label: 'Mayor Precio', id: 'desc' },
+        { label: 'A-Z', id: 'descAlf' },
+        { label: 'Z-A', id: 'ascAlf' }
+    ];
+
+    const [selectedOption, setSelectedOption] = useState('');
+
+    const handleOptionChange = (event) => {
+        if (event && event.target) {
+            const selectedOrder = event.target.value;
+            setSelectedOption(selectedOrder);
+            console.info(`You selected ${selectedOrder}`);
+
+            onOrderChange(selectedOrder);
+        }
+    };
 
 
-export const OrderFilter = () => {
-  const options = ['Ordenar por:', 'Menor Precio', 'Mayor precio', 'A-Z', 'Z-A']
-
-  const [open, setOpen] = useState(false)
-  const anchorRef = useRef(null)
-  const [selectedIndex, setSelectedIndex] = useState(0)
-
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  }
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setOpen(false);
-  }
-  const handleToggle = () => {
-    setOpen(prevOpen => !prevOpen);
-  }
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-
-  }
-
-
-  return (
-    <>
-      <ButtonGroup variant='contained' ref={anchorRef}>
-        <Button onClick={handleClick}> {options[selectedIndex]} </Button>
-        <Button
-          size='small'
-          onClick={handleToggle}
-        >
-          <ArrowDropDownIcon />
-        </Button>
-      </ButtonGroup>
-      <Popper
-        sx={{
-          zIndex: 1,
-        }}
-        open={open}
-        anchorEl={anchorRef.current}
-        role={undefined}
-        transition
-        disablePortal
-      >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-            }}
-          >
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose} >
-                <MenuList autoFocusItem >
-                  {options.map((option, index) => (
-                    <MenuItem
-                      key={option}
-                      selected={index === selectedIndex}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                    >
-                      {option}
+    return (
+        <FormControl fullWidth sx={{
+            maxWidth: '170px',
+            '& .MuiInputLabel-root': {
+                color: '#fff',
+            },
+            '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                    borderColor: '#25d366',
+                },
+                '&:hover fieldset': {
+                    borderColor: '#20a751',
+                },
+                '&.Mui-focused fieldset': {
+                    borderColor: '#25d366',
+                },
+            },
+            '& .MuiSelect-icon': {
+                color: '#25d366',
+            },
+            '& .MuiSelect-select.MuiSelect-select': {
+                color: '#fff',
+            },
+            '& .MuiListItem-root.Mui-selected': {
+                backgroundColor: '#25d366',
+                color: '#fff',
+            },
+        }}>
+            <InputLabel id="speciality-filter-label" htmlFor="speciality-filter" sx={{
+                '& .MuiInputLabel-root': {
+                    color: '#fff',
+                },
+                '&.Mui-focused': {
+                    color: '#25D366',
+                },
+            }}>Ordenar Por:</InputLabel>
+            <Select
+                labelId="speciality-filter-label"
+                id="speciality-filter"
+                value={selectedOption}
+                label="Especialidad"
+                onChange={handleOptionChange}
+                MenuProps={{
+                    PaperProps: {
+                        style: {
+                            maxHeight: 220,
+                            backgroundColor: '#111B21',
+                            color: '#fff',
+                        },
+                    },
+                }}
+            >
+                {options.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.label}
                     </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </>
-  )
-}
+                ))}
+            </Select>
+        </FormControl>
+    );
+};
