@@ -31,7 +31,6 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setIsAuthenticated(true);
         setUser(res.data);
-        setName(res.data.name);
       } else {
         console.error("Respuesta inesperada", res);
       }

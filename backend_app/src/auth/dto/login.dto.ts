@@ -1,7 +1,7 @@
 import { IsEmail, IsString, MaxLength, MinLength} from "class-validator";
 import { BaseEntity } from "../../common/base/entity";
 
-export default class LoginDto extends BaseEntity {
+export default class LoginDto{
 
     @IsEmail()
     email: string;
