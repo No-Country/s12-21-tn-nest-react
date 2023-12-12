@@ -41,7 +41,7 @@ function App() {
               <Menu navLinksArray={navLinksArray}/>
               <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/Mentores" element={<MentoresPage />} />
+              <Route path="/mentores" element={<MentoresPage />} />
               <Route path="/signUp" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/mentorForm" element={<MentorForm />} />
