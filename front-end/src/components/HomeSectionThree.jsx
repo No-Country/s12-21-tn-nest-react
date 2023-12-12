@@ -26,7 +26,7 @@ export default function HomeSectionThree() {
         <Grid container spacing={3}>
           {sectionMentorHome.map(item =>
             <Grid key={item.title} item xs={12} sm={6} md={4}>
-              <Card sx={{ height: '100%', color: '#fff', p: 1, backgroundColor: '#111B21' }}>
+              <Card sx={{ height: '100%', color: '#fff', p: 1, backgroundColor: '#111B21' }} data-aos="flip-up" data-aos-duration="1500">
                 <CardContent>
                   <Box color='#00A884'>{item.icon}</Box>
                   <Typography component='h4' variant='h6' gutterBottom>{item.title}</Typography>
