@@ -21,7 +21,7 @@ export default function HomeSectionOne() {
         {dataHomeJson.map((data) => (
           <Grid item key={data} xs={12} sm={6} md={4} lg={4}>
             <CardHomeText
-              picture={data.picture}
+              image={data.picture}
               title={data.title}
               description={data.description}
             />
