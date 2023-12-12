@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/"
     },
     {
       "source": "/mentores",
-      "destination": "/mentores"
+      "destination": "/index.html"
     }
   ]
 }
