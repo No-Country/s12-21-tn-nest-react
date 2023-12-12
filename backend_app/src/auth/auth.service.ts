@@ -77,7 +77,7 @@ export class AuthService {
       if (!verifyUser)
         throw new UnauthorizedException(`Wrong document or password`);
       const isMatch = await bcrypt.compare(user.password, verifyUser.password);
-      console.log(isMatch);
+
       if (!isMatch) throw new UnauthorizedException(`Wrong email or password`);
 
       const token = await this.jwtService.signAsync(
