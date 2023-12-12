@@ -315,12 +315,11 @@ export class MentorService {
         object_user_actualiazar,
       );
     }
-
     if (updateProfile.categories.length > 0) {
       const categoriesSearch = await this.categoriesRepository.find({
         where: { id: In(updateProfile.categories) },
       });
-      let newCategoriesToadd: Array<any>;
+      let newCategoriesToadd: Array<any> = [];
       if (categoriesSearch.length > 0) {
         newCategoriesToadd = categoriesSearch.filter(
           (categorySearch) =>

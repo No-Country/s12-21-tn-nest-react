@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [name, setName] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
 
@@ -31,7 +32,12 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setIsAuthenticated(true);
         setUser(res.data);
-        setName(res.data.name);
+        //setName(res.data.name);
+        //setUserId(res.data.id);
+        /* 
+        // Obtén el ID del mentor asociado al usuario
+        const mentorIdResponse = await obtenerIdDelMentor(res.data.id);
+        setMentorId(mentorIdResponse.data.id); // Asigna el ID del mentor al estado */
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -39,6 +45,16 @@ export const AuthProvider = ({ children }) => {
       setErrors(err.response.data);
     }
   };
+
+  /*   const obtenerIdDelMentor = async (userId) => {
+    // Realiza una solicitud para obtener el ID del mentor asociado al usuario
+    try {
+      const response = await axios.get(`http://localhost:8080/api/mentor/getIdByUserId/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching mentor ID:', error);
+    }
+  }; */
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -93,6 +109,7 @@ export const AuthProvider = ({ children }) => {
         isLoading,
         loginActive,
         toggleLoginClass,
+        userId,
       }}
     >
       {children}

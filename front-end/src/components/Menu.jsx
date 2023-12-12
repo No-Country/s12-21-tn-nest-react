@@ -2,24 +2,12 @@ import { useState } from 'react'
 import MenuListDrawer from './MenuListDrawer'
 import { AppBar, Box, Button, Container, Drawer, IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import LoginIcon from '@mui/icons-material/Login';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import HomeIcon from '@mui/icons-material/Home';
-import SchoolIcon from '@mui/icons-material/School';
 import logo from '../images/logo-page.png'
 import { NavLink } from 'react-router-dom';
 
-/* const navLinks = [
-  { title: 'Home', path: '#', icon: <HomeIcon /> },
-  { title: 'Mentores', path: '#mentores', icon: <GroupAddIcon /> },
-  { title: 'Mentorias', path: '#mentorias', icon: <SchoolIcon /> },
-  { title: 'Login', path: '#login', icon: <LoginIcon /> },
-  { title: 'Register', path: '#register', icon: <HowToRegIcon /> }
-] */
-
-export default function Menu({navLinksArray}) {
+export default function Menu({ navLinksArray }) {
   const [open, setOpen] = useState(false);
+
   return (
     <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }}>
       <Container>
@@ -28,13 +16,13 @@ export default function Menu({navLinksArray}) {
             <IconButton color='inherit' size='large' onClick={() => setOpen(true)} sx={{ display: { sm: 'flex', md: 'none' } }}>
               <MenuIcon />
             </IconButton>
-            <Box component='div' >
-              <img src={logo} style={{ width: 220 }} />
+            <Box component='div' sx={{ width: { xs: '140px', sm: '220px' } }}>
+              <img src={logo} style={{ width: '100%' }} />
             </Box>
             <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
               {
                 navLinksArray.map(item => (
-                  <Button color='inherit' component='a' key={item.title} href={item.path}>
+                  <Button color='inherit' component={NavLink} key={item.title} to={item.path}>
                     {item.title}
                   </Button>
                 ))
