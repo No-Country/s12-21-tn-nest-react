@@ -10,7 +10,6 @@ export const SpecialityFilter = ({ onSelectSpeciality }) => {
         try {
             const response = await urlApi.get('/mentor/speciality/filter');
             setSpecialities(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error('Error fetching specialities:', error);
         }
