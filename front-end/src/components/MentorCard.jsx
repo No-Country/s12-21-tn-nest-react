@@ -10,8 +10,9 @@ export const MentorCard = ({ name, speciality, date, aboutMe, categories, price,
             justifyContent: 'center',
             width: 370,
             height: 550,
-            background: '#d8d2d2ca',
+            background: '#389e2f32',
             borderRadius: 3,
+            
         }}>
             <Box style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Box style={{ position: 'relative', width: '100%' }}>
@@ -32,47 +33,48 @@ export const MentorCard = ({ name, speciality, date, aboutMe, categories, price,
                         right: 0,
                         color: 'white',
                         padding: '8px',
+                        background: 'rgba(2, 44, 11, 0.144)',
                     }}>
-                        <Typography variant="h5" fontWeight="600" sx={{ fontSize: '2.25rem' }}>
+                        <Typography variant="h5" fontWeight="600">
                             {name}
                         </Typography>
-                        <Typography variant="subtitle1" sx={{ fontSize: '1.75rem' }}>
+                        <Typography variant="subtitle1">
                             {speciality}
                         </Typography>
-                        <Typography variant="subtitle1" sx={{ marginBottom: '5px', fontSize: '1.25rem' }} >
+                        <Typography variant="subtitle1" sx={{ marginBottom: '5px' }} >
                             {date}
                         </Typography>
                     </Box>
                 </Box>
             </Box>
-            <Box style={{ display: 'flex', flexDirection: 'column', gap: 4, justifyContent: 'space-between', flex: 1 }}>
+            <Box style={{ display: 'flex', flexDirection: 'column', gap: 4, justifyContent: 'space-between', flex: 1,  }}>
                 <CardContent>
-                    <Rating name="read-only" value={4} readOnly style={{ fontSize: '22px', marginBottom: '1.5rem' }} />
+                    <Rating name="read-only" value={4} readOnly style={{ fontSize: '22px', marginBottom: '1rem' }} />
                     <Typography variant="body1" color="textPrimary" sx={{
-                        fontSize: '1.24rem',
-                        marginBottom: '1.35rem',
+                        marginBottom: '1rem',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
                         WebkitLineClamp: 3,
                         WebkitBoxOrient: 'vertical',
+                        color: 'white'
                     }}>
                         {aboutMe}
                     </Typography>
                     <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
                         {categories.map((category, index) => (
                             <Box key={index} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                                <img src={category.image} style={{ width: 40, height: 40 }} />
-                                <Typography variant="body1" color="textPrimary" sx={{ fontSize: '1.24rem' }}>
+                                <img src={category.image} style={{ width: 30, height: 30 }} />
+                                <Typography variant="body1" color="white">
                                     {category.name}
                                 </Typography>
                             </Box>
                         ))}
                     </Box>
                 </CardContent>
-                <CardActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <Chip label={`$${price}/h`} color='primary' sx={{ fontSize: '1.20rem' }} />
-                    <Button variant='contained' sx={{ fontSize: '1.20rem' }} >
+                <CardActions sx={{ display: 'flex', justifyContent: 'space-around', paddingBottom: '1rem' }}>
+                    <Chip label={`$${price}/h`} color='success' />
+                    <Button variant='contained' color='success' >
                         Contactar
                     </Button>
                 </CardActions>
