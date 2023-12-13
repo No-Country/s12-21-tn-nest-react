@@ -1,26 +1,7 @@
 import { Box, Grid, Pagination } from "@mui/material";
-import { useEffect, useState } from "react";
 import { MentorCard } from "./MentorCard";
-import { urlApi } from '../../config/axios';
 
-export const MentorCardRenderer = ({ selectedSpeciality }) => {
-  const [mentorsData, setMentorsData] = useState([]);
-
-  useEffect(() => {
-    const fetchMentors = async () => {
-      try {
-        // Consulta a la API según la especialidad seleccionada
-        const response = await urlApi.get(`/mentor/filter?speciality=${selectedSpeciality}`);
-        setMentorsData(response.data);
-      } catch (error) {
-        console.error('Error fetching mentors:', error);
-      }
-    };
-
-    fetchMentors();
-  }, [selectedSpeciality]); // Ejecutar cuando selectedSpeciality cambie
-
-
+export const MentorCardRenderer = ({ mentorsData }) => {
 
   return (
     <>
