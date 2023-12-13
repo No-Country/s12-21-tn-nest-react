@@ -9,7 +9,7 @@ export default function Menu({ navLinksArray }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }}>
+    <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }} data-aos="fade-down">
       <Container>
         <AppBar position='static' sx={{ border: 'none', boxShadow: '0', bgcolor: '#202C33', py: 1 }}>
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
