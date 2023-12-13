@@ -1,17 +1,17 @@
 [
   {
-    "picture":"../images/home/picture1.jpg",
+    "picture":"/images/home/picture1.jpg",
     "title": "Aprende de Expertos en tu campo",
     "description": "Encontraras mentores con experiencia y conocimientos que pueden guiarte en tu camino hacia el exito."
   },
   {
-    "picture":"../images/home/picture3.jpg",
+    "picture":"/src/images/home/picture3.jpg",
     "title": "Comparte tu experiencia y conocimientos",
     "description": "Si tienes experiencia en tu campo especifico puedes convertirte en mentor y compartir tus conocimientos con futuros alumnos."
   },
   
   {
-    "picture":"../images/home/picture2.jpg",
+    "picture":"/src/images/home/picture2.jpg",
     "title": "Mejora tus Habilidades y conocimientos",
     "description": "Tanto si eres mentor como alumno, tendras la oportunidad de crecer y aprender en un ambiente de apoyo y colaboración."
   },

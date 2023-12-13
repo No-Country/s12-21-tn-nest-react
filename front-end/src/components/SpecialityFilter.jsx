@@ -10,7 +10,6 @@ export const SpecialityFilter = ({ onSelectSpeciality }) => {
         try {
             const response = await urlApi.get('/mentor/speciality/filter');
             setSpecialities(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error('Error fetching specialities:', error);
         }
@@ -31,7 +30,7 @@ export const SpecialityFilter = ({ onSelectSpeciality }) => {
 
     return (
         <FormControl fullWidth sx={{
-            maxWidth: '170px',
+            width: '150px', minWidth: '150px',
             '& .MuiInputLabel-root': {
                 color: '#fff',
             },
