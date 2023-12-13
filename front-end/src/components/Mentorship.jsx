@@ -63,7 +63,6 @@ const Mentorship = ({ location }) => {
   
     try {
       const response = await axios.post('http://localhost:8080/api/Auth/register/mentor', {
-  
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         email: newUser.email,
@@ -105,7 +104,6 @@ const Mentorship = ({ location }) => {
         <MenuItem value="">
             <em>None</em>
         </MenuItem>
-          {/* Mapear las especialidades desde el estado */}
         {specialities.map((speciality) => (
             <MenuItem key={speciality.id} value={speciality.name}>
               {speciality.name}
@@ -127,7 +125,6 @@ const Mentorship = ({ location }) => {
         <MenuItem value="">
             <em>None</em>
         </MenuItem>
-          {/* Mapear las especialidades desde el estado */}
         {categories.map((category) => (
             <MenuItem key={category.id} value={category.name}>
               {category.name}
@@ -136,16 +133,16 @@ const Mentorship = ({ location }) => {
         </Select>
       </FormControl>
       <Grid item>
-                    <Button
-                      type="submit"
-                      onClick={submit} 
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                       Siguiente
-                    </Button>
-                </Grid>
+        <Button
+          type="submit"
+          onClick={submit} 
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Siguiente
+        </Button>
+      </Grid>
    
     </div>
   );

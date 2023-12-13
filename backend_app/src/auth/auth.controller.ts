@@ -1,13 +1,15 @@
 import {
   Body,
   Controller,
+  HttpException,
+  HttpStatus,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import LoginDto from './dto/login.dto';
-import RegisterDto from './dto/register.dto';
+import RegisterDto, { RegisterAlumnDto } from './dto/register.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -28,10 +30,18 @@ export class AuthController {
   @Post('register/student')
   @UseInterceptors(FileInterceptor('file'))
   async studentRegister(
-    @Body() registerDto: RegisterDto,
+    @Body() registerDto: RegisterAlumnDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return await this.authService.studentRegister(registerDto, file);
+    try {
+      await this.authService.studentRegister(registerDto, file);
+      return;
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'error registering student',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @Post('login')
