@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import {  Typography } from '@mui/material';
 import { useLocation, Link , useNavigate} from "react-router-dom";
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
-
+import { urlApi } from '../../config/axios';
 
 const StudentForm = ({ location }) => {
   const navigate = useNavigate();
@@ -28,7 +28,8 @@ const StudentForm = ({ location }) => {
 
   const fetchSpecialities = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/mentor/speciality/filter");
+      let URLSpecialties = `mentor/speciality/filter`
+      const response = await urlApi.get(URLSpecialties);
       setSpecialities(response.data); 
     } catch (error) {
       console.error("Error al obtener las especialidades:", error);
@@ -36,7 +37,8 @@ const StudentForm = ({ location }) => {
   };
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/mentor/categories/filter");
+      const URLCategories = `mentor/categories/filter`
+      const response = await urlApi.get(URLCategories);
       setCategories(response.data); 
     } catch (error) {
       console.error("Error al obtener las categorias:", error);
@@ -86,9 +88,10 @@ const StudentForm = ({ location }) => {
     formData.append('speciality', newStudent.studentSpecility);
   
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/register/student', formData, {
+      let url = 'auth/register/student'
+      const response = await urlApi.post( url , formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
+          'Content-Type': 'multipart/form-data', 
         },
       });
   

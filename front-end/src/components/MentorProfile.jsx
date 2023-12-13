@@ -79,7 +79,7 @@ const Profile = () => {
 
             </Grid>
             <Grid item xs={12} sm={6}>
-            <Link to={`/updateProfile/${mentorId}`} state={{ mentorInfo }}>
+            <Link to={`/updateMentorProfile/${mentorId}`} state={{ mentorInfo }}>
                   <Button
                     fullWidth
                     variant="contained"

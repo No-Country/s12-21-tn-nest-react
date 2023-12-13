@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, Link , useNavigate} from "react-router-dom";
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
+import { urlApi } from '../../config/axios';
 
 
 const Mentorship = ({ location }) => {
@@ -42,7 +43,8 @@ const Mentorship = ({ location }) => {
 
   const fetchSpecialities = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/mentor/speciality/filter");
+      let URLSpecialities = `mentor/speciality/filter`
+      const response = await urlApi.get(URLSpecialities);
       setSpecialities(response.data); 
     } catch (error) {
       console.error("Error al obtener las especialidades:", error);
@@ -50,7 +52,8 @@ const Mentorship = ({ location }) => {
   };
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/mentor/categories/filter");
+      const URLCategories = `mentor/categories/filter`
+      const response = await urlApi.get(URLCategories);
       setCategories(response.data); 
     } catch (error) {
       console.error("Error al obtener las categorias:", error);
@@ -89,7 +92,8 @@ const Mentorship = ({ location }) => {
     formData.append('speciality', mentorSpeciality);
   
     try {
-      const response = await axios.post('http://localhost:8080/api/Auth/register/mentor', formData, {
+      let url = 'Auth/register/mentor'
+      const response = await urlApi.post( url , formData, {
         headers: {
           'Content-Type': 'multipart/form-data', 
         }
