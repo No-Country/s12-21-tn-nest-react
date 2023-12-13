@@ -21,9 +21,13 @@ export class AlumnService {
 
   async create(request: AlunmCreateRequestDto, file: Express.Multer.File) {
     try {
-      const categories = await this.categoryRepository.findByIds(
-        request.categoriesId,
-      );
+      let categories: Category[] = [];
+
+      if (request.categoriesId)
+        categories = await this.categoryRepository.findByIds(
+          request.categoriesId,
+        );
+
       if (!file) {
         const alumn = this.alumnRepository.create({
           ...request,
@@ -84,7 +88,8 @@ export class AlumnService {
 
   async remove(id: string) {
     try {
-      this.alumnRepository.softDelete(id);
+      const alumn = await this.alumnRepository.findOne({ where: { id } });
+      this.alumnRepository.softDelete(alumn.id);
     } catch (error) {
       throw 'Error deleting alumn';
     }
