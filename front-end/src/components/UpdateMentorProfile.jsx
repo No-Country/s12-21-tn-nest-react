@@ -30,10 +30,7 @@ const UpdateMentorProfile = () => {
     phone: mentorInfo.userId.phone || '', 
     birthdate: mentorInfo.birthdate,
     speciality: mentorInfo.speciality || { id: '', name: '' }, 
-    categories: mentorInfo.categories.map((category) => ({
-      id: category.id,
-      name: category.name,
-    })) || [],
+    categories: mentorInfo.categories || [],
   });
 
 
@@ -80,44 +77,37 @@ const UpdateMentorProfile = () => {
     };
   }
   
+  
 
   const handleChange = (field, value) => {
-    if (field === 'categories') {
-      const selectedCategories = value.map(category => ({
-        id: categories.find(cat => cat.name === category.name)?.id || '',
-        name: category.name,
-      }));
+    setEditedInfo((prevInfo) => {
+      let updatedValue = value;
   
-      setEditedInfo(prevInfo => ({
+      if (field === 'birthdate' && value instanceof Date) {
+        updatedValue = value;
+      } else if (field === 'speciality') {
+        updatedValue = value;
+      }
+  
+      return {
         ...prevInfo,
-        categories: selectedCategories.map((category) => category.id),
-      }));
-    } else {
-      setEditedInfo(prevInfo => {
-        let updatedValue = value;
-  
-        if (field === 'birthdate' && value instanceof Date) {
-          updatedValue = value;
-        } else if (field === 'speciality') {
-          // Solo actualiza el nombre de la especialidad
-          updatedValue = value;
-        }
-  
-        return {
-          ...prevInfo,
-          [field]: updatedValue,
-        };
-      });
-    }
+        [field]: updatedValue,
+      };
+    });
   };
+  
   
   
   const handleSaveChanges = async () => {
     try {console.log(editedInfo);
-      await axios.put(`http://localhost:8080/api/mentor/profile/categories/update/5d93e6fd-8d99-47d8-884a-ce71faf78552`, { 
-        ...editedInfo,
-        speciality: editedInfo.speciality.id,
-      });
+   const categoryIds = editedInfo.categories.map((category) => category.id);
+   console.log('Category IDs:', categoryIds);
+
+   await axios.put(`http://localhost:8080/api/mentor/profile/categories/update/5d93e6fd-8d99-47d8-884a-ce71faf78552`, {
+     ...editedInfo,
+     speciality: editedInfo.speciality.id,
+     categories: categoryIds, 
+   });
     } catch (error) {
       console.error('Error updating mentor information:', error);
     }

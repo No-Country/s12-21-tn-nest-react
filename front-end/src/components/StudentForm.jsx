@@ -5,17 +5,18 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import { Container, Grid, Typography } from '@mui/material';
+import {  Typography } from '@mui/material';
 import { useLocation, Link , useNavigate} from "react-router-dom";
+import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
+
 
 const StudentForm = ({ location }) => {
   const navigate = useNavigate();
   const {newUser} = useLocation().state || {};
   const [selectedFile, setSelectedFile] = React.useState(null);
+  const [categoryIds, setCategoryIds] = useState([]);
   const [categories, setCategories] = useState([]); 
   const [specialities, setSpecialities] = useState([]); 
   const [newStudent, setNewStudent] = useState({
@@ -69,20 +70,28 @@ const StudentForm = ({ location }) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', newStudent.studentImage, newStudent.studentImage.name);
-    console.log('Información de newUser en studentForm:', newUser);
-    const {role, firstName, lastName,password, email, phone} = newUser
-    console.log('Información de newUse.newuser en studentForm:', newUser);
-
+  
+    const { role, firstName, lastName, password, email, phone } = newUser;
+  
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('password', password);
+    formData.append('role', role);
+    studentCategories.forEach(val => {
+      formData.append('categories[]', val);
+    });
+    //formData.append('categories', studentCategories);
+    formData.append('speciality', newStudent.studentSpecility);
+  
     try {
-      
-      const response = await axios.post('http://localhost:8080/api/auth/register/student', {
-        firstName,
-        lastName,
-        email,
-        phone,
-        password,
-        role
+      const response = await axios.post('http://localhost:8080/api/auth/register/student', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
+        },
       });
+  
       console.log('Respuesta.data del servidor:', response.data);
       console.log('Respuesta del servidor:', response);
     } catch (error) {
@@ -91,10 +100,21 @@ const StudentForm = ({ location }) => {
       } else {
         console.error('Error registering the student:', error);
       }
-  }};
+    }
+  };
+  
+
+  const handleCategoryChange = (event) => {
+    const selectedCategoryIds = event.target.value;
+    setCategoryIds(selectedCategoryIds);
+    setNewStudent({
+      ...newStudent,
+      studentCategories: selectedCategoryIds,
+    });
+  };
 
   return (
-    <Container>
+    <Container  style={{ backgroundColor: '#FFFFFF', color: '#FFFFFF' }}>
             <Grid sx={{ width: '100%' }}>
                 <Typography component="h1" variant="h5">Mi Perfil de Estudiante</Typography>
                 <Grid item sx={{ mt: 3, mb: 2 }}>
@@ -135,7 +155,7 @@ const StudentForm = ({ location }) => {
           onChange={handleChange}
           autoWidth
           label="Especialidad"
-          name="mentorSpeciality"
+          name="studentSpecility"
         >
         <MenuItem value="">
             <em>None</em>
@@ -147,27 +167,33 @@ const StudentForm = ({ location }) => {
         ))}
         </Select>
       </FormControl>
-      <FormControl sx={{ m: 1, minWidth: 100 }}>
-        <InputLabel id="demo-simple-select-autowidth-label">Categorias</InputLabel>
-        <Select
-          labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"
-          value={studentCategories}
-          onChange={handleChange}
-          autoWidth
-          label="category"
-          name="mentorCategory"
-        >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {categories.map((category) => (
-            <MenuItem key={category.id} value={category.name}>
-              {category.name}
-            </MenuItem>
-        ))}
-        </Select>
-      </FormControl>
+      <FormControl sx={{ m: 1, width: 300 }}>
+          <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
+          <Select
+  labelId="demo-multiple-chip-label"
+  id="demo-multiple-chip"
+  multiple
+  value={studentCategories}
+  onChange={handleCategoryChange}
+  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+  renderValue={(selected) => (
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+      {selected.map((id) => (
+        <Chip key={id} label={categories.find(category => category.id === id)?.name} />
+      ))}
+    </Box>
+  )}
+  
+>
+  {categories.map((category) => (
+    <MenuItem key={category.id} value={category.id}>
+      {category.name}
+    </MenuItem>
+  ))}
+</Select>
+
+        </FormControl>
+     
    
     </div>
                 <Grid item>
