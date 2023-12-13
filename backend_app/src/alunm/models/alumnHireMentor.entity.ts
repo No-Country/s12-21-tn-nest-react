@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Alumn } from './alumn.entity';
 import { Mentor } from '../../mentor/models/mentor.entity';
 import { Category } from '../../mentor/models/categories.entity';
@@ -30,17 +37,27 @@ export class AlumnHireMentor extends BaseEntity {
   @ManyToOne(() => Category, (Category) => Category.AlumnHireMentors)
   categoryjoin: Category;
 
-  @OneToOne(() => Mpago, (payment) => payment.mentorship)
-  @JoinColumn({
-    name: 'payment',
+  @OneToOne(() => Mpago, (payment) => payment.mentorship, {
+    eager: true,
   })
-  @OneToOne(() => Stripe, (payment) => payment.mentorship)
   @JoinColumn({
-    name: 'payment',
+    name: 'mpago_payment',
   })
-  @OneToOne(() => Paypal, (payment) => payment.mentorship)
+  mpago_payment: Mpago;
+
+  @OneToOne(() => Stripe, (payment) => payment.mentorship, {
+    eager: true,
+  })
   @JoinColumn({
-    name: 'payment',
+    name: 'stripe_payment',
   })
-  payment: string;
+  stripe_payment: Stripe;
+
+  @OneToOne(() => Paypal, (payment) => payment.mentorship, {
+    eager: true,
+  })
+  @JoinColumn({
+    name: 'paypal_payment',
+  })
+  paypal_payment: Paypal;
 }

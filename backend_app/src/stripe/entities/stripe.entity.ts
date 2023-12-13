@@ -16,9 +16,7 @@ export class Stripe extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   url: string;
 
-  @OneToOne(() => AlumnHireMentor, (mentorship) => mentorship.payment, {
-    eager: true,
-  })
+  @OneToOne(() => AlumnHireMentor, (mentorship) => mentorship.stripe_payment)
   @JoinColumn({
     name: 'mentorship',
   })
