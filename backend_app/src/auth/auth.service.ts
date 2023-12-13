@@ -43,7 +43,7 @@ export class AuthService {
         throw new BadRequestException(`This Email is already registered`);
 
       const encriptedPass = await bcrypt.hash(password, SALT_ROUNDS);
-      const newUser = await this.userService.createStudent({
+      const newUser = await this.userService.createUser({
         firstName,
         lastName,
         phone,
@@ -51,6 +51,7 @@ export class AuthService {
         role,
         password: encriptedPass,
       });
+
       const alumno = await this.alumnService.create(
         {
           user: newUser,
@@ -72,7 +73,6 @@ export class AuthService {
 
   async login(user: LoginDto) {
     try {
-      console.log('llegue2');
       const verifyUser = await this.userService.findByEmailExistent(user.email);
       if (!verifyUser)
         throw new UnauthorizedException(`Wrong document or password`);

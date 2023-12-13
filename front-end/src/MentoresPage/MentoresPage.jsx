@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Typography, Paper, Button } from '@mui/material'
 import { SpecialityFilter } from '../components/SpecialityFilter'
 import { OrderFilter } from '../components/OrderFilter'
@@ -7,13 +7,14 @@ import { CategoryFilter } from '../components/CategoryFilter'
 import { urlApi } from '../../config/axios'
 
 export const MentoresPage = () => {
-    const [selectedSpeciality, setSelectedSpeciality] = useState('');
+    const [mentorsData, setMentorsData] = useState([])
     const [selectedOrder, setSelectedOrder] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState([]);
+    const [selectedSpeciality, setSelectedSpeciality] = useState('');
 
     //Filtro de especialidad:
     const handleSpecialityChange = (selectedSpeciality) => {
         setSelectedSpeciality(selectedSpeciality);
-        console.log(`Filtrando mentores con especialidad ${selectedSpeciality}`);
     };
 
     //Filtro de orden:
@@ -21,17 +22,42 @@ export const MentoresPage = () => {
         setSelectedOrder(selectedOrder);
     };
 
+    //Filtro de categoria:
+    const handleCategoryChange = (categoryName) => {
+        let updateCategories = [...selectedCategory]
+        if (updateCategories.includes(categoryName)) {
+            updateCategories = updateCategories.filter(name => name !== categoryName)
+        } else {
+            updateCategories.push(categoryName)
+        }
+        setSelectedCategory(updateCategories)
+    }
+
     const handleFilterClick = async () => {
         //Aqui vamos a crear la funcion para el llamado al backend.
         try {
-            let url = `mentor/filter?idSpeciality=${selectedSpeciality}`;
+            let url = `mentor/filter?idSpeciality=${selectedSpeciality}&order=${selectedOrder}&categoryName=${selectedCategory}`;
             const response = await urlApi.get(url);
-            console.log('Respuesta del backend: ', response.data);
+            setMentorsData(response.data);
         } catch (error) {
             console.error('Error al filtrar mentores:', error);
         }
-        console.log(`Filtrando mentores con especialidad ${selectedSpeciality} y orden ${selectedOrder}`);
-    }
+    };
+
+    //Funcion para la primera carga de dataMentors:
+    useEffect(() => {
+        const fetchAllMentors = async () => {
+            try {
+                const response = await urlApi.get('mentor/filter');
+                setMentorsData(response.data);
+            } catch (error) {
+                console.error('Error fetching mentors:', error);
+            }
+        }
+
+        fetchAllMentors();
+    }, [])
+
 
     return (
         <Box sx={{
@@ -52,28 +78,39 @@ export const MentoresPage = () => {
                     elevation={3}
                     sx={{
                         display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
+                        flexDirection: 'column', // Cambia a una disposición de columna en dispositivos móviles
+                        alignItems: 'center', // Centra los elementos en dispositivos móviles
                         padding: '1rem',
                         margin: '1rem 0',
                         backgroundColor: '#111B21',
                         boxShadow: '0px 0px 5px #25D366',
                         borderRadius: '10px',
-                        width: '70%',
+                        width: '100%', // Ocupa todo el ancho disponible
+                        gap: '1.2rem',
+                        [`@media (min-width:600px)`]: {
+                            width: '700px',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        },
                     }}
                 >
                     <Box sx={{
                         display: 'flex',
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         gap: '1.75rem',
                         width: '100%',
                         alignItems: 'center',
                         justifyContent: 'flex-start',
                         backgroundColor: '#111B21',
+                        [`@media (min-width:600px)`]: {
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        },
                     }}>
                         <SpecialityFilter onSelectSpeciality={handleSpecialityChange} />
-                        <CategoryFilter />
+                        <CategoryFilter onSelectCategory={handleCategoryChange} />
                         <OrderFilter onOrderChange={handleOrderChange} />
                     </Box>
                     <Button
@@ -92,7 +129,7 @@ export const MentoresPage = () => {
                         Filtrar
                     </Button>
                 </Paper>
-                <MentorCardRenderer selectedSpeciality={selectedSpeciality} />
+                <MentorCardRenderer mentorsData={mentorsData} />
             </Box>
         </Box>
     )

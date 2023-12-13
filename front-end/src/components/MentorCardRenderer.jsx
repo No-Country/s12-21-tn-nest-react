@@ -1,32 +1,23 @@
+import { useState } from "react";
 import { Box, Grid, Pagination } from "@mui/material";
-import { useEffect, useState } from "react";
 import { MentorCard } from "./MentorCard";
-import { urlApi } from '../../config/axios';
 
-export const MentorCardRenderer = ({ selectedSpeciality }) => {
-  const [mentorsData, setMentorsData] = useState([]);
+export const MentorCardRenderer = ({ mentorsData }) => {
+  const mentorsPerPage = 9
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastMentor = currentPage * mentorsPerPage
+  const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage
+  const currentMentors = mentorsData.slice(indexOfFirstMentor, indexOfLastMentor)
 
-  useEffect(() => {
-    const fetchMentors = async () => {
-      try {
-        // Consulta a la API según la especialidad seleccionada
-        const response = await urlApi.get(`/mentor/filter?speciality=${selectedSpeciality}`);
-        setMentorsData(response.data);
-      } catch (error) {
-        console.error('Error fetching mentors:', error);
-      }
-    };
-
-    fetchMentors();
-  }, [selectedSpeciality]); // Ejecutar cuando selectedSpeciality cambie
-
-
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value)
+  }
 
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '6rem' }}>
         <Grid container spacing={3} sx={{ gap: 8, justifyContent: 'center' }} >
-          {mentorsData.map((mentor) => (
+          {currentMentors.map((mentor) => (
             <MentorCard
               key={mentor.id}
               name={mentor.userId.firstName + ' ' + mentor.userId.lastName}
@@ -46,11 +37,12 @@ export const MentorCardRenderer = ({ selectedSpeciality }) => {
       </Box>
       <Box sx={{ width: '100%', backgroundColor: '#0B141A', display: 'flex', justifyContent: 'center' }} >
         <Pagination
-          count={3}
+          count={Math.ceil(mentorsData.length / mentorsPerPage)}
           variant="outlined"
           size="large"
           showFirstButton
           showLastButton
+          onChange={handlePageChange}
           sx={{
             display: 'flex',
             marginTop: '6rem',

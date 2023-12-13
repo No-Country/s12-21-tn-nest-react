@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 
 export default function CardMentorSection({title,description,textButton}) {
   return (
-    <Container sx={{ marginTop: '8rem' }}>      
+    <Container sx={{ marginTop: '8rem' }} data-aos="zoom-in" data-aos-duration="1500" data-aos-delay="300">      
       <Box sx={{ textAlign: 'center' }}>
         <Typography component="h3" variant="h2" sx={{ color: '#25D366' }}>
           {title}

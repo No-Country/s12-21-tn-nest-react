@@ -1,48 +1,39 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ButtonGroup, Button, Popper, Grow, Paper, ClickAwayListener, MenuList, MenuItem, Checkbox } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { urlApi } from '../../config/axios';
 
-export const CategoryFilter = () => {
-    const options = [
-        'Back-End',
-        'Front-End',
-        'DevOps',
-        'SQL',
-        'Typescript',
-        'Javascript',
-        'Vue Js',
-        'Java',
-        'Docker',
-        'Angular',
-        'CSS',
-        'HTML',
-        'React',
-        'Python',
-        'Node Js'
-    ];
-
+export const CategoryFilter = ({ onSelectCategory }) => {
     const [open, setOpen] = useState(false);
-    const anchorRef = useRef(null);
+    const [categoryData, setCategoryData] = useState([])
     const [selectedIndices, setSelectedIndices] = useState([]);
+    const anchorRef = useRef(null);
 
-    const handleMenuItemClick = (event, index) => {
-        const selectedIndex = selectedIndices.indexOf(index);
+    const fetchCategories = async () => {
+        try {
+            const response = await urlApi.get('mentor/categories/filter')
+            setCategoryData(response.data)
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchCategories()
+    }, [])
+
+    const handleMenuItemClick = (event, categoryName) => {
+        const selectedIndex = selectedIndices.indexOf(categoryName);
         let newSelectedIndices = [];
 
         if (selectedIndex === -1) {
-            newSelectedIndices = [...selectedIndices, index];
-        } else if (selectedIndex === 0) {
-            newSelectedIndices = selectedIndices.slice(1);
-        } else if (selectedIndex === selectedIndices.length - 1) {
-            newSelectedIndices = selectedIndices.slice(0, -1);
-        } else if (selectedIndex > 0) {
-            newSelectedIndices = [
-                ...selectedIndices.slice(0, selectedIndex),
-                ...selectedIndices.slice(selectedIndex + 1),
-            ];
+            newSelectedIndices = [...selectedIndices, categoryName];
+        } else {
+            newSelectedIndices = selectedIndices.filter(name => name !== categoryName);
         }
 
         setSelectedIndices(newSelectedIndices);
+        onSelectCategory(categoryName)
     };
 
     const handleToggle = () => {
@@ -60,7 +51,7 @@ export const CategoryFilter = () => {
     return (
         <>
             <ButtonGroup variant="outlined" ref={anchorRef} sx={{
-                maxWidth: '170px',
+                width: '150px', minWidth: '150px',
                 '& .MuiButton-endIcon': {
                     color: '#25D366',
                 },
@@ -100,13 +91,13 @@ export const CategoryFilter = () => {
                         >
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MenuList autoFocusItem>
-                                    {options.map((option, index) => (
-                                        <MenuItem key={option} sx={{ color: '#fff' }} onClick={(event) => handleMenuItemClick(event, index)}>
+                                    {categoryData.map((categories) => (
+                                        <MenuItem key={categories.id} value={categories.id} sx={{ color: '#fff' }} onClick={(event) => handleMenuItemClick(event, categories.name)}>
                                             <Checkbox
-                                                checked={selectedIndices.indexOf(index) !== -1}
+                                                checked={selectedIndices.indexOf(categories.name) !== -1}
                                                 sx={{ color: '#25d366', '&.Mui-checked': { color: '#25d366' } }}
                                             />
-                                            {option}
+                                            {categories.name}
                                         </MenuItem>
                                     ))}
                                 </MenuList>
