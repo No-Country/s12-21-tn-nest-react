@@ -16,7 +16,8 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [name, setName] = useState(null);
+  const [rolName, setRolName] = useState(null);
+  const [rolId, setRolId] = useState(null);
   const [userId, setUserId] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
@@ -28,10 +29,14 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (user) => {
     try {
       const res = await loginRequest(user);
-      console.log(res);
+      console.log(res.data);
       if (res && res.data) {
-        setIsAuthenticated(true);
         setUser(res.data);
+        setIsAuthenticated(true);
+        setUserId(res.data.userId);
+        setRolName(res.data.role.name);
+        setRolId(res.data.role.id);
+
         //setName(res.data.name);
         //setUserId(res.data.id);
         /* 
@@ -110,6 +115,8 @@ export const AuthProvider = ({ children }) => {
         loginActive,
         toggleLoginClass,
         userId,
+        rolId,
+        rolName,
       }}
     >
       {children}
