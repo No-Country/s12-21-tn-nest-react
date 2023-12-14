@@ -1,24 +1,33 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class SavePaypalOrderDto {
+export class SaveMpagoDto {
   @ApiProperty({
-    description: 'paypal_id id',
+    description: 'mpago_preference_id id',
     nullable: false,
-    example: '10D568937W586635G',
+    example: '13239157-6f7ece7b-52a5-4338-8cd2-3138bcf1d515',
   })
-  @IsNotEmpty({ message: 'paypal_id is required' })
+  @IsNotEmpty({ message: 'mpago_preference_id is required' })
   @IsString()
-  paypal_id: string;
+  mpago_preference_id: string;
 
   @ApiProperty({
     description: 'Order status',
     nullable: false,
-    example: 'COMPLETED',
+    example: 'APPROVED',
   })
   @IsNotEmpty({ message: 'status is required' })
   @IsString()
   status: string;
+
+  @ApiProperty({
+    description: 'Order status detail',
+    nullable: false,
+    example: 'ACREDITED',
+  })
+  @IsNotEmpty({ message: 'status_detail is required' })
+  @IsString()
+  status_detail: string;
 
   @ApiProperty({
     description: 'Mentorship id',
@@ -32,7 +41,8 @@ export class SavePaypalOrderDto {
   @ApiProperty({
     description: 'paypal payment url',
     nullable: true,
-    example: 'https://www.sandbox.paypal.com/checkoutnow?token=...',
+    example:
+      'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=13239157-...',
   })
   @IsNotEmpty({ message: 'url is required' })
   @IsString()

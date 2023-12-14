@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 import { PaypalModule } from './paypal/paypal.module';
+import { StripeModule } from './stripe/stripe.module';
+import { MpagoModule } from './mpago/mpago.module';
 import { QuotesModule } from './quotes/quotes.module';
 
 const feactureModule = [
@@ -17,6 +19,8 @@ const feactureModule = [
   RoleModule,
   AlunmModule,
   PaypalModule,
+  StripeModule,
+  MpagoModule,
   QuotesModule,
 ];
 

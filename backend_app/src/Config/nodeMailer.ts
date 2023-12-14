@@ -75,13 +75,13 @@ export const send = async (email: string) => {
       </head>
       <div class="container">
         <div class="wrapper">
-          <h1 class="title">Excelente, ahora formas parte de la comunidad de LegalHub</h1>
+          <h1 class="title">Excelente, ahora formas parte de la comunidad de MentorSphere</h1>
           <p class="text">Hola Podrás acceder a todos los profesionales que tenemos en nuestra plataforma y además recibir información de asesoría legal.
           <br />
           <br />
           Haz click en el siguiente enlace para activar tu cuenta</p>
           <div class="button_wrapper">
-            <a href="https://abogado-back.onrender.com/api/v1/users/account/activate?email=${email}" target= "_blank" class="button">Confirmar mi cuenta</a>
+            <a href="https://mentorsphere-api.onrender.com/api/mentors/profile/activate/${email}" target= "_blank" class="button">Confirmar mi cuenta</a>
           </div>
         </div>
       </div>`,

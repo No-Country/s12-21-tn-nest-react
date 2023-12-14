@@ -15,6 +15,9 @@ import { MentorService } from 'src/mentor/mentor.service';
 import { AlumnService } from 'src/alunm/alunm.service';
 import { send } from 'src/Config/nodeMailer';
 import { verify_ages } from 'src/functions/general';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +26,7 @@ export class AuthService {
     private jwtService: JwtService,
     private readonly mentorService: MentorService,
     private readonly alumnService: AlumnService,
+    @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
   async studentRegister(
@@ -169,5 +173,11 @@ export class AuthService {
         throw new ErrorManager().errorHandler(error);
       }
     }
+  }
+  async find_User(id: string) {
+    const seachUser = await this.userRepository.findOne({
+      where: { id },
+    });
+    return seachUser;
   }
 }
