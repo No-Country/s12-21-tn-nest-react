@@ -11,20 +11,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import {useNavigate, Link} from "react-router-dom";
 import Button from '@mui/material/Button';
+import { TextField } from '@mui/material';
 
 const Profile = () => {
   const defaultTheme = createTheme();
   const navigate = useNavigate()
-
   const [mentorInfo, setMentorInfo] = useState(null);
 /*   const { userId, mentorId } = useAuth();
  */  const mentorId = '5d93e6fd-8d99-47d8-884a-ce71faf78552'
  const userId = 'adca6e5f-c606-47ae-9c67-1a00dbe9ffc1'
-
- const navigateTo = () => {
-  console.log("MentorInfo en profile:", mentorInfo);
-  navigate(`/updateProfile/${mentorId}`, { state: { mentorInfo } });
- }
 
  const customTheme = createTheme({
   palette: {
@@ -47,7 +42,6 @@ const Profile = () => {
         console.error('Error fetching mentor information:', error);
       }
     };
-
     fetchMentorInfo();
   }, []);
 
@@ -75,15 +69,17 @@ const Profile = () => {
               <Typography variant="h4">MENTOR: {`${mentorInfo.userId.firstName} ${mentorInfo.userId.lastName}`}</Typography>
               <Typography variant="subtitle1">Mentor email: {mentorInfo.userId.email}</Typography>
               <Typography variant="subtitle1">Mentor phone: {mentorInfo.userId.phone}</Typography>
-              <Typography variant="subtitle1">{mentorInfo.birthdate}</Typography>
-              <Typography variant="subtitle1">{mentorInfo.price}</Typography>
-              {/* Otros campos de información */}
-              <Typography variant="body1">{`Mentor Description: ${mentorInfo.mentorDescription}`}</Typography>
+              <Typography variant="subtitle1">Nacimiento: {mentorInfo.birthdate}</Typography>
+              <Typography variant="subtitle1">Precio: {mentorInfo.price}</Typography>
+            
+              <Typography variant="body1">{`Descripción: ${mentorInfo.mentorDescription}`}</Typography>
               <Typography variant="body1">{`About Me: ${mentorInfo.aboutMe}`}</Typography>
-              {/* Agrega el resto de los campos de información */}
+              <Typography variant="body1">{`Especilidad: ${mentorInfo.speciality.name}`}</Typography>
+              <Typography variant="body1">{`Categorias: ${mentorInfo.categories.map((category) => category.name).join(', ')}`}</Typography>
+
             </Grid>
             <Grid item xs={12} sm={6}>
-            <Link to={`/updateProfile/${mentorId}`} state={{ mentorInfo }}>
+            <Link to={`/updateMentorProfile/${mentorId}`} state={{ mentorInfo }}>
                   <Button
                     fullWidth
                     variant="contained"
