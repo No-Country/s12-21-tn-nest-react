@@ -39,6 +39,7 @@ export class AlumnHireMentor extends BaseEntity {
 
   @OneToOne(() => Mpago, (payment) => payment.mentorship, {
     eager: true,
+    onDelete: 'SET NULL',
   })
   @JoinColumn({
     name: 'mpago_payment',
@@ -47,6 +48,7 @@ export class AlumnHireMentor extends BaseEntity {
 
   @OneToOne(() => Stripe, (payment) => payment.mentorship, {
     eager: true,
+    onDelete: 'SET NULL',
   })
   @JoinColumn({
     name: 'stripe_payment',
@@ -55,6 +57,7 @@ export class AlumnHireMentor extends BaseEntity {
 
   @OneToOne(() => Paypal, (payment) => payment.mentorship, {
     eager: true,
+    onDelete: 'SET NULL',
   })
   @JoinColumn({
     name: 'paypal_payment',
