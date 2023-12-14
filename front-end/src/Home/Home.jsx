@@ -5,8 +5,12 @@ import HomeSectionOne from "../components/HomeSectionOne";
 import HomeSectionTwo from "../components/HomeSectionTwo";
 import HomeSectionThree from "../components/HomeSectionThree";
 import fotoMain from '../images/home//home-picture.jpg'
+import AOS from 'aos';
+import 'aos/dist/aos.css'
+import { useEffect } from 'react';
 
 const Home = () => {
+  useEffect(() => { AOS.init() }, [])
   return (
     <Container>
       <HomeMainSection

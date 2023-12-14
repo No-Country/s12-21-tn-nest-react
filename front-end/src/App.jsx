@@ -4,22 +4,21 @@ import Home from "./Home/Home";
 import SignUp from "./SignUp/SignUp";
 import Login from "./Login/Login";
 import Header from "./components/Header";
-import StepperForm  from "./components/StepperForm";
 import "./App.css";
 import { MentoresPage } from "./MentoresPage/MentoresPage";
 import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
-import Profile from "./components/Profile";
+import MentorProfile from "./components/MentorProfile";
+import StudentProfile from "./components/StudentProfile";
 import UpdateMentorProfile from "./components/UpdateMentorProfile";
+import UpdateStudentProfile from "./components/UpdateStudentProfile";
 import Menu from "./components/Menu";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
-import ModifyMentorCategories from "./components/ModifyMentorCategories";
-import ModifyMentorSpecialities from "./components/ModifyMentorSpecialities";
 
 const navLinksArray = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
@@ -27,7 +26,8 @@ const navLinksArray = [
   { title: 'Mentorias', path: '#mentorias', icon: <SchoolIcon /> },
   { title: 'Login', path: '/login', icon: <LoginIcon /> },
   { title: 'Register', path: '/signup', icon: <HowToRegIcon /> },
-  { title: 'Profile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
+  { title: 'MentorProfile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
+  { title: 'StudentProfile', path: '/studentProfile/:id', icon: <HowToRegIcon /> },
 ]
 
 function App() {
@@ -47,10 +47,10 @@ function App() {
               <Route path="/mentorForm" element={<MentorForm />} />
               <Route path="/mentorshipForm" element={<Mentorship />} />
               <Route path="/studentForm" element={<StudentForm />} />
-              <Route path="/mentorProfile/:id" element={<Profile />} />
-              <Route path="/updateProfile/:id" element={<UpdateMentorProfile />} />
-              <Route path="/modifyMentorCategories" element={<ModifyMentorCategories />} />
-              <Route path="/modifyMentorSpeciality" element={<ModifyMentorSpecialities />} />
+              <Route path="/mentorProfile/:id" element={<MentorProfile />} />
+              <Route path="/studentProfile/:id" element={<StudentProfile />} />
+              <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
+              <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
               </Routes>
             </div>
           </BrowserRouter>
