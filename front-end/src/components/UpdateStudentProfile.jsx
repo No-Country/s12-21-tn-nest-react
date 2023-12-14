@@ -22,7 +22,8 @@ const UpdateStudentProfile = () => {
     lastName: studentInfo.user.lastName || '',
     phone: studentInfo.user.phone || '', 
 /*     speciality: studentInfo.speciality || { id: '', name: '' }, 
- */    categories: studentInfo.categories || [],
+ */    categoriesId: studentInfo.categories || [],
+       email: studentInfo.user.email || '',
   });
 
 
@@ -71,26 +72,24 @@ const UpdateStudentProfile = () => {
     };
   }
   
-  
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setEditedInfo({
-        ...editedInfo,
-        [name]: value,
-    });
+  const handleChange = (name, value) => {
+    setEditedInfo((prevInfo) => ({
+      ...prevInfo,
+      [name]: value,
+    }));
   };
+  
   
   const handleSaveChanges = async () => {
     try {
-      let url = `mentor/profile/update/5d93e6fd-8d99-47d8-884a-ce71faf78552`
-      console.log(editedInfo);
-      const categoryIds = editedInfo.categories.map((category) => category.id);
+      let url = `alumn/52d0fa61-0eb8-4e32-9039-e10fc2406283`
+      console.log('Saving changes:', editedInfo);
+      const categoryIds = editedInfo.categoriesId.map((category) => category.id);
       console.log('Category IDs:', categoryIds);
       
-      await urlApi.put(url , {
+      await urlApi.patch(url , {
         ...editedInfo,
-        categories: categoryIds, 
+        categoriesId: categoryIds, 
       });
       } catch (error) {
         console.error('Error updating mentor information:', error);
@@ -109,7 +108,6 @@ const UpdateStudentProfile = () => {
             label="Nombre"
             fullWidth
             value={editedInfo.firstName}
-            name='editedInfo.firstName'
             onChange={(e) => handleChange('firstName', e.target.value)}
             margin="normal"
           />
@@ -154,13 +152,13 @@ const UpdateStudentProfile = () => {
       labelId="demo-multiple-chip-label"
       id="demo-multiple-chip"
       multiple
-      value={editedInfo.categories.map((category) => category.name)}
+      value={editedInfo.categoriesId.map((category) => category.name)}
       onChange={(e) => {
         const selectedCategories = e.target.value.map((categoryName) => ({
           id: categories.find((cat) => cat.name === categoryName)?.id || '',
           name: categoryName,
         }));
-        handleChange('categories', selectedCategories);
+        handleChange('categoriesId', selectedCategories);
       }}
       input={<OutlinedInput id="select-multiple-chip" label="Categorías" />}
       renderValue={(selected) => (
@@ -175,7 +173,7 @@ const UpdateStudentProfile = () => {
         <MenuItem
           key={category.id}
           value={category.name}
-          style={getStyles(category.name, editedInfo.categories, customTheme)}
+          style={getStyles(category.name, editedInfo.categoriesId, customTheme)}
         >
           {category.name}
         </MenuItem>

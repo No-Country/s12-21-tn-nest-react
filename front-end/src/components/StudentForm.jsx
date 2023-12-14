@@ -18,15 +18,15 @@ const StudentForm = ({ location }) => {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [categoryIds, setCategoryIds] = useState([]);
   const [categories, setCategories] = useState([]); 
-  const [specialities, setSpecialities] = useState([]); 
-  const [newStudent, setNewStudent] = useState({
+/*   const [specialities, setSpecialities] = useState([]); 
+ */  const [newStudent, setNewStudent] = useState({
     studentImage: null,
     studentSpecility: "",
     studentCategories: [],
   })
   const { studentImage, studentCategories, studentSpecility} = newStudent
 
-  const fetchSpecialities = async () => {
+/*   const fetchSpecialities = async () => {
     try {
       let URLSpecialties = `mentor/speciality/filter`
       const response = await urlApi.get(URLSpecialties);
@@ -34,7 +34,7 @@ const StudentForm = ({ location }) => {
     } catch (error) {
       console.error("Error al obtener las especialidades:", error);
     }
-  };
+  }; */
   const fetchCategories = async () => {
     try {
       const URLCategories = `mentor/categories/filter`
@@ -64,8 +64,8 @@ const StudentForm = ({ location }) => {
   };
 
   useEffect(() => {
-    fetchSpecialities();
-    fetchCategories();
+/*     fetchSpecialities();
+ */    fetchCategories();
   }, []); 
 
   const submit = async (e) => {
@@ -85,8 +85,8 @@ const StudentForm = ({ location }) => {
       formData.append('categories[]', val);
     });
     //formData.append('categories', studentCategories);
-    formData.append('speciality', newStudent.studentSpecility);
-  
+/*     formData.append('speciality', newStudent.studentSpecility);
+ */  
     try {
       let url = 'auth/register/student'
       const response = await urlApi.post( url , formData, {
@@ -149,7 +149,7 @@ const StudentForm = ({ location }) => {
                 </Grid>
       
     <div>
-      <FormControl sx={{ m: 1, minWidth: 100 }}>
+      {/* <FormControl sx={{ m: 1, minWidth: 100 }}>
         <InputLabel id="demo-simple-select-autowidth-label">Especialidad</InputLabel>
         <Select
           labelId="demo-simple-select-autowidth-label"
@@ -169,7 +169,7 @@ const StudentForm = ({ location }) => {
             </MenuItem>
         ))}
         </Select>
-      </FormControl>
+      </FormControl> */}
       <FormControl sx={{ m: 1, width: 300 }}>
           <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
           <Select

@@ -4,9 +4,11 @@ import { AppBar, Box, Button, Container, Drawer, IconButton, Toolbar, Typography
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../images/logo-page.png'
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
 
 export default function Menu({ navLinksArray }) {
   const [open, setOpen] = useState(false);
+  const { isAuthenticated } = useAuth(); // Use the useAuth hook to get the authentication status
 
   return (
     <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }} data-aos="fade-down">
@@ -20,13 +22,29 @@ export default function Menu({ navLinksArray }) {
               <img src={logo} style={{ width: '100%' }} />
             </Box>
             <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
-              {
-                navLinksArray.map(item => (
-                  <Button color='inherit' component={NavLink} key={item.title} to={item.path}>
-                    {item.title}
-                  </Button>
-                ))
-              }
+              {isAuthenticated ? (
+                // Render links for authenticated users
+                <>
+                  {navLinksArray
+                    .filter(item => item.title !== 'Login' && item.title !== 'Register')
+                    .map(item => (
+                      <Button color='inherit' component={NavLink} key={item.title} to={item.path}>
+                        {item.title}
+                      </Button>
+                    ))}
+                </>
+              ) : (
+                // Render links for non-authenticated users
+                <>
+                  {navLinksArray
+                    .filter(item => item.title === 'Login' || item.title === 'Register' || item.title === 'Home' || item.title === 'Mentores')
+                    .map(item => (
+                      <Button color='inherit' component={NavLink} key={item.title} to={item.path}>
+                        {item.title}
+                      </Button>
+                    ))}
+                </>
+              )}
             </Box>
           </Toolbar>
         </AppBar>
