@@ -129,7 +129,7 @@ export class MentorController {
   ) {
     return this.mentorService.delete_mentor_categories(id, idCategory);
   }
-  @Put('profile/categories/update/:id')
+  @Put('profile/update/:id')
   @UseInterceptors(FileInterceptor('file'))
   async update_profile(
     @Param('id') id: string,

@@ -73,7 +73,6 @@ export class AuthService {
 
   async login(user: LoginDto) {
     try {
-      console.log('llegue2');
       const verifyUser = await this.userService.findByEmailExistent(user.email);
       if (!verifyUser)
         throw new UnauthorizedException(`Wrong document or password`);
