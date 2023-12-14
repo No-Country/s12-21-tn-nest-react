@@ -102,7 +102,7 @@ export class MpagoService {
         });
         if (mentorship) {
           mentorship.mpago_payment = savedOrder.identifiers[0].id;
-          await await this.mentorshipRepository.save(mentorship);
+          await this.mentorshipRepository.save(mentorship);
         }
       }
     } catch (error) {

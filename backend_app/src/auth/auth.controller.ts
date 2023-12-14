@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -47,5 +49,9 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return await this.authService.login(loginDto);
+  }
+  @Get('filter/:id')
+  async find_User(@Param('id') id: string) {
+    return await this.authService.find_User(id);
   }
 }

@@ -6,10 +6,11 @@ import { Category } from './models/categories.entity';
 import { Mentor } from './models/mentor.entity';
 import { Speciality } from './models/especializaciones';
 import { UserModule } from 'src/auth/user/user.module';
+import { State } from 'src/quotes/models/state.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Category, Mentor, Speciality]),
+    TypeOrmModule.forFeature([Category, Mentor, Speciality, State]),
     UserModule,
   ],
   controllers: [MentorController],

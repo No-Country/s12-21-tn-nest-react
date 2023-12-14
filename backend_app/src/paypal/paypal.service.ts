@@ -60,7 +60,6 @@ export class PaypalService {
       //return response.result.links[1].href;
     } catch (error) {
       console.log(error);
-      
       throw new HttpException(
         `Can't proccess new payment.`,
         HttpStatus.BAD_REQUEST,
