@@ -16,9 +16,11 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiForbiddenResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { CreateOkPaypalOrderResponseDto } from './dto/created_ok-response.dto';
 
 @ApiBearerAuth()
 @ApiTags('PayPal')
@@ -33,6 +35,7 @@ export class PaypalController {
   @ApiBody({
     type: CreatePaypalOrderDto,
   })
+  @ApiOkResponse({ type: CreateOkPaypalOrderResponseDto })
   create(@Body() createPaypalOrderDto: CreatePaypalOrderDto) {
     return this.paypalService.createOrder(createPaypalOrderDto);
   }
@@ -40,6 +43,11 @@ export class PaypalController {
   @Get('accepted')
   findAll(@Query('token') token: string) {
     return this.paypalService.captureOrder(token);
+  }
+
+  @Get('cancel')
+  cancelOrder(@Query('token') token: string) {
+    return this.paypalService.captureUnpaidOrder(token);
   }
 
   @ApiForbiddenResponse()

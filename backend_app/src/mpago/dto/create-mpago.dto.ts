@@ -1,24 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreatePaypalOrderDto {
+export class CreateMpagoDto {
   @ApiProperty({
     description: 'Mentorship id',
     nullable: false,
     example: 'd9f80740-38f0-11e8-b467-0ed5f89f718b',
   })
-  @IsNotEmpty({ message: 'reference_id is required' })
+  @IsNotEmpty({ message: 'external_reference is required' })
   @IsString()
-  reference_id: string;
-
-  @ApiProperty({
-    description: 'Currency code',
-    nullable: false,
-    example: 'USD',
-  })
-  @IsNotEmpty({ message: 'currency_code is required' })
-  @IsString()
-  currency_code: string;
+  external_reference: string;
 
   @ApiProperty({
     description: 'Mentorship value',
@@ -28,6 +19,16 @@ export class CreatePaypalOrderDto {
   @IsNotEmpty({ message: 'Mentorship value is required' })
   @IsString()
   value: string;
+
+  @ApiProperty({
+    description: 'Mentorship email',
+    nullable: false,
+    example: 'nn@mail.com',
+  })
+  @IsNotEmpty({ message: 'Mentorship email required' })
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 
   @ApiProperty({
     description: 'Mentorship name or mentor name',
