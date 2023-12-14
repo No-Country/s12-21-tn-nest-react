@@ -17,6 +17,7 @@ import { AlunmCreateRequestDto } from './dtos/alunmCreateRequest.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { hireMentorRequestDto } from './dtos/hireMentor.dto';
 import { CalificationDto } from './dtos/calification.dto';
+import { AlunmUpdateRequestDto } from './dtos/alumnUpdate.dto';
 
 @Controller('alumn')
 @ApiTags('Alumn')
@@ -68,7 +69,7 @@ export class AlunmController {
 
   @Patch('/:id')
   async update(
-    @Body() request: AlunmCreateRequestDto,
+    @Body() request: AlunmUpdateRequestDto,
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {

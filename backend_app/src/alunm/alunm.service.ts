@@ -7,6 +7,7 @@ import { uploadCloudinary } from 'src/Config/upload';
 import { AlumnHireMentor } from './models/alumnHireMentor.entity';
 import { Category } from 'src/mentor/models/categories.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
+import { AlunmUpdateRequestDto } from './dtos/alumnUpdate.dto';
 
 @Injectable()
 export class AlumnService {
@@ -108,18 +109,22 @@ export class AlumnService {
   }
 
   async update(
-    request: AlunmCreateRequestDto,
+    request: AlunmUpdateRequestDto,
     file: Express.Multer.File,
     id: string,
   ) {
     try {
-      const alumn = await this.alumnRepository.findOne({ where: { id } });
+      const alumn = await this.alumnRepository.findOne({
+        where: { id },
+        relations: ['categories', 'user'],
+      });
       if (!alumn) throw 'Alumn not found';
 
-      const categories = await this.categoryRepository.findByIds(
-        request.categoriesId,
-      );
+      const { categoriesId, ...rest } = request;
+      const categories = await this.categoryRepository.findByIds(categoriesId);
+
       alumn.categories = categories;
+      alumn.user = { ...alumn.user, ...rest };
 
       if (!file) return await this.alumnRepository.save(alumn);
 
