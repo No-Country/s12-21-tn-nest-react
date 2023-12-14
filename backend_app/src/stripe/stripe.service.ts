@@ -11,6 +11,7 @@ import { Stripe as StripeEntity } from './entities/stripe.entity';
 import { StripeIntentSaveDto } from './dto/stripe-intent-save.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 
 const stripeApiKey = process.env.STRIPE_SECRET_KEY;
 const stripe = new Stripe(stripeApiKey, {
@@ -24,6 +25,8 @@ export class StripeService {
   constructor(
     @InjectRepository(StripeEntity)
     private stripeRepository: Repository<StripeEntity>,
+    @InjectRepository(AlumnHireMentor)
+    private mentorshipRepository: Repository<AlumnHireMentor>,
   ) {}
   async createPaymentIntent(
     createStripeIntentDto: CreateStripeIntentDto,
@@ -106,7 +109,14 @@ export class StripeService {
         const newOrder = this.stripeRepository.create({
           ...order,
         });
-        await this.stripeRepository.insert(newOrder);
+        const savedOrder = await this.stripeRepository.insert(newOrder);
+        const mentorship = await this.mentorshipRepository.findOne({
+          where: { id: order.mentorship },
+        });
+        if (mentorship) {
+          mentorship.paypal_payment = savedOrder.identifiers[0].id;
+          await await this.mentorshipRepository.save(mentorship);
+        }
       }
     } catch (error) {
       throw new HttpException(
