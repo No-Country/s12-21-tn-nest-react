@@ -30,7 +30,7 @@ export const SpecialityFilter = ({ onSelectSpeciality }) => {
 
     return (
         <FormControl fullWidth sx={{
-            maxWidth: '170px',
+            width: '150px', minWidth: '150px',
             '& .MuiInputLabel-root': {
                 color: '#fff',
             },

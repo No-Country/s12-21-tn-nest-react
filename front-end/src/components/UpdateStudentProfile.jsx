@@ -6,32 +6,23 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
 import { urlApi } from '../../config/axios';
 
-
-const UpdateMentorProfile = () => {
+const UpdateStudentProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const mentorInfo = location.state?.mentorInfo || {};
+  const studentInfo = location.state?.studentInfo || {};
   const [specialities, setSpecialities] = useState([]); //opciones del select
   const [categories, setCategories] = useState([]);  //opciones del select
   const [loadingSpecialities, setLoadingSpecialities] = useState(true);
 
   const [editedInfo, setEditedInfo] = useState({
-    mentorDescription: mentorInfo.mentorDescription || '', 
-    aboutMe: mentorInfo.aboutMe || '',
-    price: mentorInfo.price || '',
 /*     categories: mentorInfo.categories.map((category) => category.name) || [],
- */    firstName: mentorInfo.userId.firstName || '',
-    lastName: mentorInfo.userId.lastName || '',
-    phone: mentorInfo.userId.phone || '', 
-    birthdate: mentorInfo.birthdate,
-    speciality: mentorInfo.speciality || { id: '', name: '' }, 
-    categories: mentorInfo.categories || [],
+ */    firstName: studentInfo.user.firstName || '',
+    lastName: studentInfo.user.lastName || '',
+    phone: studentInfo.user.phone || '', 
+/*     speciality: studentInfo.speciality || { id: '', name: '' }, 
+ */    categories: studentInfo.categories || [],
   });
 
 
@@ -82,24 +73,13 @@ const UpdateMentorProfile = () => {
   
   
 
-  const handleChange = (field, value) => {
-    setEditedInfo((prevInfo) => {
-      let updatedValue = value;
-  
-      if (field === 'birthdate' && value instanceof Date) {
-        updatedValue = value;
-      } else if (field === 'speciality') {
-        updatedValue = value;
-      }
-  
-      return {
-        ...prevInfo,
-        [field]: updatedValue,
-      };
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setEditedInfo({
+        ...editedInfo,
+        [name]: value,
     });
   };
-  
-  
   
   const handleSaveChanges = async () => {
     try {
@@ -110,7 +90,6 @@ const UpdateMentorProfile = () => {
       
       await urlApi.put(url , {
         ...editedInfo,
-        speciality: editedInfo.speciality.id,
         categories: categoryIds, 
       });
       } catch (error) {
@@ -124,12 +103,13 @@ const UpdateMentorProfile = () => {
       <div style={{ backgroundColor: '#FFFFFF', color: '#FFFFFF' }}>
         <Container component="main" maxWidth="xs">
           <Grid item xs={12} sm={6}>
-            <Avatar src={mentorInfo.image} className=""/>
+            <Avatar src={studentInfo.image} className=""/>
           </Grid>
           <TextField
             label="Nombre"
             fullWidth
             value={editedInfo.firstName}
+            name='editedInfo.firstName'
             onChange={(e) => handleChange('firstName', e.target.value)}
             margin="normal"
           />
@@ -147,28 +127,7 @@ const UpdateMentorProfile = () => {
             onChange={(e) => handleChange('phone', e.target.value)}
             margin="normal"
           />
-          <TextField
-            label="Descripción"
-            fullWidth
-            value={editedInfo.mentorDescription}
-            onChange={(e) => handleChange('mentorDescription', e.target.value)}
-            margin="normal"
-          />
-          <TextField
-            label="aboutMe"
-            fullWidth
-            value={editedInfo.aboutMe}
-            onChange={(e) => handleChange('aboutMe', e.target.value)}
-            margin="normal"
-          />
-          <TextField
-            label="price"
-            fullWidth
-            value={editedInfo.price}
-            onChange={(e) => handleChange('price', e.target.value)}
-            margin="normal"
-          />
-          <FormControl sx={{ m: 1, minWidth: 200 }}>
+          {/* <FormControl sx={{ m: 1, minWidth: 200 }}>
               <InputLabel id="mentorSpeciality-label">Especialidad</InputLabel>
               <Select
                   labelId="mentorSpeciality-label"
@@ -187,16 +146,7 @@ const UpdateMentorProfile = () => {
                     </MenuItem>
                   ))}
                 </Select>
-            </FormControl>
-          <Link to={`/modifyMentorSpeciality`} state={{ mentorInfo }}>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  style={{ marginLeft: 8 }}
-                >
-                  Modificar Especilidad
-                </Button>
-            </Link>
+            </FormControl> */}
             <div>
   <FormControl sx={{ m: 1, width: 300 }}>
     <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
@@ -232,24 +182,10 @@ const UpdateMentorProfile = () => {
       ))}
     </Select>
   </FormControl>
-  <Link to={`/modifyMentorCategories`} state={{ mentorInfo }}>
-    <Button variant="outlined" color="secondary" style={{ marginLeft: 8 }}>
-      Modificar Categorías
-    </Button>
-  </Link>
 </div>
 
-          <Grid item sx={{ mt: 3, mb: 2 }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                label="Fecha de Nacimiento"
-                value={dayjs(editedInfo.birthdate)} 
-                onChange={(date) => setEditedInfo({ ...editedInfo, birthdate: date.toISOString() })}
-                slotProps={{ textField: { variant: 'outlined' } }}
-                />
-            </LocalizationProvider>
-           </Grid>
-           <Link to={`/mentorProfile/${mentorInfo.id}`}>
+        
+           <Link to={`/studentProfile/${studentInfo.id}`}>
             <Button variant="contained" color="primary" onClick={handleSaveChanges}>
                 Guardar Cambios
             </Button>
@@ -260,4 +196,4 @@ const UpdateMentorProfile = () => {
   );
 };
 
-export default UpdateMentorProfile;
+export default UpdateStudentProfile;
