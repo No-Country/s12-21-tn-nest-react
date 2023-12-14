@@ -72,7 +72,8 @@ export class AlunmController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.alunmService.update(request, file, id);
+    console.log("Hola")
+    // return this.alunmService.update(request, file, id);
   }
 
   @Post('/hire-mentor')
