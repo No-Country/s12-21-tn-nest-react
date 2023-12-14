@@ -19,6 +19,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
+import SchedulerComponent from "./components/SchedulerComponent";
 
 const navLinksArray = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
@@ -28,6 +29,8 @@ const navLinksArray = [
   { title: 'Register', path: '/signup', icon: <HowToRegIcon /> },
   { title: 'MentorProfile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
   { title: 'StudentProfile', path: '/studentProfile/:id', icon: <HowToRegIcon /> },
+  { title: 'Calendar', path: '/calendar', icon: <HowToRegIcon /> },
+
 ]
 
 function App() {
@@ -51,6 +54,7 @@ function App() {
               <Route path="/studentProfile/:id" element={<StudentProfile />} />
               <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
               <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
+              <Route path="/calendar" element={<SchedulerComponent />} />
               </Routes>
             </div>
           </BrowserRouter>

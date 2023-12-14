@@ -1,24 +1,33 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class SavePaypalOrderDto {
+export class StripeIntentSaveDto {
   @ApiProperty({
-    description: 'paypal_id id',
+    description: 'stripe_session_id id',
     nullable: false,
-    example: '10D568937W586635G',
+    example: 'cs_test_a1xcCV7mYo4iO4UV...',
   })
-  @IsNotEmpty({ message: 'paypal_id is required' })
+  @IsNotEmpty({ message: 'stripe_session_id is required' })
   @IsString()
-  paypal_id: string;
+  stripe_session_id: string;
 
   @ApiProperty({
     description: 'Order status',
     nullable: false,
-    example: 'COMPLETED',
+    example: 'complete',
   })
   @IsNotEmpty({ message: 'status is required' })
   @IsString()
   status: string;
+
+  @ApiProperty({
+    description: 'Payment status',
+    nullable: false,
+    example: 'paid',
+  })
+  @IsNotEmpty({ message: 'payment_status is required' })
+  @IsString()
+  payment_status: string;
 
   @ApiProperty({
     description: 'Mentorship id',
@@ -30,11 +39,11 @@ export class SavePaypalOrderDto {
   mentorship: string;
 
   @ApiProperty({
-    description: 'paypal payment url',
-    nullable: true,
-    example: 'https://www.sandbox.paypal.com/checkoutnow?token=...',
+    description: 'Stripe payment url',
+    nullable: false,
+    example: 'https://checkout.stripe.com/c/pay/cs_test_...',
   })
   @IsNotEmpty({ message: 'url is required' })
   @IsString()
-  url?: string;
+  url: string;
 }

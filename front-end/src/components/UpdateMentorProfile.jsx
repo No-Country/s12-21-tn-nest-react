@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 import axios from 'axios';
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -147,16 +148,18 @@ const UpdateMentorProfile = () => {
             onChange={(e) => handleChange('phone', e.target.value)}
             margin="normal"
           />
-          <TextField
+          <TextareaAutosize
             label="Descripción"
-            fullWidth
+            minRows={7}
+            style={{ width: '100%', marginBottom: '16px' }}  // Establece el ancho al 100% y agrega margen inferior
             value={editedInfo.mentorDescription}
             onChange={(e) => handleChange('mentorDescription', e.target.value)}
             margin="normal"
           />
-          <TextField
+          <TextareaAutosize
             label="aboutMe"
-            fullWidth
+            minRows={5}
+            style={{ width: '100%', marginBottom: '16px' }}  // Establece el ancho al 100% y agrega margen inferior
             value={editedInfo.aboutMe}
             onChange={(e) => handleChange('aboutMe', e.target.value)}
             margin="normal"
