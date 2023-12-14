@@ -5,6 +5,7 @@ import { Paypal } from './entities/paypal.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SavePaypalOrderDto } from './dto/save-paypal.dto';
+import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 
 const host = process.env.HOST;
 const environment = new paypal.core.SandboxEnvironment(
@@ -18,6 +19,8 @@ const client = new paypal.core.PayPalHttpClient(environment);
 export class PaypalService {
   constructor(
     @InjectRepository(Paypal) private paypalRepository: Repository<Paypal>,
+    @InjectRepository(AlumnHireMentor)
+    private mentorshipRepository: Repository<AlumnHireMentor>,
   ) {}
   async createOrder(createPaypalOrderDto: CreatePaypalOrderDto) {
     try {
@@ -120,7 +123,15 @@ export class PaypalService {
         const newOrder = this.paypalRepository.create({
           ...order,
         });
-        await this.paypalRepository.insert(newOrder);
+        const savedOrder = await this.paypalRepository.insert(newOrder);
+
+        const mentorship = await this.mentorshipRepository.findOne({
+          where: { id: order.mentorship },
+        });
+        if (mentorship) {
+          mentorship.paypal_payment = savedOrder.identifiers[0].id;
+          await await this.mentorshipRepository.save(mentorship);
+        }
       }
     } catch (error) {
       throw new HttpException(
