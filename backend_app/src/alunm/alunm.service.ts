@@ -146,7 +146,7 @@ export class AlumnService {
       alumn.profileImg = profileImg;
 
       const updated = await this.alumnRepository.save(alumn);
-      return updated 
+      return updated;
     } catch (error) {
       console.log(error);
       throw 'Error updating alumn';

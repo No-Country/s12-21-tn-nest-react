@@ -13,6 +13,7 @@ import {
 import { Category } from './categories.entity';
 import { Speciality } from './especializaciones';
 import { User } from 'src/auth/user/entities/user.entity';
+import { State } from 'src/quotes/models/state.entity';
 
 @Entity({ name: 'mentor' })
 export class Mentor extends BaseEntity {
@@ -56,4 +57,16 @@ export class Mentor extends BaseEntity {
     name: 'user',
   })
   userId: User;
+
+  @ManyToMany(() => State, (state) => state.state)
+  @JoinTable({
+    name: 'mentors_quotes',
+    joinColumn: {
+      name: 'mentors_id',
+    },
+    inverseJoinColumn: {
+      name: 'quotes_id',
+    },
+  })
+  stateMentor: State[];
 }
