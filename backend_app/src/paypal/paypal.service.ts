@@ -53,8 +53,14 @@ export class PaypalService {
         url: response.result.links[1].href,
       };
       await this.createOrUpdateOrder(newOrder);
-      return response.result.links[1].href;
+      return {
+        id: response.result.id,
+        url: response.result.links[1].href,
+      };
+      //return response.result.links[1].href;
     } catch (error) {
+      console.log(error);
+      
       throw new HttpException(
         `Can't proccess new payment.`,
         HttpStatus.BAD_REQUEST,

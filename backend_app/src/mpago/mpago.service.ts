@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateMpagoDto } from './dto/create-mpago.dto';
 import { UpdateMpagoDto } from './dto/update-mpago.dto';
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Mpago } from './entities/mpago.entity';
 import { Repository } from 'typeorm';
+import { SaveMpagoDto } from './dto/save-mpago.dto';
+import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 
 const host = process.env.HOST;
 const accessToken = process.env.MP_ACCESS_TOKEN;
@@ -17,6 +19,8 @@ export class MpagoService {
   constructor(
     @InjectRepository(Mpago)
     private mpagoRepository: Repository<Mpago>,
+    @InjectRepository(AlumnHireMentor)
+    private mentorshipRepository: Repository<AlumnHireMentor>,
   ) {}
   async create(createMpagoDto: CreateMpagoDto) {
     try {
@@ -32,37 +36,32 @@ export class MpagoService {
           auto_return: 'all',
           back_urls: { success, failure, pending },
           marketplace: 'MentorSphere',
-          external_reference: 'idididididid', //alumn_hire_mentor id
+          external_reference: createMpagoDto.external_reference, //alumn_hire_mentor id
           payer: {
-            email: 'nn@mail.com',
+            email: createMpagoDto.email,
             identification: { type: 'dni', number: '12345678' },
           },
           items: [
             {
               id: 'wKVNqjnvLNBbm7S93VCBWo',
-              title: 'Mentorship of user x...',
+              title: createMpagoDto.brand_name,
               quantity: 1,
-              unit_price: 589,
+              unit_price: Number(createMpagoDto.value),
             },
           ],
         },
       });
-      //persistir order en la base de datos
-      //test data reemplazar por saveOrUpdate func
+
       const newOrder = {
         mpago_preference_id: checkoutData.id,
         status: 'never',
         status_detail: 'never',
-        mentorship: '5e2f12cc-989e-11ee-98ba-fcaa14c77543',
+        mentorship: checkoutData.external_reference,
         url: checkoutData.init_point,
       };
-      const newOrderToStore = this.mpagoRepository.create({
-        ...newOrder,
-      });
-      await this.mpagoRepository.insert(newOrderToStore);
-      //console.log(checkoutData);
+      await this.createOrUpdateOrder(newOrder);
 
-      return { id: checkoutData.id, init_point: checkoutData.init_point };
+      return { id: checkoutData.id, url: checkoutData.init_point };
     } catch (error) {
       console.log({ message: error });
     }
@@ -80,6 +79,41 @@ export class MpagoService {
     });
     console.log(data);
     return { data };
+  }
+
+  private async createOrUpdateOrder(order: SaveMpagoDto) {
+    try {
+      const existingOrder = await this.mpagoRepository.findOne({
+        where: {
+          mpago_preference_id: order.mpago_preference_id,
+        },
+      });
+      if (existingOrder) {
+        this.mpagoRepository.merge(existingOrder, order);
+        return this.mpagoRepository.save(existingOrder);
+      } else {
+        const newOrder = this.mpagoRepository.create({
+          ...order,
+        });
+        const savedOrder = await this.mpagoRepository.insert(newOrder);
+
+        const mentorship = await this.mentorshipRepository.findOne({
+          where: { id: order.mentorship },
+        });
+        if (mentorship) {
+          mentorship.mpago_payment = savedOrder.identifiers[0].id;
+          await await this.mentorshipRepository.save(mentorship);
+        }
+      }
+    } catch (error) {
+      throw new HttpException(
+        `Can't save or update order`,
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: new Error(error.message),
+        },
+      );
+    }
   }
 
   findOne(id: number) {

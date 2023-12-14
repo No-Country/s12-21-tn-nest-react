@@ -5,7 +5,7 @@ export class SaveMpagoDto {
   @ApiProperty({
     description: 'mpago_preference_id id',
     nullable: false,
-    example: '10D568937W586635G',
+    example: '13239157-6f7ece7b-52a5-4338-8cd2-3138bcf1d515',
   })
   @IsNotEmpty({ message: 'mpago_preference_id is required' })
   @IsString()
@@ -41,7 +41,8 @@ export class SaveMpagoDto {
   @ApiProperty({
     description: 'paypal payment url',
     nullable: true,
-    example: 'https://www.sandbox.paypal.com/checkoutnow?token=...',
+    example:
+      'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=13239157-...',
   })
   @IsNotEmpty({ message: 'url is required' })
   @IsString()

@@ -37,13 +37,4 @@ export class CreateStripeIntentDto {
   @IsNotEmpty({ message: 'brand_name is required' })
   @IsString()
   brand_name: string;
-
-  @ApiProperty({
-    description: 'Mentorship or mentor id/profile',
-    nullable: false,
-    example: 'http://localhost:8080/api/paypal',
-  })
-  @IsNotEmpty({ message: 'cancel_url is required' })
-  @IsString()
-  cancel_url: 'http://localhost:8080/api/paypal';
 }

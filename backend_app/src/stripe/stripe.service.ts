@@ -62,7 +62,10 @@ export class StripeService {
           },
         },
       });
-      return session.url;
+      return {
+        id: session.id,
+        url: session.url,
+      };
     } catch (error) {
       throw error;
     }

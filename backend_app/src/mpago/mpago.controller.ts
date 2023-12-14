@@ -11,7 +11,14 @@ import {
 import { MpagoService } from './mpago.service';
 import { CreateMpagoDto } from './dto/create-mpago.dto';
 import { UpdateMpagoDto } from './dto/update-mpago.dto';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CreateOkMpagoOrderResponseDto } from './dto/created_ok-response.dto';
 
 @ApiBearerAuth()
 @ApiTags('MercadoPago')
@@ -26,6 +33,7 @@ export class MpagoController {
   @ApiBody({
     type: CreateMpagoDto,
   })
+  @ApiOkResponse({ type: CreateOkMpagoOrderResponseDto })
   create(@Body() createMpagoDto: CreateMpagoDto) {
     return this.mpagoService.create(createMpagoDto);
   }
