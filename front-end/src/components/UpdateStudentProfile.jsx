@@ -82,7 +82,7 @@ const UpdateStudentProfile = () => {
   
   const handleSaveChanges = async () => {
     try {
-      let url = `alumn/52d0fa61-0eb8-4e32-9039-e10fc2406283`
+      let url = `alumn/0c7a806a-a6a1-4dfb-8218-4aa4fdee8097`
       console.log('Saving changes:', editedInfo);
       const categoryIds = editedInfo.categoriesId.map((category) => category.id);
       console.log('Category IDs:', categoryIds);
