@@ -7,12 +7,15 @@ import { uploadCloudinary } from 'src/Config/upload';
 import { AlumnHireMentor } from './models/alumnHireMentor.entity';
 import { Category } from 'src/mentor/models/categories.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
+import { AlunmUpdateRequestDto } from './dtos/alumnUpdate.dto';
+import { User } from 'src/auth/user/entities/user.entity';
 
 @Injectable()
 export class AlumnService {
   constructor(
     @InjectRepository(Alumn) private alumnRepository: Repository<Alumn>,
     @InjectRepository(Mentor) private mentorRepsitory: Repository<Mentor>,
+    @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(AlumnHireMentor)
     private alumnHireMentorRepository: Repository<AlumnHireMentor>,
     @InjectRepository(Category)
@@ -21,9 +24,13 @@ export class AlumnService {
 
   async create(request: AlunmCreateRequestDto, file: Express.Multer.File) {
     try {
-      const categories = await this.categoryRepository.findByIds(
-        request.categoriesId,
-      );
+      let categories: Category[] = [];
+
+      if (request.categoriesId)
+        categories = await this.categoryRepository.findByIds(
+          request.categoriesId,
+        );
+
       if (!file) {
         const alumn = this.alumnRepository.create({
           ...request,
@@ -84,7 +91,8 @@ export class AlumnService {
 
   async remove(id: string) {
     try {
-      this.alumnRepository.softDelete(id);
+      const alumn = await this.alumnRepository.findOne({ where: { id } });
+      this.alumnRepository.softDelete(alumn.id);
     } catch (error) {
       throw 'Error deleting alumn';
     }
@@ -103,26 +111,44 @@ export class AlumnService {
   }
 
   async update(
-    request: AlunmCreateRequestDto,
+    request: AlunmUpdateRequestDto,
     file: Express.Multer.File,
     id: string,
   ) {
     try {
-      const alumn = await this.alumnRepository.findOne({ where: { id } });
+      const alumn = await this.alumnRepository.findOne({
+        where: { id },
+        relations: ['categories', 'user'],
+      });
       if (!alumn) throw 'Alumn not found';
 
-      const categories = await this.categoryRepository.findByIds(
-        request.categoriesId,
-      );
-      alumn.categories = categories;
+      const { categoriesId, ...rest } = request;
+      const categories = await this.categoryRepository.findByIds(categoriesId);
 
-      if (!file) return await this.alumnRepository.save(alumn);
+      const user = await this.userRepository.findOne({
+        where: { id: alumn.user.id },
+      });
+
+      alumn.categories = categories;
+      user.email = rest.email;
+      user.firstName = rest.firstName;
+      user.lastName = rest.lastName;
+      user.phone = rest.phone;
+      alumn.user = user;
+
+      this.userRepository.save(user);
+      if (!file) {
+        return await this.alumnRepository.save(alumn);
+      }
 
       const fileUploaded = await uploadCloudinary(file);
       const profileImg = (fileUploaded as { url: string }).url;
       alumn.profileImg = profileImg;
-      return await this.alumnRepository.save(alumn);
+
+      const updated = await this.alumnRepository.save(alumn);
+      return updated;
     } catch (error) {
+      console.log(error);
       throw 'Error updating alumn';
     }
   }

@@ -156,6 +156,7 @@ const SignUp = () => {
 
   return (
     <>
+    <div className='container'>
     <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -334,6 +335,7 @@ const SignUp = () => {
             </Box>
         </Container>
     </ThemeProvider>
+    </div>
         </>
   )
 }

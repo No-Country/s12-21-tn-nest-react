@@ -11,7 +11,6 @@ import {
   update_object_mentor,
 } from '../functions/DeepPartial';
 import { createMentor } from './class/Mentor/createMentor.dto';
-import { verify_ages } from '../functions/General';
 import { Mentor } from './models/mentor.entity';
 import { Speciality } from './models/especializaciones';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
@@ -316,12 +315,12 @@ export class MentorService {
         object_user_actualiazar,
       );
     }
-
     if (updateProfile.categories.length > 0) {
+      searchMentor.categories = [];
       const categoriesSearch = await this.categoriesRepository.find({
         where: { id: In(updateProfile.categories) },
       });
-      let newCategoriesToadd: Array<any>;
+      let newCategoriesToadd: Array<any> = [];
       if (categoriesSearch.length > 0) {
         newCategoriesToadd = categoriesSearch.filter(
           (categorySearch) =>

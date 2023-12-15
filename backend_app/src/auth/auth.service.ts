@@ -14,6 +14,9 @@ import { ErrorManager } from 'src/Config/error.manager';
 import { MentorService } from 'src/mentor/mentor.service';
 import { AlumnService } from 'src/alunm/alunm.service';
 import { send } from 'src/Config/nodeMailer';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user/entities/user.entity';
+import { Repository } from 'typeorm';
 import { verify_ages } from '../functions/General';
 
 @Injectable()
@@ -23,6 +26,7 @@ export class AuthService {
     private jwtService: JwtService,
     private readonly mentorService: MentorService,
     private readonly alumnService: AlumnService,
+    @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
   async studentRegister(
@@ -43,7 +47,7 @@ export class AuthService {
         throw new BadRequestException(`This Email is already registered`);
 
       const encriptedPass = await bcrypt.hash(password, SALT_ROUNDS);
-      const newUser = await this.userService.createStudent({
+      const newUser = await this.userService.createUser({
         firstName,
         lastName,
         phone,
@@ -51,6 +55,7 @@ export class AuthService {
         role,
         password: encriptedPass,
       });
+
       const alumno = await this.alumnService.create(
         {
           user: newUser,
@@ -72,12 +77,11 @@ export class AuthService {
 
   async login(user: LoginDto) {
     try {
-      console.log('llegue2');
       const verifyUser = await this.userService.findByEmailExistent(user.email);
       if (!verifyUser)
         throw new UnauthorizedException(`Wrong document or password`);
       const isMatch = await bcrypt.compare(user.password, verifyUser.password);
-      console.log(isMatch);
+
       if (!isMatch) throw new UnauthorizedException(`Wrong email or password`);
 
       const token = await this.jwtService.signAsync(
@@ -169,5 +173,11 @@ export class AuthService {
         throw new ErrorManager().errorHandler(error);
       }
     }
+  }
+  async find_User(id: string) {
+    const seachUser = await this.userRepository.findOne({
+      where: { id },
+    });
+    return seachUser;
   }
 }
