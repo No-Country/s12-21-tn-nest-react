@@ -21,6 +21,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
 import SchedulerComponent from "./components/SchedulerComponent";
 
+import MentorProfileTest from "./components/MentorProfileTest";
+
 const navLinksArray = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
   { title: 'Mentores', path: '/mentores', icon: <GroupAddIcon /> },
@@ -30,6 +32,7 @@ const navLinksArray = [
   { title: 'MentorProfile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
   { title: 'StudentProfile', path: '/studentProfile/:id', icon: <HowToRegIcon /> },
   { title: 'Calendar', path: '/calendar', icon: <HowToRegIcon /> },
+  { title: 'MentorProfileTest', path: '/mentorProfileTest/:id', icon: <HowToRegIcon /> },
 
 ]
 
@@ -41,20 +44,21 @@ function App() {
           <BrowserRouter>
             <div className="main_app">
               {/* <Header /> */}
-              <Menu navLinksArray={navLinksArray}/>
+              <Menu navLinksArray={navLinksArray} />
               <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/mentores" element={<MentoresPage />} />
-              <Route path="/signUp" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/mentorForm" element={<MentorForm />} />
-              <Route path="/mentorshipForm" element={<Mentorship />} />
-              <Route path="/studentForm" element={<StudentForm />} />
-              <Route path="/mentorProfile/:id" element={<MentorProfile />} />
-              <Route path="/studentProfile/:id" element={<StudentProfile />} />
-              <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
-              <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
-              <Route path="/calendar" element={<SchedulerComponent />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/mentores" element={<MentoresPage />} />
+                <Route path="/signUp" element={<SignUp />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/mentorForm" element={<MentorForm />} />
+                <Route path="/mentorshipForm" element={<Mentorship />} />
+                <Route path="/studentForm" element={<StudentForm />} />
+                <Route path="/mentorProfile/:id" element={<MentorProfile />} />
+                <Route path="/studentProfile/:id" element={<StudentProfile />} />
+                <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
+                <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
+                <Route path="/calendar" element={<SchedulerComponent />} />
+                <Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />
               </Routes>
             </div>
           </BrowserRouter>
