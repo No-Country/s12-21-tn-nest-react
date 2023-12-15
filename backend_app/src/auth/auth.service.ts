@@ -14,10 +14,10 @@ import { ErrorManager } from 'src/Config/error.manager';
 import { MentorService } from 'src/mentor/mentor.service';
 import { AlumnService } from 'src/alunm/alunm.service';
 import { send } from 'src/Config/nodeMailer';
-import { verify_ages } from 'src/functions/general';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { Repository } from 'typeorm';
+import { verify_ages } from '../functions/General';
 
 @Injectable()
 export class AuthService {

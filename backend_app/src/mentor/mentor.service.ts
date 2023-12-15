@@ -3,20 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './models/categories.entity';
 import { In, Repository } from 'typeorm';
 import { createCategories } from './class/Categories/createCategories.dto';
-import { uploadCloudinary } from 'src/Config/upload';
+import { uploadCloudinary } from '../Config/upload';
 import { updateCategories } from './class/Categories/updateCategories.dto';
 import {
   create_object_category_update,
   create_object_mentor,
   update_object_mentor,
-} from 'src/functions/DeepPartial';
+} from '../functions/DeepPartial';
 import { createMentor } from './class/Mentor/createMentor.dto';
 import { Mentor } from './models/mentor.entity';
 import { Speciality } from './models/especializaciones';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
 import * as bcrypt from 'bcryptjs';
 import { SALT_ROUNDS } from '../common/constants';
-import { UserService } from 'src/auth/user/user.service';
+import { UserService } from '../auth/user/user.service';
 @Injectable()
 export class MentorService {
   constructor(
