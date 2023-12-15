@@ -22,4 +22,40 @@ export class QuotesController {
       };
     }
   }
+  @Get('hour')
+  async get_hour() {
+    return await this.repositoryService.getScheduler();
+  }
+  @Get('hour/create')
+  async post_hour() {
+    if (await this.repositoryService.postScheduler()) {
+      return {
+        status: HttpStatus.CREATED,
+        message: 'Las horas fueron cargadadas correctamente',
+      };
+    } else {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Las hora ya se encuentran cargada correctamente',
+      };
+    }
+  }
+  @Get('days')
+  async get_days() {
+    return await this.repositoryService.getDays();
+  }
+  @Get('days/create')
+  async post_days() {
+    if (await this.repositoryService.postDays()) {
+      return {
+        status: HttpStatus.CREATED,
+        message: 'Los dias fueron cargadadas correctamente',
+      };
+    } else {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Los dias ya se encuentran cargada correctamente',
+      };
+    }
+  }
 }
