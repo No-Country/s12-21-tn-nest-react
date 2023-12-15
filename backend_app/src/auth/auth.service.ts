@@ -97,9 +97,7 @@ export class AuthService {
         role: verifyUser.role,
       };
     } catch (error) {
-      if (error) {
-        throw new ErrorManager().errorHandler(error);
-      }
+      console.log(error);
     }
   }
 
