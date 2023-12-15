@@ -22,6 +22,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import SchedulerComponent from "./components/SchedulerComponent";
 
 import MentorProfileTest from "./components/MentorProfileTest";
+import StudentProfileTest from "./components/StudentProfileTest";
 
 const navLinksArray = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
@@ -32,7 +33,8 @@ const navLinksArray = [
   { title: 'MentorProfile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
   { title: 'StudentProfile', path: '/studentProfile/:id', icon: <HowToRegIcon /> },
   { title: 'Calendar', path: '/calendar', icon: <HowToRegIcon /> },
-  { title: 'MentorProfileTest', path: '/mentorProfileTest/:id', icon: <HowToRegIcon /> },
+  { title: 'MentorProfileTest', path: '/mentorProfileTest/:id', icon: <HowToRegIcon /> },       //test perfil mentor
+  { title: 'StudentProfileTest', path: '/studentProfileTest/:id', icon: <HowToRegIcon /> },      //test perfil student
 
 ]
 
@@ -58,7 +60,8 @@ function App() {
                 <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
                 <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
                 <Route path="/calendar" element={<SchedulerComponent />} />
-                <Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />
+                <Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />         //test perfil mentor
+                <Route path="/studentProfileTest/:id" element={<StudentProfileTest />} />       //test perfil student
               </Routes>
             </div>
           </BrowserRouter>
