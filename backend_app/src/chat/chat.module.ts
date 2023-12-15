@@ -3,6 +3,7 @@ import { ChatService } from './chat.service';
 import { ChatGateway } from './chat.gateway';
 
 @Module({
+  imports: [],
   providers: [ChatGateway, ChatService],
 })
 export class ChatModule {}

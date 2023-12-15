@@ -8,12 +8,14 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 import { PaypalModule } from './paypal/paypal.module';
+import { ChatModule } from './chat/chat.module';
 
-const feactureModule = [
+const featureModule = [
   MentorModule,
   AuthModule,
   RoleModule,
   AlunmModule,
+  ChatModule
 ];
 
 @Module({
@@ -47,7 +49,7 @@ const feactureModule = [
       }),
       inject: [ConfigService],
     }),
-    ...feactureModule,
+    ...featureModule,
     UserModule,
     PaypalModule,
   ],
