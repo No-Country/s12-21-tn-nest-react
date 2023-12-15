@@ -20,6 +20,9 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
 import SchedulerComponent from "./components/SchedulerComponent";
+import { ChatHome } from "./chat/ChatHome";
+import { PrivateChat } from "./chat/PrivateChat";
+import { SocketProvider } from "./context/SocketContext";
 
 const navLinksArray = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
@@ -43,18 +46,28 @@ function App() {
               {/* <Header /> */}
               <Menu navLinksArray={navLinksArray}/>
               <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/mentores" element={<MentoresPage />} />
-              <Route path="/signUp" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/mentorForm" element={<MentorForm />} />
-              <Route path="/mentorshipForm" element={<Mentorship />} />
-              <Route path="/studentForm" element={<StudentForm />} />
-              <Route path="/mentorProfile/:id" element={<MentorProfile />} />
-              <Route path="/studentProfile/:id" element={<StudentProfile />} />
-              <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
-              <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
-              <Route path="/calendar" element={<SchedulerComponent />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/mentores" element={<MentoresPage />} />
+                <Route path="/signUp" element={<SignUp />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/mentorForm" element={<MentorForm />} />
+                <Route path="/mentorshipForm" element={<Mentorship />} />
+                <Route path="/studentForm" element={<StudentForm />} />
+                <Route path="/mentorProfile/:id" element={<MentorProfile />} />
+                <Route path="/studentProfile/:id" element={<StudentProfile />} />
+                <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
+                <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
+                <Route path="/calendar" element={<SchedulerComponent />} />
+                <Route 
+                  path="/chat" 
+                  element={
+                    <SocketProvider>
+                      <ChatHome />
+                    </SocketProvider>
+                  }
+                >
+                  <Route path=":id" element={<PrivateChat />} />
+                </Route>
               </Routes>
             </div>
           </BrowserRouter>
