@@ -22,7 +22,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import SchedulerComponent from "./components/SchedulerComponent";
 
 import MentorProfileTest from "./components/MentorProfileTest";
-import StudentProfileTest from "./components/StudentProfileTest";
+
 
 const navLinksArray = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
