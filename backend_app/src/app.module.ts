@@ -8,27 +8,21 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 import { PaypalModule } from './paypal/paypal.module';
-<<<<<<< HEAD
 import { ChatModule } from './chat/chat.module';
-=======
 import { StripeModule } from './stripe/stripe.module';
 import { MpagoModule } from './mpago/mpago.module';
 import { QuotesModule } from './quotes/quotes.module';
->>>>>>> 3c8660173668079dc51c981a984769868c4e387f
 
 const featureModule = [
   MentorModule,
   AuthModule,
   RoleModule,
   AlunmModule,
-<<<<<<< HEAD
-  ChatModule
-=======
   PaypalModule,
   StripeModule,
   MpagoModule,
   QuotesModule,
->>>>>>> 3c8660173668079dc51c981a984769868c4e387f
+  ChatModule,
 ];
 
 @Module({
@@ -62,9 +56,9 @@ const featureModule = [
       }),
       inject: [ConfigService],
     }),
-    ...featureModule,
     UserModule,
     PaypalModule,
+    ...featureModule,
   ],
   providers: [JwtService],
 })
