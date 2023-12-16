@@ -1,7 +1,7 @@
 import { CardMedia, Box, Card, Typography, CardContent, Chip, Rating, Button, CardActions } from '@mui/material'
+import {Link} from "react-router-dom";
 
-
-export const MentorCard = ({ name, speciality, date, aboutMe, categories, price, mentorImage }) => {
+export const MentorCard = ({ mentorId, name, speciality, date, aboutMe, categories, price, mentorImage }) => {
     return (
         <Card sx={{
             display: 'flex',
@@ -74,9 +74,11 @@ export const MentorCard = ({ name, speciality, date, aboutMe, categories, price,
                 </CardContent>
                 <CardActions sx={{ display: 'flex', justifyContent: 'space-around', paddingBottom: '1rem' }}>
                     <Chip label={`$${price}/h`} color='success' />
-                    <Button variant='contained' color='success' >
-                        Contactar
-                    </Button>
+                    <Link to={`/contactMentor`} state={{ mentorId }}>
+                        <Button variant='contained' color='success' >
+                            Contactar
+                        </Button>
+                    </Link>
                 </CardActions>
             </Box>
         </Card>

@@ -32,21 +32,21 @@ const Mentorship = ({ location }) => {
       const newSchedules = { ...prevSchedules };
       selectedDays.forEach((day) => {
         if (!newSchedules[day]) {
-          newSchedules[day] = [{ start: "", end: "" }];
+          newSchedules[day] = [""];
         }
       });
       return newSchedules;
     });
   };
+  
 
-  const handleScheduleChange = (day, index, field, value) => {
+  const handleScheduleChange = (day, index, value) => {
     setDaySchedules((prevSchedules) => {
       const newSchedules = { ...prevSchedules };
       newSchedules[day][index] = {
-        ...newSchedules[day][index],
-        [field]: value,
+        dayWeek: dayOptions.find((d) => d.name === day).id,
+        time: value,
       };
-      console.log(newSchedules);
       return newSchedules;
     });
   };
@@ -54,11 +54,12 @@ const Mentorship = ({ location }) => {
   const addSchedule = (day) => {
     setDaySchedules((prevSchedules) => {
       const newSchedules = { ...prevSchedules };
-      newSchedules[day] = [...newSchedules[day], { start: "", end: "" }];
+      newSchedules[day] = [...newSchedules[day], ""]; // Inicializa con una cadena de texto
       return newSchedules;
     });
   };
-
+  
+  
   const removeSchedule = (day, index) => {
     setDaySchedules((prevSchedules) => {
       const newSchedules = { ...prevSchedules };
@@ -107,7 +108,7 @@ const Mentorship = ({ location }) => {
   };
   const fetchDayOptions = async () => {
     try {
-      let URLDaysOptions = `quotes/hour`
+      let URLDaysOptions = `quotes/days`
       const response = await urlApi.get(URLDaysOptions);
       setDayOptions(response.data);
     } catch (error) {
@@ -134,18 +135,23 @@ const Mentorship = ({ location }) => {
   const submit = async (e) => {
     e.preventDefault();
 
-    const formattedSchedules = Object.entries(daySchedules).reduce((acc, [day, schedules]) => {
+    const mentor_availability = Object.entries(daySchedules).reduce((acc, [day, schedules]) => {
       schedules.forEach((schedule) => {
-        acc.push({
-          day: day.toLowerCase(),
-          timeStart: schedule.start,
-          timeEnd: schedule.end,
-        });
+        if (schedule.time) {
+          const [start, end] = schedule.time.split(' a ');
+          acc.push({
+            dayWeek: schedule.dayWeek,
+            startDate: start,
+            endDate: end,
+          });
+        }
       });
       return acc;
     }, []);
+    
   
-    console.log('Formatted Schedules:', formattedSchedules);
+    console.log('mentor_availability:', mentor_availability);
+  
 
     const formData = new FormData();
     formData.append('file', newMentor.mentorImage, newMentor.mentorImage.name);
@@ -235,66 +241,73 @@ const Mentorship = ({ location }) => {
       </FormControl>
 
 
+{/* Day selection */}
+<FormControl sx={{ m: 1, width: 300 }}>
+  <InputLabel id="demo-multiple-select-label">Días de la semana</InputLabel>
+  <Select
+    labelId="demo-multiple-select-label"
+    id="demo-multiple-select"
+    multiple
+    value={selectedDays}
+    onChange={handleDayChange}
+    input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+    renderValue={(selected) => (
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+        {selected.map((day) => (
+          <Chip key={day} label={day} />
+        ))}
+      </Box>
+    )}
+  >
+    {/* Use options from the fetched data */}
+    {dayOptions.map((day) => (
+      <MenuItem key={day.id} value={day.name}>
+        {day.name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
- {/* Day selection */}
- <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-select-label">Días de la semana</InputLabel>
-        <Select
-          labelId="demo-multiple-select-label"
-          id="demo-multiple-select"
-          multiple
-          value={selectedDays}
-          onChange={handleDayChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((day) => (
-                <Chip key={day} label={day} />
-              ))}
-            </Box>
-          )}
-        >
-          {/* Use options from the fetched data */}
-          {dayOptions.map((day) => (
-            <MenuItem key={day} value={day}>
-              {day}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
 
- {/* Day schedule inputs */}
- {selectedDays.map((day) => (
-        <div key={day}>
-          <Box sx={{ m: 1, width: 300 }}>
-            <InputLabel id={`day-label-${day}`}>{day}</InputLabel>
-            {daySchedules[day].map((schedule, index) => (
-              <div key={index}>
-                <FormControl>
-                  <InputLabel id={`start-label-${day}-${index}`}>Desde</InputLabel>
-                  <OutlinedInput
-                    id={`start-input-${day}-${index}`}
-                    value={schedule.start}
-                    onChange={(e) => handleScheduleChange(day, index, 'start', e.target.value)}
-                    label={`Desde ${day}`}
-                  />
-                </FormControl>
-                <FormControl>
-                  <InputLabel id={`end-label-${day}-${index}`}>Hasta</InputLabel>
-                  <OutlinedInput
-                    id={`end-input-${day}-${index}`}
-                    value={schedule.end}
-                    onChange={(e) => handleScheduleChange(day, index, 'end', e.target.value)}
-                    label={`Hasta ${day}`}
-                  />
-                </FormControl>
-                <Button onClick={() => removeSchedule(day, index)}>Eliminar</Button>
-              </div>
-            ))}
-            <Button onClick={() => addSchedule(day)}>Agregar horario</Button>
-          </Box>
+// ... (código existente)
+
+{/* Day schedule inputs */}
+{selectedDays.map((day) => (
+  <div key={day}>
+    <Box sx={{ m: 1, width: 300 }}>
+      <InputLabel id={`day-label-${day}`}>{day}</InputLabel>
+      {daySchedules[day].map((schedule, index) => (
+        <div key={index}>
+          <FormControl>
+            <InputLabel id={`time-label-${day}-${index}`}>Hora</InputLabel>
+            <Select
+  labelId={`time-label-${day}-${index}`}
+  id={`time-input-${day}-${index}`}
+  value={schedule.time || hoursOptions[0].name} // Asegúrate de que sea un valor válido
+  onChange={(e) => {
+    console.log('Selected Value in Select:', e.target.value);
+    handleScheduleChange(day, index, e.target.value);
+  }}
+>
+  {/* Use options from the fetched data */}
+  {hoursOptions.map((hour) => (
+    <MenuItem key={hour.id} value={hour.name}>
+      {hour.name}
+    </MenuItem>
+  ))}
+</Select>
+
+          </FormControl>
+          <Button onClick={() => removeSchedule(day, index)}>Eliminar</Button>
         </div>
       ))}
+      <Button onClick={() => addSchedule(day)}>Agregar horario</Button>
+    </Box>
+  </div>
+))}
+
+
+
 
 
       <Grid item>
