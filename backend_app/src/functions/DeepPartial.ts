@@ -55,7 +55,8 @@ export const update_object_mentor = async (
           key !== 'lastName' &&
           key !== 'phone' &&
           key !== 'birthday' &&
-          key !== 'password'
+          key !== 'password' &&
+          key !== 'mentor_availability'
         ) {
           object_update[key] = put[key];
         }

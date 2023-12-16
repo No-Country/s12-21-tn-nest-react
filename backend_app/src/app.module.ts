@@ -8,6 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './auth/role/role.module';
 import { AlunmModule } from './alunm/alunm.module';
 import { PaypalModule } from './paypal/paypal.module';
+import { StripeModule } from './stripe/stripe.module';
+import { MpagoModule } from './mpago/mpago.module';
+import { QuotesModule } from './quotes/quotes.module';
 
 const feactureModule = [
   MentorModule,
@@ -15,6 +18,10 @@ const feactureModule = [
   AuthModule,
   RoleModule,
   AlunmModule,
+  PaypalModule,
+  StripeModule,
+  MpagoModule,
+  QuotesModule,
 ];
 
 @Module({
@@ -49,7 +56,6 @@ const feactureModule = [
       inject: [ConfigService],
     }),
     ...feactureModule,
-    PaypalModule,
   ],
   providers: [JwtService],
 })

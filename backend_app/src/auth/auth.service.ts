@@ -15,6 +15,9 @@ import { MentorService } from 'src/mentor/mentor.service';
 import { AlumnService } from 'src/alunm/alunm.service';
 import { send } from 'src/Config/nodeMailer';
 import { verify_ages } from 'src/functions/general';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +26,7 @@ export class AuthService {
     private jwtService: JwtService,
     private readonly mentorService: MentorService,
     private readonly alumnService: AlumnService,
+    @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
   async studentRegister(
@@ -93,9 +97,7 @@ export class AuthService {
         role: verifyUser.role,
       };
     } catch (error) {
-      if (error) {
-        throw new ErrorManager().errorHandler(error);
-      }
+      console.log(error);
     }
   }
 
@@ -113,6 +115,7 @@ export class AuthService {
       aboutMe,
       birthDate,
       speciality,
+      mentor_availability,
     }: RegisterDto,
     file: Express.Multer.File,
   ) {
@@ -134,7 +137,14 @@ export class AuthService {
       if (categories.length == 0) {
         return {
           status: HttpStatus.NOT_FOUND,
-          message: 'enter the project categories',
+          message: 'enter the categories',
+        };
+      }
+
+      if (mentor_availability.length == 0) {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: 'enter the availability',
         };
       }
       const newUser = await this.userService.createMentor({
@@ -153,6 +163,7 @@ export class AuthService {
         Categories: categories,
         idSpeciality: speciality,
         userId: newUser['id'],
+        mentor_availability,
       };
 
       const mentor = await this.mentorService.post_create_mentor(
@@ -169,5 +180,28 @@ export class AuthService {
         throw new ErrorManager().errorHandler(error);
       }
     }
+  }
+  async find_User(id: string) {
+    const seachUser = await this.userRepository.findOne({
+      where: { id },
+      relations: {
+        mentor: true,
+        alumn: true,
+      },
+    });
+
+    delete seachUser.firstName;
+    delete seachUser.id;
+    delete seachUser.createdAt;
+    delete seachUser.updatedAt;
+    delete seachUser.deletedAt;
+    delete seachUser.lastName;
+    delete seachUser.email;
+    delete seachUser.phone;
+    delete seachUser.role['id'];
+    delete seachUser.role['updatedAt'];
+    delete seachUser.role['deletedAt'];
+
+    return seachUser;
   }
 }
