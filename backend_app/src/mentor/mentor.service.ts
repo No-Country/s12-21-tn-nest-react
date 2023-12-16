@@ -17,6 +17,9 @@ import { updateMentor } from './class/Mentor/updateMentor.dto';
 import * as bcrypt from 'bcryptjs';
 import { SALT_ROUNDS } from '../common/constants';
 import { UserService } from 'src/auth/user/user.service';
+import { Availability } from '../quotes/models/availability.entity';
+import { add_in_list_element } from 'src/functions/general';
+import { State } from 'src/quotes/models/state.entity';
 @Injectable()
 export class MentorService {
   constructor(
@@ -26,6 +29,9 @@ export class MentorService {
     @InjectRepository(Speciality)
     private specialityRepository: Repository<Speciality>,
     private readonly userService: UserService,
+    @InjectRepository(Availability)
+    private availabilityRepository: Repository<Availability>,
+    @InjectRepository(State) private stateRepository: Repository<State>,
   ) {}
   async get_categories_all() {
     try {
@@ -104,11 +110,16 @@ export class MentorService {
         post.Categories,
       );
       const mentor_add = this.mentorRepository.create(object_mentor);
-
       if (file) {
         const upload = await uploadCloudinary(file);
         mentor_add['image'] = upload['url'];
       }
+      const list = await add_in_list_element(
+        post.mentor_availability,
+        this.availabilityRepository,
+        this.stateRepository,
+      );
+      mentor_add.availables = list;
       mentor_add.categories = categoriesSearch;
       await this.mentorRepository.save(mentor_add);
       return {
@@ -127,11 +138,13 @@ export class MentorService {
   ) {
     try {
       let mentors = await this.mentorRepository.find({
-        relations: {
-          categories: true,
-          speciality: true,
-          userId: true,
-        },
+        relations: [
+          'categories',
+          'speciality',
+          'userId',
+          'availables',
+          'availables.state',
+        ],
       });
 
       if (categoryName && categoryName.length > 0) {
@@ -217,12 +230,13 @@ export class MentorService {
   async mentor_find(id: string) {
     return await this.mentorRepository.findOne({
       where: { id: id },
-      relations: {
-        categories: true,
-        speciality: true,
-        userId: true,
-        availables: true,
-      },
+      relations: [
+        'categories',
+        'speciality',
+        'userId',
+        'availables',
+        'availables.state',
+      ],
     });
   }
 
@@ -262,6 +276,15 @@ export class MentorService {
       };
     }
 
+    if (
+      !updateProfile.mentor_availability ||
+      updateProfile.mentor_availability.length === 0
+    ) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        mesage: 'enter availability',
+      };
+    }
     const object_update_mentor = await update_object_mentor(
       updateProfile,
       file,
@@ -285,6 +308,7 @@ export class MentorService {
         categories: true,
         speciality: true,
         userId: true,
+        availables: true,
       },
     });
     const object_user_actualiazar = {};
@@ -332,9 +356,20 @@ export class MentorService {
       }
       if (newCategoriesToadd.length > 0) {
         searchMentor.categories.push(...newCategoriesToadd);
-        this.mentorRepository.save(searchMentor);
       }
     }
+
+    if (updateProfile.mentor_availability.length > 0) {
+      searchMentor.availables = [];
+      const list = await add_in_list_element(
+        updateProfile.mentor_availability,
+        this.availabilityRepository,
+        this.stateRepository,
+      );
+      console.log('llege');
+      searchMentor.availables = list;
+    }
+    this.mentorRepository.save(searchMentor);
     return {
       status: HttpStatus.ACCEPTED,
       message: 'profile has been updated',
