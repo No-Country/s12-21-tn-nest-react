@@ -115,6 +115,7 @@ export class AuthService {
       aboutMe,
       birthDate,
       speciality,
+      mentor_availability,
     }: RegisterDto,
     file: Express.Multer.File,
   ) {
@@ -136,7 +137,14 @@ export class AuthService {
       if (categories.length == 0) {
         return {
           status: HttpStatus.NOT_FOUND,
-          message: 'enter the project categories',
+          message: 'enter the categories',
+        };
+      }
+
+      if (mentor_availability.length == 0) {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: 'enter the availability',
         };
       }
       const newUser = await this.userService.createMentor({
@@ -155,6 +163,7 @@ export class AuthService {
         Categories: categories,
         idSpeciality: speciality,
         userId: newUser['id'],
+        mentor_availability,
       };
 
       const mentor = await this.mentorService.post_create_mentor(

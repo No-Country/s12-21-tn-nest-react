@@ -57,7 +57,15 @@ export class Mentor extends BaseEntity {
     name: 'user',
   })
   userId: User;
-
-  @OneToMany(() => Availability, (availability) => availability.mentor)
+  @ManyToMany(() => Availability, (availability) => availability.mentors)
+  @JoinTable({
+    name: 'mentors_availability',
+    joinColumn: {
+      name: 'mentors_id',
+    },
+    inverseJoinColumn: {
+      name: 'availability_id',
+    },
+  })
   availables: Availability[];
 }
