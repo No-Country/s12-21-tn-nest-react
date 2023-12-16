@@ -18,7 +18,8 @@ const Mentorship = ({ location }) => {
   })
   const [specialities, setSpecialities] = useState([]); //opciones especialidades
   const [categories, setCategories] = useState([]);  //opciones categorias
-  const [options, setOptions] = useState([]);  //opciones horarios
+  const [dayOptions, setDayOptions] = useState([]); //opciones dias
+  const [hoursOptions, setHoursOptions] = useState([]); //opciones horas
   const { mentorSpeciality, mentorCategory } = newMentorship
 
   const [selectedDays, setSelectedDays] = useState([]);
@@ -104,21 +105,31 @@ const Mentorship = ({ location }) => {
       console.error("Error al obtener las categorias:", error);
     }
   };
-  const fetchOptions = async () => {
+  const fetchDayOptions = async () => {
     try {
-      let URLOptions = ``
-      const response = await urlApi.get(URLOptions);
-      setOptions(response.data); 
+      let URLDaysOptions = `quotes/hour`
+      const response = await urlApi.get(URLDaysOptions);
+      setDayOptions(response.data);
     } catch (error) {
-      console.error("Error al obtener las opciones de horarios:", error);
+      console.error("Error al obtener las opciones de días:", error);
+    }
+  };
+  const fetchHoursOptions = async () => {
+    try {
+      let URLHoursOptions = `quotes/hour`
+      const response = await urlApi.get(URLHoursOptions);
+      setHoursOptions(response.data);
+    } catch (error) {
+      console.error("Error al obtener las opciones de horas:", error);
     }
   };
 
   useEffect(() => {
     fetchSpecialities();
     fetchCategories();
-/*     fetchOptions();
- */  }, []); 
+    fetchDayOptions();
+    fetchHoursOptions();
+  }, []); 
 
   const submit = async (e) => {
     e.preventDefault();
@@ -243,8 +254,8 @@ const Mentorship = ({ location }) => {
             </Box>
           )}
         >
-          {/* Add options for each day of the week */}
-          {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map((day) => (
+          {/* Use options from the fetched data */}
+          {dayOptions.map((day) => (
             <MenuItem key={day} value={day}>
               {day}
             </MenuItem>

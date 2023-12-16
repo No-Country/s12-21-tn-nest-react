@@ -221,6 +221,7 @@ export class MentorService {
         categories: true,
         speciality: true,
         userId: true,
+        availables: true,
       },
     });
   }

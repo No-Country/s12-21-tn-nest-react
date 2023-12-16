@@ -13,6 +13,7 @@ import {
 import { Category } from './categories.entity';
 import { Speciality } from './especializaciones';
 import { User } from 'src/auth/user/entities/user.entity';
+import { Availability } from 'src/quotes/models/availability.entity';
 
 @Entity({ name: 'mentor' })
 export class Mentor extends BaseEntity {
@@ -56,4 +57,7 @@ export class Mentor extends BaseEntity {
     name: 'user',
   })
   userId: User;
+
+  @OneToMany(() => Availability, (availability) => availability.mentor)
+  availables: Availability[];
 }
