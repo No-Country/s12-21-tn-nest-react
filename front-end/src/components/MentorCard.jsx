@@ -1,7 +1,19 @@
+import { useState } from 'react';
 import { CardMedia, Box, Card, Typography, CardContent, Chip, Rating, Button, CardActions } from '@mui/material'
-import {Link} from "react-router-dom";
+import { PagosDonativos } from './PagosDonativos';
 
-export const MentorCard = ({ mentorId, name, speciality, date, aboutMe, categories, price, mentorImage }) => {
+
+export const MentorCard = ({ name, speciality, date, aboutMe, categories, price, mentorImage }) => {
+    const [showDonativos, setShowDonativos] = useState(false)
+
+    const handleShowDonativos = () => {
+        setShowDonativos(true)
+    }
+
+    const handleCloseDonativos = () => {
+        setShowDonativos(false)
+    }
+
     return (
         <Card sx={{
             display: 'flex',
@@ -9,10 +21,10 @@ export const MentorCard = ({ mentorId, name, speciality, date, aboutMe, categori
             alignItems: 'flex-start',
             justifyContent: 'center',
             width: 370,
-            height: 550,
+            height: 570,
             background: '#389e2f32',
             borderRadius: 3,
-            
+
         }}>
             <Box style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Box style={{ position: 'relative', width: '100%' }}>
@@ -47,11 +59,14 @@ export const MentorCard = ({ mentorId, name, speciality, date, aboutMe, categori
                     </Box>
                 </Box>
             </Box>
-            <Box style={{ display: 'flex', flexDirection: 'column', gap: 4, justifyContent: 'space-between', flex: 1,  }}>
+            <Box style={{ display: 'flex', flexDirection: 'column', gap: 3, justifyContent: 'space-between', flex: 1, }}>
                 <CardContent>
-                    <Rating name="read-only" value={4} readOnly style={{ fontSize: '22px', marginBottom: '1rem' }} />
+                    <Box sx={{ display: 'flex', alignItems: 'center', paddingBottom: '.75rem', gap: '1.3rem' }}>
+                        <Rating name="read-only" value={4} readOnly style={{ fontSize: '22px' }} />
+                        <Chip label={`$${price}/h`} color='success' />
+                    </Box>
                     <Typography variant="body1" color="textPrimary" sx={{
-                        marginBottom: '1rem',
+                        marginBottom: '1.4rem',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
@@ -64,7 +79,7 @@ export const MentorCard = ({ mentorId, name, speciality, date, aboutMe, categori
                     <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
                         {categories.map((category, index) => (
                             <Box key={index} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                                <img src={category.image} style={{ width: 30, height: 30 }} />
+                                <img src={category.image} style={{ width: 25, height: 25 }} />
                                 <Typography variant="body1" color="white">
                                     {category.name}
                                 </Typography>
@@ -72,13 +87,15 @@ export const MentorCard = ({ mentorId, name, speciality, date, aboutMe, categori
                         ))}
                     </Box>
                 </CardContent>
-                <CardActions sx={{ display: 'flex', justifyContent: 'space-around', paddingBottom: '1rem' }}>
-                    <Chip label={`$${price}/h`} color='success' />
-                    <Link to={`/contactMentor`} state={{ mentorId }}>
-                        <Button variant='contained' color='success' >
-                            Contactar
-                        </Button>
-                    </Link>
+                <CardActions sx={{ display: 'flex', justifyContent: 'space-around', paddingBottom: '1.5rem' }}>
+
+                    <Button variant='contained' color='success' onClick={handleShowDonativos} >
+                        Donar
+                    </Button>
+                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} />
+                    <Button variant='contained' color='success' >
+                        Contactar
+                    </Button>
                 </CardActions>
             </Box>
         </Card>

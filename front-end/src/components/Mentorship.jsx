@@ -172,6 +172,7 @@ const Mentorship = ({ location }) => {
     });
     //formData.append('categories', studentCategories);
     formData.append('speciality', mentorSpeciality);
+    formData.append('mentor_availability[]', mentor_availability);
   
     try {
       let url = 'Auth/register/mentor'
