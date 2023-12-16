@@ -25,16 +25,24 @@ import { PrivateChat } from "./chat/PrivateChat";
 import { SocketProvider } from "./context/SocketContext";
 
 const navLinksArray = [
-  { title: 'Home', path: '/', icon: <HomeIcon /> },
-  { title: 'Mentores', path: '/mentores', icon: <GroupAddIcon /> },
-  { title: 'Mentorias', path: '#mentorias', icon: <SchoolIcon /> },
-  { title: 'Login', path: '/login', icon: <LoginIcon /> },
-  { title: 'Register', path: '/signup', icon: <HowToRegIcon /> },
-  { title: 'MentorProfile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
-  { title: 'StudentProfile', path: '/studentProfile/:id', icon: <HowToRegIcon /> },
-  { title: 'Calendar', path: '/calendar', icon: <HowToRegIcon /> },
-
-]
+  { title: "Home", path: "/", icon: <HomeIcon /> },
+  { title: "Mentores", path: "/mentores", icon: <GroupAddIcon /> },
+  { title: "Mentorias", path: "#mentorias", icon: <SchoolIcon /> },
+  { title: "Login", path: "/login", icon: <LoginIcon /> },
+  { title: "Register", path: "/signup", icon: <HowToRegIcon /> },
+  {
+    title: "MentorProfile",
+    path: "/mentorProfile/:id",
+    icon: <HowToRegIcon />,
+  },
+  {
+    title: "StudentProfile",
+    path: "/studentProfile/:id",
+    icon: <HowToRegIcon />,
+  },
+  { title: "Calendar", path: "/calendar", icon: <HowToRegIcon /> },
+  { title: "Chat", path: "/chat", icon: <HowToRegIcon /> },
+];
 
 function App() {
   return (

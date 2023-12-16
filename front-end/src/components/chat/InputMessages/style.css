@@ -1,0 +1,73 @@
+
+
+.input__private{
+  height: 70px;
+  width: 100%;
+  background: rgb(4, 90, 80);
+  box-shadow: 0px 0px 5px #151919;
+  z-index: 1;
+  box-shadow: 0px 0px 5px #25D366;
+  position: relative;
+}
+
+
+
+.input__wrapper{
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.input__msg::placeholder{
+  color: rgb(79, 166, 157);
+  font-family: 'Roboto', sans-serif;
+  font-size: 17px;
+  font-weight: normal;
+  width: 100%;
+}
+
+.input__msg{
+  resize: none;
+  height: 50px;
+  width: 100%;
+  border-radius: 10px;
+  margin: 10px;
+  background: rgb(17, 57, 53);
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+
+
+
+.container__send{
+  width: 90px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn__send{
+  background: none;
+  margin: 10px;
+  float: left;
+  cursor: pointer;
+
+  border: none;
+  outline: none;;
+  font-weight: bold;
+}
+
+.btn__send img{
+  width: 35px;
+  height: 35px;
+  display: block;
+  cursor: pointer;
+
+}
+
+svg:hover{
+  fill: #0a411e;
+}

@@ -1,0 +1,15 @@
+.list__chat{
+    height: calc(85vh - 70px);
+    max-height: calc(85vh - 70px);
+    width: 80%;
+    background-color: #111B21;
+    margin: auto;
+    overflow-y: scroll;
+}
+
+.list__chat::-webkit-scrollbar {
+    width: 0px;
+}
+
+
+

@@ -1,0 +1,35 @@
+.item__list{
+  margin-top: 12px;
+  height: 60px;
+  width: 100%;
+  background: rgb(4, 90, 80);
+  border: 1px solid rgb(73, 143, 74);
+  border-radius: 10px;
+}
+
+.item__list:hover{
+  background: rgb(5, 106, 94);
+  border: 1px solid rgb(73, 143, 74);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.item__list-img{
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  margin: 5px;
+  float: left;
+  cursor: pointer;
+  background-color: #25D366;
+}
+
+.item__list-name{
+  margin-top: 5px;
+  margin-left: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+}

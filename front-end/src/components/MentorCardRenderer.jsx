@@ -17,10 +17,10 @@ export const MentorCardRenderer = ({ mentorsData }) => {
     <>
       <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '6rem' }}>
         <Grid container spacing={3} sx={{ gap: 8, justifyContent: 'center' }} >
-          {currentMentors.map((mentor) => (
+          {currentMentors && currentMentors.map((mentor) => (
             <MentorCard
               key={mentor.id}
-              name={mentor.userId.firstName + ' ' + mentor.userId.lastName}
+              name={mentor?.userId?.firstName + ' ' + mentor.userId?.lastName}
               speciality={mentor.speciality.name}
               date={new Date(mentor.updatedAt).toLocaleDateString('es-ES', {
                 day: 'numeric',
