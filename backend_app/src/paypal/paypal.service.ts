@@ -93,9 +93,13 @@ export class PaypalService {
         mentorship: response.result.purchase_units[0].reference_id,
       };
     } catch (error) {
+      console.log(error.message);
+      const message =
+        JSON.parse(error._originalError.text).details[0].description ||
+        `Can't proccess ${token} order. For more details, see server console log`;
       throw new HttpException(
-        `Can't proccess ${token} order.`,
-        HttpStatus.BAD_REQUEST,
+        message,
+        error.statusCode || HttpStatus.BAD_REQUEST,
         {
           cause: new Error(error.message),
         },
@@ -103,22 +107,26 @@ export class PaypalService {
     }
   }
 
-  async captureUnpaidOrder(token: string) {
+  async getOrderStatus(token: string) {
     try {
       const request = new paypal.orders.OrdersGetRequest(token);
       const response = await client.execute(request);
+      const url = response.result.links[1]?.href || null;
+
       const newOrder = {
         paypal_id: response.result.id,
         status: response.result.status,
         mentorship: response.result.purchase_units[0].reference_id,
-        url: response.result.links[1].href,
+        url,
       };
       await this.createOrUpdateOrder(newOrder);
+
       return {
         status: response.result.status,
         mentorship: response.result.purchase_units[0].reference_id,
       };
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         `Can't proccess ${token} payment.`,
         HttpStatus.BAD_REQUEST,
@@ -154,6 +162,7 @@ export class PaypalService {
         }
       }
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         `Can't save or update order`,
         HttpStatus.BAD_REQUEST,
