@@ -14,9 +14,9 @@ export const MentorCardRenderer = ({ mentorsData }) => {
   }
 
   return (
-    <>
-      <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '6rem' }}>
-        <Grid container spacing={3} sx={{ gap: 8, justifyContent: 'center' }} >
+    <Box sx={{marginLeft: '10px'}}>
+      <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '6rem'}}>
+        <Grid container spacing={5} sx={{ justifyContent: 'space-around', alignItems: 'center', gap: '2.5rem' }} >
           {currentMentors.map((mentor) => (
             <MentorCard
               key={mentor.id}
@@ -64,6 +64,6 @@ export const MentorCardRenderer = ({ mentorsData }) => {
           }}
         />
       </Box>
-    </>
+    </Box>
   );
 };
