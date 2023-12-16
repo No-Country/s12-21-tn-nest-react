@@ -52,10 +52,10 @@ export class MpagoService {
         },
       });
 
-      const newOrder = {
+      const newOrder: SaveMpagoDto = {
         mpago_preference_id: checkoutData.id,
-        status: 'never',
-        status_detail: 'never',
+        status: 'pending',
+        status_detail: 'pending',
         mentorship: checkoutData.external_reference,
         url: checkoutData.init_point,
       };
@@ -68,17 +68,15 @@ export class MpagoService {
   }
 
   async success(id: string) {
-    const client = new MercadoPagoConfig({
-      accessToken,
-      options: { timeout: 5000 },
-    });
-    const payment = new Payment(client);
-
-    const data = await payment.get({
-      id,
-    });
-    console.log(data);
-    return { data };
+    const data = await this.findOne(id);
+    const newOrder: SaveMpagoDto = {
+      status: data.status,
+      status_detail: data.status_detail,
+      mentorship: data.external_reference,
+      url: null,
+    };
+    await this.createOrUpdateOrder(newOrder);
+    return { status: data.status, mentorship: data.external_reference };
   }
 
   private async createOrUpdateOrder(order: SaveMpagoDto) {
@@ -116,8 +114,26 @@ export class MpagoService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} mpago`;
+  async findOne(id: string) {
+    try {
+      const client = new MercadoPagoConfig({
+        accessToken,
+        options: { timeout: 5000 },
+      });
+      const payment = new Payment(client);
+      const data = await payment.get({
+        id,
+      });
+      return data;
+    } catch (error) {
+      throw new HttpException(
+        `Can't save or update order`,
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: new Error(error.message),
+        },
+      );
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

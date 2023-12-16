@@ -33,9 +33,6 @@ export class StripeService {
   ): Promise<any> {
     const convertAmount = createStripeIntentDto.amount * 100;
     try {
-      /*
-        database ops
-      */
       const session = await stripe.checkout.sessions.create({
         line_items: [
           {
@@ -54,12 +51,9 @@ export class StripeService {
         cancel_url: `${host}/api/stripe/cancel?session_id={CHECKOUT_SESSION_ID}`,
         metadata: {
           mentorship: createStripeIntentDto.reference_id,
-          //pupil: createStripeIntentDto.pupil_id, d9f80740-38f0-11e8-b467-0ed5f89f718b
         },
         payment_intent_data: {
-          metadata: {
-            //mentorship: createStripeIntentDto.reference_id,
-          },
+          metadata: {},
         },
       });
       return {
@@ -87,6 +81,10 @@ export class StripeService {
         url: session.url,
       };
       await this.createOrUpdateOrder(newOrder);
+      return {
+        status: session.payment_status,
+        mentorship: session.metadata.mentorship,
+      };
     } catch (error) {
       throw new HttpException(
         `Can't proccess ${session_id} payment.`,
@@ -117,11 +115,12 @@ export class StripeService {
           where: { id: order.mentorship },
         });
         if (mentorship) {
-          mentorship.paypal_payment = savedOrder.identifiers[0].id;
+          mentorship.stripe_payment = savedOrder.identifiers[0].id;
           await await this.mentorshipRepository.save(mentorship);
         }
       }
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         `Can't save or update order`,
         HttpStatus.BAD_REQUEST,
