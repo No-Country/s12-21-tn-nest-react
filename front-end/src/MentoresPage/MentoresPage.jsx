@@ -78,14 +78,14 @@ export const MentoresPage = () => {
                     elevation={3}
                     sx={{
                         display: 'flex',
-                        flexDirection: 'column', // Cambia a una disposición de columna en dispositivos móviles
-                        alignItems: 'center', // Centra los elementos en dispositivos móviles
+                        flexDirection: 'column',
+                        alignItems: 'center',
                         padding: '1rem',
                         margin: '1rem 0',
                         backgroundColor: '#111B21',
                         boxShadow: '0px 0px 5px #25D366',
                         borderRadius: '10px',
-                        width: '100%', // Ocupa todo el ancho disponible
+                        width: '100%',
                         gap: '1.2rem',
                         [`@media (min-width:600px)`]: {
                             width: '700px',
@@ -129,7 +129,7 @@ export const MentoresPage = () => {
                         Filtrar
                     </Button>
                 </Paper>
-                <MentorCardRenderer mentorsData={mentorsData} />
+            <MentorCardRenderer mentorsData={mentorsData} />
             </Box>
         </Box>
     )
