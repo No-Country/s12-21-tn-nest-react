@@ -21,7 +21,7 @@ const StudentProfile = () => {
   const navigate = useNavigate()
   const [studentInfo, setStudentInfo] = useState(null);
 /*   const { userId, mentorId } = useAuth();
- */  const studentId = "e34f247c-c2ed-4602-92a6-5377f7b39d69"//'0c7a806a-a6a1-4dfb-8218-4aa4fdee8097' //0c7a806a-a6a1-4dfb-8218-4aa4fdee8097
+ */  const studentId = '0c7a806a-a6a1-4dfb-8218-4aa4fdee8097' //0c7a806a-a6a1-4dfb-8218-4aa4fdee8097
   const userId = '42924aa9-fed5-428a-8eaa-8ba83bd4c737' //68cfbe0f-4cf2-4483-a487-6328ecbff1bd
 
   const customTheme = createTheme({
