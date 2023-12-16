@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  Res,
+  Query,
 } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { CreateStripeIntentDto } from './dto/create-stripe-intent.dto';
@@ -14,7 +14,7 @@ import { UpdateStripeDto } from './dto/update-stripe.dto';
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiOkResponse,
+  ApiCreatedResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
@@ -33,19 +33,19 @@ export class StripeController {
   @ApiBody({
     type: CreateStripeIntentDto,
   })
-  @ApiOkResponse({ type: CreateOkStripeIntentResponseDto })
+  @ApiCreatedResponse({ type: CreateOkStripeIntentResponseDto })
   create(@Body() createStripeIntentDto: CreateStripeIntentDto) {
     return this.stripeService.createPaymentIntent(createStripeIntentDto);
   }
 
   @Get('/success')
-  async findSuccess(@Res({ passthrough: true }) res): Promise<any> {
-    return this.stripeService.catchPayment(res.req.query.session_id);
+  async findSuccess(@Query('session_id') id: string): Promise<any> {
+    return this.stripeService.catchPayment(id);
   }
 
   @Get('/cancel')
-  async findCancel(@Res({ passthrough: true }) res): Promise<any> {
-    return this.stripeService.catchPayment(res.req.query.session_id);
+  async findCancel(@Query('session_id') id: string): Promise<any> {
+    return this.stripeService.catchPayment(id);
   }
 
   @Get(':id')
