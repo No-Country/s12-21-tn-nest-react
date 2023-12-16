@@ -2,6 +2,7 @@ import {
   BadRequestException,
   HttpStatus,
   Injectable,
+  Search,
   UnauthorizedException,
 } from '@nestjs/common';
 import LoginDto from './dto/login.dto';
@@ -184,7 +185,55 @@ export class AuthService {
   async find_User(id: string) {
     const seachUser = await this.userRepository.findOne({
       where: { id },
+      relations: {
+        mentor: true,
+        alumn: true,
+      },
     });
+
+    //     "mentor": [
+    //         {
+    //             "id": "08278a1f-1cc1-439f-b9ac-587725459327",
+    //             "createdAt": "2023-12-09T03:41:42.000Z",
+    //             "updatedAt": "2023-12-09T03:41:42.000Z",
+    //             "deletedAt": null,
+    //             "mentorDescription": "wadwadawdada",
+    //             "image": "https://s3.ppllstatics.com/elnortedecastilla/www/pre2017/multimedia/noticias/201501/12/media/cortadas/facebook-profile-picture-no-pic-avatar--575x323.jpg",
+    //             "price": "1000",
+    //             "aboutMe": "Hola",
+    //             "birthdate": "1990-11-25T02:00:00.000Z",
+    //             "userId": {
+    //                 "firstName": "mateo",
+    //                 "id": "529a2c5d-9cf0-4967-80e0-58dc05335f19",
+    //                 "createdAt": "2023-12-09T03:41:42.000Z",
+    //                 "updatedAt": "2023-12-09T03:41:42.000Z",
+    //                 "deletedAt": null,
+    //                 "lastName": "pablo londrado",
+    //                 "email": "s@gmail.com",
+    //                 "phone": "376274683"
+    //             }
+    //         }
+    //     ],
+    //     "alumn": [],
+    //     "role": {
+    //         "id": "a6e8b83a-545a-41c3-ada3-d95aea176f0e",
+    //         "createdAt": "2023-11-29T21:46:03.000Z",
+    //         "updatedAt": "2023-11-29T21:46:03.000Z",
+    //         "deletedAt": null,
+    //         "name": "mentor"
+    //     }
+    // }
+    delete seachUser.firstName;
+    delete seachUser.id;
+    delete seachUser.createdAt;
+    delete seachUser.updatedAt;
+    delete seachUser.deletedAt;
+    delete seachUser.lastName;
+    delete seachUser.email;
+    delete seachUser.phone;
+    delete seachUser.role['id'];
+    delete seachUser.role['updatedAt'];
+    delete seachUser.role['deletedAt'];
     return seachUser;
   }
 }
