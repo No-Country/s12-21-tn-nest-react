@@ -34,7 +34,6 @@ const navLinksArray = [
   { title: 'StudentProfile', path: '/studentProfile/:id', icon: <HowToRegIcon /> },
   { title: 'Calendar', path: '/calendar', icon: <HowToRegIcon /> },
   { title: 'MentorProfileTest', path: '/mentorProfileTest/:id', icon: <HowToRegIcon /> },       //test perfil mentor
-  { title: 'StudentProfileTest', path: '/studentProfileTest/:id', icon: <HowToRegIcon /> },      //test perfil student
 
 ]
 
@@ -61,7 +60,6 @@ function App() {
                 <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
                 <Route path="/calendar" element={<SchedulerComponent />} />
                 <Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />         //test perfil mentor
-                <Route path="/studentProfileTest/:id" element={<StudentProfileTest />} />       //test perfil student
               </Routes>
             </div>
           </BrowserRouter>
