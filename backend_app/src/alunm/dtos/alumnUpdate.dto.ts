@@ -3,7 +3,6 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 
 //create class and omit password from CreateUserDto
 export class AlunmUpdateRequestDto {
-
   @IsNotEmpty()
   @ApiProperty()
   firstName: string;

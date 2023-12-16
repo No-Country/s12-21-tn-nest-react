@@ -14,7 +14,7 @@ import { UpdateMpagoDto } from './dto/update-mpago.dto';
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiOkResponse,
+  ApiCreatedResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
@@ -33,7 +33,7 @@ export class MpagoController {
   @ApiBody({
     type: CreateMpagoDto,
   })
-  @ApiOkResponse({ type: CreateOkMpagoOrderResponseDto })
+  @ApiCreatedResponse({ type: CreateOkMpagoOrderResponseDto })
   create(@Body() createMpagoDto: CreateMpagoDto) {
     return this.mpagoService.create(createMpagoDto);
   }
@@ -45,7 +45,7 @@ export class MpagoController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.mpagoService.findOne(+id);
+    return this.mpagoService.findOne(id);
   }
 
   @Patch(':id')

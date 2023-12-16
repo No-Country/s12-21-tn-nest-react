@@ -57,7 +57,6 @@ export class PaypalService {
         id: response.result.id,
         url: response.result.links[1].href,
       };
-      //return response.result.links[1].href;
     } catch (error) {
       console.log(error);
       throw new HttpException(
@@ -78,17 +77,30 @@ export class PaypalService {
   }
 
   async captureOrder(token: string) {
-    const request = new paypal.orders.OrdersCaptureRequest(token);
-    request.requestBody({});
-    const response = await client.execute(request);
-    const newOrder = {
-      paypal_id: response.result.id,
-      status: response.result.status,
-      mentorship: response.result.purchase_units[0].reference_id,
-      url: null,
-    };
-    await this.createOrUpdateOrder(newOrder);
-    return response.result;
+    try {
+      const request = new paypal.orders.OrdersCaptureRequest(token);
+      request.requestBody({});
+      const response = await client.execute(request);
+      const newOrder = {
+        paypal_id: response.result.id,
+        status: response.result.status,
+        mentorship: response.result.purchase_units[0].reference_id,
+        url: null,
+      };
+      await this.createOrUpdateOrder(newOrder);
+      return {
+        status: response.result.status,
+        mentorship: response.result.purchase_units[0].reference_id,
+      };
+    } catch (error) {
+      throw new HttpException(
+        `Can't proccess ${token} order.`,
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: new Error(error.message),
+        },
+      );
+    }
   }
 
   async captureUnpaidOrder(token: string) {
@@ -102,7 +114,10 @@ export class PaypalService {
         url: response.result.links[1].href,
       };
       await this.createOrUpdateOrder(newOrder);
-      return response.result;
+      return {
+        status: response.result.status,
+        mentorship: response.result.purchase_units[0].reference_id,
+      };
     } catch (error) {
       throw new HttpException(
         `Can't proccess ${token} payment.`,
