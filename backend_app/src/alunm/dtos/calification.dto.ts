@@ -8,6 +8,10 @@ export class CalificationDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  msg: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @Max(5)
   @Min(1)
   calification: number;
