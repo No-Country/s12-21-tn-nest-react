@@ -3,14 +3,16 @@ import { useState, useEffect } from "react";
 import { Typography, Rating, Box } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
+import { addScore } from "../db/auth";
 
 import "./Score.css";
 const Score = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState(null);
   const [hover, setHover] = useState(null);
-  const [message, setMessage] = useState("");
+  const [msg, setMsg] = useState("");
   const [error, setError] = useState(false);
+  const [id, setId] = useState(1);
 
   const labels = {
     1: "Useless",
@@ -32,10 +34,19 @@ const Score = () => {
     setError(!error);
   };
 
+  const addingScore = async (id, value, msg) => {
+    try {
+      const res = await addScore(id, value, msg);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const submitScore = (e) => {
     e.preventDefault();
     if (value != null) {
-      console.log(value, message);
+      console.log(value, msg);
+      addingScore(id, msg, value);
       navigate("/");
     } else {
       changeError();
