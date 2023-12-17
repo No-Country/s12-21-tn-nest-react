@@ -8,7 +8,10 @@ import { useAuth } from '../context/AuthContext';
 
 export default function Menu({ navLinksArray }) {
   const [open, setOpen] = useState(false);
-  const { isAuthenticated } = useAuth(); 
+  const { isAuthenticated, user } = useAuth(); 
+  const isMentor = isAuthenticated && user && user.role.name === "mentor";
+  const isStudent = isAuthenticated && user && user.role.name === "student";
+
 
   return (
     <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }} data-aos="fade-down">
@@ -32,13 +35,17 @@ export default function Menu({ navLinksArray }) {
                   {navLinksArray
                     .filter(item => item.title !== 'Login' && item.title !== 'Register')
                     .map(item => (
-                      <Button color='inherit' 
-                        component={NavLink} 
-                        key={item.title} 
-                        to={item.path}
-                      >
-                        {item.title}
-                      </Button>
+                      // Render MentorProfile for mentors, and StudentProfile for students
+                      (isStudent && item.title === 'MentorProfile') ||
+                      (isMentor && item.title === 'StudentProfile') ? null : (
+                        <Button color='inherit' 
+                          component={NavLink} 
+                          key={item.title} 
+                          to={item.path}
+                        >
+                          {item.title}
+                        </Button>
+                      )
                     ))}
                 </>
               ) : (

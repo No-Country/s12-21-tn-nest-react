@@ -13,16 +13,13 @@ import { useNavigate, Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import {Card, CardContent, Paper, TextField } from '@mui/material';
 import { urlApi } from '../../config/axios';
-
 import ContentBlock from './mini-components/ContentBlock';
 
 const StudentProfile = () => {
   const defaultTheme = createTheme();
   const navigate = useNavigate()
   const [studentInfo, setStudentInfo] = useState(null);
-/*   const { userId, mentorId } = useAuth();
- */  const studentId = '0c7a806a-a6a1-4dfb-8218-4aa4fdee8097' //0c7a806a-a6a1-4dfb-8218-4aa4fdee8097
-  const userId = '42924aa9-fed5-428a-8eaa-8ba83bd4c737' //68cfbe0f-4cf2-4483-a487-6328ecbff1bd
+  const { userId, studentId } = useAuth();
 
   const customTheme = createTheme({
     palette: {
@@ -47,6 +44,8 @@ const StudentProfile = () => {
       }
     };
     fetchStudentInfo();
+    console.log("userId:",userId, "studentId", studentId);
+
   }, []);
 
   return (

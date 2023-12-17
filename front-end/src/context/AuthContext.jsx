@@ -29,8 +29,7 @@ export const AuthProvider = ({ children }) => {
     try {
       let url = `auth/filter/${userId}`
       const response = await urlApi.get(url);
-      console.log("respuesta",response);
-      console.log(urlApi+url);
+      console.log("response",response);
       return response.data;
 
     } catch (error) {
@@ -49,18 +48,16 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setIsAuthenticated(true);
         setUser(res.data);
-        //setName(res.data.name);
         setUserId(res.data.userId);
 
-        const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
-        setMentorId(mentorIdResponse.mentor[0].id); 
-        setStudentId(mentorIdResponse.student[0].id)
-        console.log(mentorId);
 
-        /* 
-        // Obtén el ID del mentor asociado al usuario
-        const mentorIdResponse = await obtenerIdDelMentor(res.data.id);
-        setMentorId(mentorIdResponse.data.id); // Asigna el ID del mentor al estado */
+        if (res.data.role.name == "mentor") {
+          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
+          setMentorId(mentorIdResponse.mentor[0].id);
+        } else {
+          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
+          setStudentId(mentorIdResponse.alumn[0].id);
+        }
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -68,16 +65,6 @@ export const AuthProvider = ({ children }) => {
       setErrors(err.response.data);
     }
   };
-
-  /*   const obtenerIdDelMentor = async (userId) => {
-    // Realiza una solicitud para obtener el ID del mentor asociado al usuario
-    try {
-      const response = await axios.get(`http://localhost:8080/api/mentor/getIdByUserId/${userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching mentor ID:', error);
-    }
-  }; */
 
   useEffect(() => {
     if (errors.length > 0) {
