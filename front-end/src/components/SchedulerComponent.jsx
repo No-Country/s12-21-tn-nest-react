@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { urlApi } from '../../config/axios';
 
-const SchedulerComponent = ({ idMentor, idStudent }) => {
+const SchedulerComponent = ({ onSchedulerInfoChange }) => {
   const [selectedTime, setSelectedTime] = useState([]);
+  const [calendar, setCalendar] = useState([]);
+
   const dates = [
     { day: 'lunes', timeStart: '10:00', timeEnd: '11:00'},
     { day: 'miércoles', timeStart: '19:00', timeEnd: '22:00' },
@@ -56,19 +59,30 @@ const SchedulerComponent = ({ idMentor, idStudent }) => {
   };
   
 
-  const guardarInformacion = () => {
+  const handleStudentSelection = () => {
     //Aca me asuguro de guardar la info en el formato adecuado, y despues hago la llamada al back
-    const informacionGuardada = selectedTime.map(({ day, timeStart, timeEnd }) => ({
+    const student_selection = selectedTime.map(({ day, timeStart, timeEnd }) => ({
       day,
       timeStart,
       timeEnd,
     }));
+    onSchedulerInfoChange(student_selection);
   
     console.log('Información Guardada:', informacionGuardada);
   };
 
-  
-  
+  useEffect(() => {
+    const fetchCalendarInfo = async () => {
+      try {
+        let url = ``
+        const response = await urlApi.get(url);
+        setCalendar(response.data);
+      } catch (error) {
+        console.error('Error fetching mentor information:', error);
+      }
+    };
+    fetchCalendarInfo();
+  }, []);
 
   return (
     <TableContainer component={Paper}>

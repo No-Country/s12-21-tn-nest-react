@@ -17,9 +17,7 @@ const Profile = () => {
   const defaultTheme = createTheme();
   const navigate = useNavigate()
   const [mentorInfo, setMentorInfo] = useState(null);
-/*   const { userId, mentorId } = useAuth();
- */  const mentorId = '5d93e6fd-8d99-47d8-884a-ce71faf78552'
- const userId = 'adca6e5f-c606-47ae-9c67-1a00dbe9ffc1'
+  const { userId, mentorId } = useAuth();
 
  const customTheme = createTheme({
   palette: {
@@ -43,6 +41,7 @@ const Profile = () => {
       }
     };
     fetchMentorInfo();
+    console.log("userId:",userId, "mentorId", mentorId);
   }, []);
 
   return (

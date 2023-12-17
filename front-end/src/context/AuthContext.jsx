@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { loginRequest, verifyTokenRequest } from "../db/auth";
 import Cookies from "js-cookie";
+import { urlApi } from "../../config/axios";
 
 export const AuthContext = createContext();
 
@@ -19,8 +20,21 @@ export const AuthProvider = ({ children }) => {
   const [rolName, setRolName] = useState(null);
   const [rolId, setRolId] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [studentId, setStudentId] = useState(null);
+  const [mentorId, setMentorId] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
+
+  const obtenerIdDelMentor = async (userId) => {
+    try {
+      let url = `auth/filter/${userId}`;
+      const response = await urlApi.get(url);
+      console.log("response", response);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching mentor ID:", error);
+    }
+  };
 
   const toggleLoginClass = () => {
     setLoginActive(!loginActive);
@@ -32,17 +46,15 @@ export const AuthProvider = ({ children }) => {
       console.log(res.data);
       if (res && res.data) {
         setUser(res.data);
-        setIsAuthenticated(true);
         setUserId(res.data.userId);
-        setRolName(res.data.role.name);
-        setRolId(res.data.role.id);
 
-        //setName(res.data.name);
-        //setUserId(res.data.id);
-        /* 
-        // Obtén el ID del mentor asociado al usuario
-        const mentorIdResponse = await obtenerIdDelMentor(res.data.id);
-        setMentorId(mentorIdResponse.data.id); // Asigna el ID del mentor al estado */
+        if (res.data.role.name == "mentor") {
+          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
+          setMentorId(mentorIdResponse.mentor[0].id);
+        } else {
+          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
+          setStudentId(mentorIdResponse.alumn[0].id);
+        }
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -50,16 +62,6 @@ export const AuthProvider = ({ children }) => {
       setErrors(err.response.data);
     }
   };
-
-  /*   const obtenerIdDelMentor = async (userId) => {
-    // Realiza una solicitud para obtener el ID del mentor asociado al usuario
-    try {
-      const response = await axios.get(`http://localhost:8080/api/mentor/getIdByUserId/${userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching mentor ID:', error);
-    }
-  }; */
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -115,8 +117,8 @@ export const AuthProvider = ({ children }) => {
         loginActive,
         toggleLoginClass,
         userId,
-        rolId,
-        rolName,
+        mentorId,
+        studentId,
       }}
     >
       {children}

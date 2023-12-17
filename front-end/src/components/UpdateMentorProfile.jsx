@@ -12,11 +12,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { urlApi } from '../../config/axios';
+import { useAuth } from '../context/AuthContext';
 
 
 const UpdateMentorProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { mentorId } = useAuth();
   const mentorInfo = location.state?.mentorInfo || {};
   const [specialities, setSpecialities] = useState([]); //opciones del select
   const [categories, setCategories] = useState([]);  //opciones del select
@@ -104,7 +106,7 @@ const UpdateMentorProfile = () => {
   
   const handleSaveChanges = async () => {
     try {
-      let url = `mentor/profile/update/5d93e6fd-8d99-47d8-884a-ce71faf78552`
+      let url = `mentor/profile/update/${mentorId}`
       console.log(editedInfo);
       const categoryIds = editedInfo.categories.map((category) => category.id);
       console.log('Category IDs:', categoryIds);
@@ -151,7 +153,7 @@ const UpdateMentorProfile = () => {
           <TextareaAutosize
             label="Descripción"
             minRows={7}
-            style={{ width: '100%', marginBottom: '16px' }}  // Establece el ancho al 100% y agrega margen inferior
+            style={{ width: '100%', marginBottom: '16px' }}
             value={editedInfo.mentorDescription}
             onChange={(e) => handleChange('mentorDescription', e.target.value)}
             margin="normal"
@@ -159,7 +161,7 @@ const UpdateMentorProfile = () => {
           <TextareaAutosize
             label="aboutMe"
             minRows={5}
-            style={{ width: '100%', marginBottom: '16px' }}  // Establece el ancho al 100% y agrega margen inferior
+            style={{ width: '100%', marginBottom: '16px' }} 
             value={editedInfo.aboutMe}
             onChange={(e) => handleChange('aboutMe', e.target.value)}
             margin="normal"

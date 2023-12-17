@@ -4,18 +4,25 @@ import { AppBar, Box, Button, Container, Drawer, IconButton, Toolbar, Typography
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../images/logo-page.png'
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
+import { useAuth } from '../context/AuthContext'; 
 
 export default function Menu({ navLinksArray }) {
   const [open, setOpen] = useState(false);
-  const { isAuthenticated } = useAuth(); // Use the useAuth hook to get the authentication status
+  const { isAuthenticated, user } = useAuth(); 
+  const isMentor = isAuthenticated && user && user.role.name === "mentor";
+  const isStudent = isAuthenticated && user && user.role.name === "student";
+
 
   return (
     <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }} data-aos="fade-down">
       <Container>
-        <AppBar position='static' sx={{ border: 'none', boxShadow: '0', bgcolor: '#202C33', py: 1 }}>
+        <AppBar position='static' 
+          sx={{ border: 'none', boxShadow: '0', bgcolor: '#202C33', py: 1 }}
+        >
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <IconButton color='inherit' size='large' onClick={() => setOpen(true)} sx={{ display: { sm: 'flex', md: 'none' } }}>
+            <IconButton color='inherit' size='large' 
+              onClick={() => setOpen(true)} sx={{ display: { sm: 'flex', md: 'none' } }}
+            >
               <MenuIcon />
             </IconButton>
             <Box component='div' sx={{ width: { xs: '140px', sm: '220px' } }}>
@@ -28,9 +35,17 @@ export default function Menu({ navLinksArray }) {
                   {navLinksArray
                     .filter(item => item.title !== 'Login' && item.title !== 'Register')
                     .map(item => (
-                      <Button color='inherit' component={NavLink} key={item.title} to={item.path}>
-                        {item.title}
-                      </Button>
+                      // Render MentorProfile for mentors, and StudentProfile for students
+                      (isStudent && item.title === 'MentorProfile') ||
+                      (isMentor && item.title === 'StudentProfile') ? null : (
+                        <Button color='inherit' 
+                          component={NavLink} 
+                          key={item.title} 
+                          to={item.path}
+                        >
+                          {item.title}
+                        </Button>
+                      )
                     ))}
                 </>
               ) : (

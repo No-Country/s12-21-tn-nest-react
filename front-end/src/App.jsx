@@ -20,9 +20,13 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import HomeIcon from "@mui/icons-material/Home";
 import SchoolIcon from "@mui/icons-material/School";
 import SchedulerComponent from "./components/SchedulerComponent";
-
 import MentorProfileTest from "./components/MentorProfileTest";
+<<<<<<< HEAD
 import Score from "./score/Score";
+=======
+import ContactMentor from "./components/ContactMentor";
+
+>>>>>>> a386ea09149a060800c1528d0782ad7511136535
 
 const navLinksArray = [
   { title: "Home", path: "/", icon: <HomeIcon /> },
@@ -79,6 +83,7 @@ function App() {
                   element={<UpdateStudentProfile />}
                 />
                 <Route path="/calendar" element={<SchedulerComponent />} />
+<<<<<<< HEAD
                 <Route
                   path="/mentorProfileTest/:id"
                   element={<MentorProfileTest />}
@@ -88,6 +93,10 @@ function App() {
                   //<Route path="/mentor/:id/score/:id" element={<Score />} />
                 }
                 <Route path="/score" element={<Score />} />
+=======
+                <Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />         //test perfil mentor
+                <Route path="/contactMentor" element={<ContactMentor />} />
+>>>>>>> a386ea09149a060800c1528d0782ad7511136535
               </Routes>
             </div>
           </BrowserRouter>

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { CardMedia, Box, Card, Typography, CardContent, Chip, Rating, Button, CardActions } from '@mui/material'
 import { PagosDonativos } from './PagosDonativos';
+import {Link} from 'react-router-dom'
 
 
-export const MentorCard = ({ name, speciality, date, aboutMe, categories, price, mentorImage }) => {
+export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage }) => {
     const [showDonativos, setShowDonativos] = useState(false)
 
     const handleShowDonativos = () => {
@@ -93,9 +94,11 @@ export const MentorCard = ({ name, speciality, date, aboutMe, categories, price,
                         Donar
                     </Button>
                     <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} />
-                    <Button variant='contained' color='success' >
-                        Contactar
-                    </Button>
+                    <Link to={`/contactMentor`} state={ id }>
+                        <Button variant='contained' color='success' >
+                            Contactar
+                        </Button>
+                    </Link>
                 </CardActions>
             </Box>
         </Card>
