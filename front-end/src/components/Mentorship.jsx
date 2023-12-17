@@ -70,14 +70,23 @@ const Mentorship = ({ location }) => {
 
 
 
-
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setNewMentorship({
+  
+    if (name === "mentorSpeciality") {
+      const selectedSpeciality = specialities.find((speciality) => speciality.name === value);
+      setNewMentorship({
+        ...newMentorship,
+        mentorSpeciality: selectedSpeciality ? selectedSpeciality.id : "", // Almacena el ID?
+      });
+    } else {
+      setNewMentorship({
         ...newMentorship,
         [name]: value,
-    });
+      });
+    }
   };
+  
 
   const handleCategoryChange = (event) => {
     const selectedCategoryIds = event.target.value;
@@ -172,6 +181,9 @@ const Mentorship = ({ location }) => {
     });
     //formData.append('categories', studentCategories);
     formData.append('speciality', mentorSpeciality);
+/*     mentor_availability.forEach(val => {
+      formData.append('mentor_availability', val)
+    }) */
     formData.append('mentor_availability[]', mentor_availability);
   
     try {

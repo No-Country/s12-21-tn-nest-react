@@ -350,7 +350,7 @@ const SignUp = () => {
 
                   <Grid container justifyContent="flex-end">
                     <Grid item>
-                      <Link to="./login">
+                      <Link to="/login">
                         <Typography sx={{ color: "#25D366" }}>
                           ¿Ya tenes una cuenta? Ingresá!
                         </Typography>
