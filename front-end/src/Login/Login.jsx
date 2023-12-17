@@ -64,7 +64,7 @@ const Login = () => {
       <form className="container-login" onSubmit={login}>
         <div className="login-box">
           <Box
-            class="container-login__box"
+            className="container-login__box"
             sx={{ textAlign: "center", margin: "1rem auto" }}
           >
             <AccountCircle sx={{ color: "white", mr: 1, my: 0.5 }} />

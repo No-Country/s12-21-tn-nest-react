@@ -14,28 +14,39 @@ import StudentProfile from "./components/StudentProfile";
 import UpdateMentorProfile from "./components/UpdateMentorProfile";
 import UpdateStudentProfile from "./components/UpdateStudentProfile";
 import Menu from "./components/Menu";
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import LoginIcon from '@mui/icons-material/Login';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import HomeIcon from '@mui/icons-material/Home';
-import SchoolIcon from '@mui/icons-material/School';
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import LoginIcon from "@mui/icons-material/Login";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import HomeIcon from "@mui/icons-material/Home";
+import SchoolIcon from "@mui/icons-material/School";
 import SchedulerComponent from "./components/SchedulerComponent";
 
 import MentorProfileTest from "./components/MentorProfileTest";
-
+import Score from "./score/Score";
 
 const navLinksArray = [
-  { title: 'Home', path: '/', icon: <HomeIcon /> },
-  { title: 'Mentores', path: '/mentores', icon: <GroupAddIcon /> },
-  { title: 'Mentorias', path: '#mentorias', icon: <SchoolIcon /> },
-  { title: 'Login', path: '/login', icon: <LoginIcon /> },
-  { title: 'Register', path: '/signup', icon: <HowToRegIcon /> },
-  { title: 'MentorProfile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
-  { title: 'StudentProfile', path: '/studentProfile/:id', icon: <HowToRegIcon /> },
-  { title: 'Calendar', path: '/calendar', icon: <HowToRegIcon /> },
-  { title: 'MentorProfileTest', path: '/mentorProfileTest/:id', icon: <HowToRegIcon /> },       //test perfil mentor
-
-]
+  { title: "Home", path: "/", icon: <HomeIcon /> },
+  { title: "Mentores", path: "/mentores", icon: <GroupAddIcon /> },
+  { title: "Mentorias", path: "#mentorias", icon: <SchoolIcon /> },
+  { title: "Login", path: "/login", icon: <LoginIcon /> },
+  { title: "Register", path: "/signup", icon: <HowToRegIcon /> },
+  {
+    title: "MentorProfile",
+    path: "/mentorProfile/:id",
+    icon: <HowToRegIcon />,
+  },
+  {
+    title: "StudentProfile",
+    path: "/studentProfile/:id",
+    icon: <HowToRegIcon />,
+  },
+  { title: "Calendar", path: "/calendar", icon: <HowToRegIcon /> },
+  {
+    title: "MentorProfileTest",
+    path: "/mentorProfileTest/:id",
+    icon: <HowToRegIcon />,
+  }, //test perfil mentor
+];
 
 function App() {
   return (
@@ -55,11 +66,28 @@ function App() {
                 <Route path="/mentorshipForm" element={<Mentorship />} />
                 <Route path="/studentForm" element={<StudentForm />} />
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
-                <Route path="/studentProfile/:id" element={<StudentProfile />} />
-                <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
-                <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
+                <Route
+                  path="/studentProfile/:id"
+                  element={<StudentProfile />}
+                />
+                <Route
+                  path="/updateMentorProfile/:id"
+                  element={<UpdateMentorProfile />}
+                />
+                <Route
+                  path="/updateStudentProfile/:id"
+                  element={<UpdateStudentProfile />}
+                />
                 <Route path="/calendar" element={<SchedulerComponent />} />
-                <Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />         //test perfil mentor
+                <Route
+                  path="/mentorProfileTest/:id"
+                  element={<MentorProfileTest />}
+                />{" "}
+                //test perfil mentor
+                {
+                  //<Route path="/mentor/:id/score/:id" element={<Score />} />
+                }
+                <Route path="/score" element={<Score />} />
               </Routes>
             </div>
           </BrowserRouter>
