@@ -1,6 +1,6 @@
 import "./style.css";
 
-import sendIcon from "../../../../public/chat/send-icon.svg";
+import sendIcon from "../../../images/chat/send-icon.svg";
 
 export const InputMessages = () => {
   return (

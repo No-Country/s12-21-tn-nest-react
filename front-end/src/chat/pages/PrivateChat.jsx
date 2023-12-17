@@ -1,5 +1,5 @@
 import "./style.css";
-import { InputMessages } from "../components/chat/InputMessages/InputMessages";
+import { InputMessages } from "../components/InputMessages/InputMessages";
 
 export const PrivateChat = () => {
   return (

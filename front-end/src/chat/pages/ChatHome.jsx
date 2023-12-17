@@ -1,9 +1,8 @@
-
 import { Outlet } from "react-router-dom";
-import { ListChat } from "../components/chat/ListChat/ListChat";
+import { ListChat } from "../components/ListChat/ListChat";
 import { useRef } from "react";
-import { TopPrivateChat } from "../components/chat/TopComponents/TopPrivateChat";
-import { TopListChat } from "../components/chat/TopComponents/TopListChat";
+import { TopPrivateChat } from "../components/TopComponents/TopPrivateChat";
+import { TopListChat } from "../components/TopComponents/TopListChat";
 import "./style.css";
 
 export const ChatHome = () => {

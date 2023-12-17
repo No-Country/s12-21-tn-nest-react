@@ -11,6 +11,7 @@ import { PaypalModule } from './paypal/paypal.module';
 import { StripeModule } from './stripe/stripe.module';
 import { MpagoModule } from './mpago/mpago.module';
 import { QuotesModule } from './quotes/quotes.module';
+import { ChatModule } from './chat/chat.module';
 
 const feactureModule = [
   MentorModule,
@@ -21,6 +22,7 @@ const feactureModule = [
   StripeModule,
   MpagoModule,
   QuotesModule,
+  ChatModule,
 ];
 
 @Module({

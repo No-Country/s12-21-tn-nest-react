@@ -1,35 +1,28 @@
-import { createContext, useEffect, useState } from "react";
-import {io} from "socket.io-client";
-import Cookies from "js-cookie";
+import { createContext, useEffect, useState, useContext } from "react";
+import { io } from "socket.io-client";
+import { AuthContext } from "./AuthContext";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const SocketConext = createContext();
-
+export const SocketConext = createContext();
 
 export const SocketProvider = ({ children }) => {
+  const { user } = useContext(AuthContext);
 
-    const [socket, setSocket] = useState(() => {
-      return io(BASE_URL, {
-        auth: {
-          token: Cookies.get("token"),}
-      });
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const socket = io(BASE_URL, {
+      auth: {
+        token: user?.token,
+      },
     });
+    setSocket(socket);
+  }, []);
 
+  return (
+    <SocketConext.Provider value={{ socket }}>{children}</SocketConext.Provider>
+  );
+};
 
-    useEffect(() => {
-      setSocket(
-        io(BASE_URL, {
-          auth: {
-            token: Cookies.get("token"),}
-        })
-      );
-    }, []);
-
-    return (
-        <SocketConext.Provider value={{socket}}>
-            {children}
-        </SocketConext.Provider>
-    )
-
-}
+export default SocketConext;
