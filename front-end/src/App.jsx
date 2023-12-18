@@ -3,7 +3,6 @@ import { AuthProvider } from "./context/AuthContext";
 import Home from "./Home/Home";
 import SignUp from "./SignUp/SignUp";
 import Login from "./Login/Login";
-import Header from "./components/Header";
 import "./App.css";
 import { MentoresPage } from "./MentoresPage/MentoresPage";
 import MentorForm from "./components/MentorForm";
@@ -19,9 +18,8 @@ import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
-import SchedulerComponent from "./components/SchedulerComponent";
 import MentorProfileTest from "./components/MentorProfileTest";
-import ContactMentor from "./components/ContactMentor";
+import ContactMentor from "./components/ContactMentor"
 
 
 const navLinksArray = [
@@ -32,7 +30,6 @@ const navLinksArray = [
   { title: 'Register', path: '/signup', icon: <HowToRegIcon /> },
   { title: 'MentorProfile', path: '/mentorProfile/:id', icon: <HowToRegIcon /> },
   { title: 'StudentProfile', path: '/studentProfile/:id', icon: <HowToRegIcon /> },
-  { title: 'Calendar', path: '/calendar', icon: <HowToRegIcon /> },
   { title: 'MentorProfileTest', path: '/mentorProfileTest/:id', icon: <HowToRegIcon /> },       //test perfil mentor
 
 ]
@@ -58,7 +55,6 @@ function App() {
                 <Route path="/studentProfile/:id" element={<StudentProfile />} />
                 <Route path="/updateMentorProfile/:id" element={<UpdateMentorProfile />} />
                 <Route path="/updateStudentProfile/:id" element={<UpdateStudentProfile />} />
-                <Route path="/calendar" element={<SchedulerComponent />} />
                 <Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />         //test perfil mentor
                 <Route path="/contactMentor" element={<ContactMentor />} />
               </Routes>

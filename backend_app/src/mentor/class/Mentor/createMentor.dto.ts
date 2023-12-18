@@ -76,8 +76,5 @@ export class createMentor {
   userId: string;
 
   @ApiProperty()
-  @IsArray()
-  @IsNotEmpty()
-  @ValidateNested({ each: true })
   mentor_availability?: any[];
 }
