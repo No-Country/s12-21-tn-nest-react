@@ -31,7 +31,7 @@ export class StripeService {
   async createPaymentIntent(
     createStripeIntentDto: CreateStripeIntentDto,
   ): Promise<any> {
-    const convertAmount = createStripeIntentDto.amount * 100;
+    const convertAmount = Number(createStripeIntentDto.amount) * 100;
     try {
       const session = await stripe.checkout.sessions.create({
         line_items: [
@@ -61,7 +61,14 @@ export class StripeService {
         url: session.url,
       };
     } catch (error) {
-      throw error;
+      console.log({ message: error });
+      throw new HttpException(
+        { message: error },
+        error.statusCode || HttpStatus.BAD_REQUEST,
+        {
+          cause: new Error(error.message),
+        },
+      );
     }
   }
 
