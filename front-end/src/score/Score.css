@@ -1,0 +1,135 @@
+.container-score__reject {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 40vw;
+  min-height: 30vh;
+  background: rgba(112, 112, 112, 0.452);
+  color: white;
+  font-size: 1.6rem;
+  margin: 10vh auto;
+  border-radius: 1rem;
+}
+
+.score-reject__button1,
+.score-reject__button2 {
+  width: 10rem;
+  font-size: 1.6rem;
+  margin: 0.2rem auto;
+  height: 3rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+}
+
+.score-reject__button1 {
+  margin-top: 2rem;
+  &:hover {
+    background-color: #25d366;
+  }
+}
+
+.score-reject__button2 {
+  &:hover {
+    background-color: brown;
+  }
+}
+
+.score__title {
+  display: flex;
+  justify-content: center;
+  color: #25d366;
+  margin: -1rem auto 2rem;
+  text-align: center;
+}
+
+.score-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  background-color: rgba(112, 112, 112, 0.452);
+  color: white;
+  padding: 3rem;
+  width: 90vw;
+  height: 70vh;
+  margin: 0 auto;
+  border-radius: 3rem;
+}
+
+.score-form__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.score-form__paragraph {
+  margin: 2rem 0 0.4rem;
+  font-size: 1.2rem;
+}
+
+.score-form__msg {
+  margin-top: 0.8rem;
+  min-height: 4rem;
+  padding: 0.4rem;
+  font-size: 1rem;
+  border-radius: 0.4rem;
+}
+
+.score-form__button {
+  margin: 2rem 0;
+  height: auto;
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.score-form__button {
+  --border-right: 6px;
+  --text-stroke-color: rgba(255, 255, 255, 0.6);
+  --animation-color: #37ff8b;
+  --fs-size: 2em;
+  letter-spacing: 3px;
+  text-decoration: none;
+  font-size: var(--fs-size);
+  font-family: "Arial";
+  position: relative;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-stroke-color);
+}
+
+.hover-text {
+  position: absolute;
+  box-sizing: border-box;
+  content: attr(data-text);
+  color: var(--animation-color);
+  width: 0%;
+  inset: 0;
+  border-right: var(--border-right) solid var(--animation-color);
+  overflow: hidden;
+  transition: 0.5s;
+  -webkit-text-stroke: 1px var(--animation-color);
+  left: 35%;
+}
+
+.score-form__button:hover .hover-text {
+  width: 30%;
+  filter: drop-shadow(0 0 23px var(--animation-color));
+  left: calc(35%);
+}
+
+@media screen and (min-width: 720px) {
+  .score__title {
+    margin: 0 auto 2rem;
+  }
+  .score-form {
+    padding: 4rem;
+    width: 40vw;
+    height: 60vh;
+  }
+  .score-form__title {
+    font-size: 2.4rem;
+  }
+}

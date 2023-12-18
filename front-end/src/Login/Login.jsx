@@ -42,48 +42,51 @@ const Login = () => {
   }, [isAuthenticated]);
 
   const login = handleSubmit((data) => {
-    console.log(data);
     signIn(data);
   });
 
   return (
     <>
-      {loginErrors.map((error, i) => (
-        <div
-          style={{
-            background: "red",
-            color: "white",
-            textAlign: "center",
-          }}
-          key={i}
-        >
-          {error}
-        </div>
-      ))}
+      {loginErrors &&
+        loginErrors.length > 0 &&
+        loginErrors.map((error, i) => (
+          <div
+            style={{
+              background: "red",
+              color: "white",
+              textAlign: "center",
+            }}
+            key={i}
+          >
+            {error}
+          </div>
+        ))}
       <form className="container-login" onSubmit={login}>
         <div className="login-box">
           <Box
-            sx={{
-              display: "flex",
-              alignItems: "flex-start",
-              margin: "3rem 0 3rem 0",
-            }}
+            className="container-login__box"
+            sx={{ textAlign: "center", margin: "1rem auto" }}
           >
             <AccountCircle sx={{ color: "white", mr: 1, my: 0.5 }} />
-            <div sx={{ display: "flex", flexDirection: "column" }}>
+            <div
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <TextField
-                sx={{ width: "19rem" }}
                 id="input-with-sx"
                 label="Email"
                 variant="standard"
                 className="input-username"
+                type="email"
                 required
                 {...register("email", { required: true })}
                 InputLabelProps={{
                   style: { color: "white" },
                 }}
                 InputProps={{
-                  style: { color: "white" },
+                  style: { color: "white", fontSize: "0.5em" },
                 }}
               />
               {errors.email && (
@@ -93,9 +96,9 @@ const Login = () => {
               )}
             </div>
           </Box>
-          <FormControl sx={{ m: 1, width: "20rem" }} variant="outlined">
+          <FormControl sx={{ m: 0 }} variant="outlined">
             <InputLabel
-              sx={{ fontSize: "1.8rem", marginBottom: "2rem", color: "white" }}
+              sx={{ color: "white" }}
               htmlFor="outlined-adornment-password"
             >
               Password
