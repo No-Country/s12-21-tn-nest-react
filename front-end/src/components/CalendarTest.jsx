@@ -1,63 +1,80 @@
-import React, { useState } from 'react';
-import Calendar from 'react-calendar';
-import TimePicker from 'react-time-picker';
-import 'react-calendar/dist/Calendar.css';
-import 'react-time-picker/dist/TimePicker.css';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, Typography, Grid } from '@mui/material';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { useAuth } from '../context/AuthContext';
+import { urlApi } from '../../config/axios';
 
-const CalendarWrapper = ({ children }) => (
-  <div style={{ borderRadius: '8px', overflow: 'hidden' }}>
-    {children}
-  </div>
-);
+const MyMentorships = () => {
+  const [mentorshipData, setMentorshipData] = useState([]);
+  const { userId, studentId, mentorId } = useAuth();
 
-const CalendarTest = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState('12:00');
-  const [formattedDate, setFormattedDate] = useState('');
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    const isoFormattedDate = date.toISOString().split('T')[0];
-    setFormattedDate(isoFormattedDate);
-    console.log(isoFormattedDate);
-  };
-  const handleTimeChange = (time) => {
-    setSelectedTime(time);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/quotes/filter/all/${studentId}`);
+        const data = await response.json();
+        setMentorshipData(data);
+      } catch (error) {
+        console.error('Error fetching mentorship data', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const getColorByState = (stateName) => {
+    switch (stateName) {
+      case 'Pendiente':
+        return 'yellow';
+      case 'Aceptada':
+        return 'green';
+      case 'Rechazada':
+        return 'red';
+      default:
+        return 'white';
+    }
   };
 
   return (
-    <div
-      style={{
-        color: '#FFF',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-        border: '2px solid #00FF00', 
-      }}
-    >
-      <h2 style={{ color: '#FFA500' }}>Selecciona la fecha y la hora para tu cita</h2>
-
-      <div style={{ margin: '0 auto 20px', maxWidth: '300px' }}>
-        <h3 style={{ color: '#FFA500' }}>Fecha:</h3>
-        <CalendarWrapper>
-          <Calendar
-            onChange={handleDateChange}
-            value={selectedDate}
-          />
-        </CalendarWrapper>
-      </div>
-
-      <div style={{ margin: '0 auto 20px', maxWidth: '200px' }}>
-        <h3 style={{ color: '#FFA500' }}>Hora:</h3>
-        <TimePicker onChange={handleTimeChange} value={selectedTime} />
-      </div>
-
-      <div style={{ fontWeight: 'bold' }}>
-        <p style={{ color: '#00FF00' }}>Fecha seleccionada: {formattedDate}</p>
-        <p style={{ color: '#00FF00' }}>Hora seleccionada: {selectedTime}</p>
-      </div>
-    </div>
+    <Grid container spacing={2}>
+      {mentorshipData.map((mentorship) => (
+        <Grid item key={mentorship.id} xs={12} sm={6} md={4}>
+          <Card
+            style={{
+              backgroundColor: getColorByState(mentorship.state.name),
+              color: 'black',
+            }}
+          >
+            <CardContent>
+              <Typography variant="h6" component="div">
+                <Grid container alignItems="center" spacing={1}>
+                  <Grid item>
+                    <CalendarTodayIcon />
+                  </Grid>
+                  <Grid item>{new Date(mentorship.appointmentDate).toLocaleDateString()}</Grid>
+                </Grid>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Estado: {mentorship.state.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Alumno: {mentorship.alumn.user.firstName} {mentorship.alumn.user.lastName}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Email: {mentorship.alumn.user.email}
+              </Typography>
+              <img
+                src={mentorship.alumn.profileImg}
+                alt={`${mentorship.alumn.user.firstName} ${mentorship.alumn.user.lastName}`}
+                style={{ width: '100%', marginTop: '8px', borderRadius: '4px' }}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 
-export default CalendarTest;
+export default MyMentorships;

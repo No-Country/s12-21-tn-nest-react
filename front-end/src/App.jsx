@@ -20,13 +20,14 @@ import HomeIcon from "@mui/icons-material/Home";
 import SchoolIcon from "@mui/icons-material/School";
 import MentorProfileTest from "./components/MentorProfileTest";
 import ContactMentor from "./components/ContactMentor";
+import MyMentorships from "./components/MyMentorships";
 
 import Score from "./score/Score";
 
 const navLinksArray = [
   { title: "Home", path: "/", icon: <HomeIcon /> },
   { title: "Mentores", path: "/mentores", icon: <GroupAddIcon /> },
-  { title: "Mentorias", path: "#mentorias", icon: <SchoolIcon /> },
+  { title: "Mentorias", path: "/myMentorships", icon: <SchoolIcon /> },
   { title: "Login", path: "/login", icon: <LoginIcon /> },
   { title: "Register", path: "/signup", icon: <HowToRegIcon /> },
   {
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/studentForm" element={<StudentForm />} />
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
                 <Route path="/contactMentor" element={<ContactMentor />} />
+                <Route path="/myMentorships" element={<MyMentorships />} />
                 <Route
                   path="/studentProfile/:id"
                   element={<StudentProfile />}

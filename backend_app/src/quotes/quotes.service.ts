@@ -55,8 +55,9 @@ export class QuotesService {
         state: { id: datoStatus.id },
       },
       relations: {
-        mentor: true,
-        state: true,
+        alumn: true,
+        mentor:true
+        state:true
       },
     });
     if (datosMentor.length > 0) return datosMentor;
@@ -67,6 +68,8 @@ export class QuotesService {
       },
       relations: {
         alumn: true,
+        mentor:true
+        state:true
       },
     });
     if (datosAlumn.length > 0) return datosAlumn;
@@ -82,7 +85,9 @@ export class QuotesService {
         state: { id: datoStatus.id },
       },
       relations: {
-        mentor: true,
+        alumn: true,
+        mentor:true
+        state:true
       },
     });
     if (datosMentor.length > 0) return datosMentor;
@@ -93,6 +98,8 @@ export class QuotesService {
       },
       relations: {
         alumn: true,
+        mentor:true
+        state:true
       },
     });
     if (datosAlumn.length > 0) return datosAlumn;
@@ -109,6 +116,8 @@ export class QuotesService {
       },
       relations: {
         mentor: true,
+        alumn:true
+        state:true
       },
     });
     if (datosMentor.length > 0) return datosMentor;
@@ -119,6 +128,8 @@ export class QuotesService {
       },
       relations: {
         alumn: true,
+        mentor:true
+        state:true
       },
     });
     if (datosAlumn.length > 0) return datosAlumn;
@@ -132,6 +143,7 @@ export class QuotesService {
       relations: {
         mentor: true,
         state: true,
+        alumn: true,
       },
     });
     if (datosMentor.length > 0) return datosMentor;
@@ -142,6 +154,7 @@ export class QuotesService {
       relations: {
         alumn: true,
         state: true,
+        mentor:true
       },
     });
     if (datosAlumn.length > 0) return datosAlumn;
