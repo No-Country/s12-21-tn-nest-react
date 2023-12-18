@@ -61,13 +61,13 @@ const StudentProfile = () => {
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
-                  backgroundImage: `url(${studentInfo.image})`,
+                  backgroundImage: `url(${studentInfo.profileImg})`,
                 }}
               />
               <Box sx={{ position: "absolute", top: { xs: "-3rem", sm: "-4rem" } }}>
-                <Avatar sx={{ width: { xs: "8rem", md: "10rem" }, height: { xs: "8rem", md: "10rem" }, border: "3px solid #25D366" }} alt={`${studentInfo.user.firstName} ${studentInfo.user.lastName}`} src={studentInfo.image} />
+                <Avatar sx={{ width: { xs: "8rem", md: "10rem" }, height: { xs: "8rem", md: "10rem" }, border: "3px solid #25D366" }} alt={`${studentInfo.user.firstName} ${studentInfo.user.lastName}`} src={studentInfo.profileImg} />
               </Box>
-              <CardContent sx={{ /* marginTop: "6rem", */ width: "100%" }}>
+              <CardContent sx={{ width: "100%" }}>
                 <ContentBlock
                   title="Nombre:"
                   description={`${studentInfo.user.firstName} ${studentInfo.user.lastName}`} />

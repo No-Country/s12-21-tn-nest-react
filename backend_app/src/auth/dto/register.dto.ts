@@ -48,8 +48,6 @@ export default class RegisterDto extends CreateUserDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsArray()
-  @IsNotEmpty()
   mentor_availability?: any[];
 }
 

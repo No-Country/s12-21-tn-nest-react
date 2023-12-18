@@ -13,7 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { urlApi } from '../../config/axios';
 import { useAuth } from '../context/AuthContext';
-
+import SchedulerComponent from './ContactCalendar';
 
 const UpdateMentorProfile = () => {
   const location = useLocation();
@@ -28,15 +28,13 @@ const UpdateMentorProfile = () => {
     mentorDescription: mentorInfo.mentorDescription || '', 
     aboutMe: mentorInfo.aboutMe || '',
     price: mentorInfo.price || '',
-/*     categories: mentorInfo.categories.map((category) => category.name) || [],
- */    firstName: mentorInfo.userId.firstName || '',
+    firstName: mentorInfo.userId.firstName || '',
     lastName: mentorInfo.userId.lastName || '',
     phone: mentorInfo.userId.phone || '', 
     birthdate: mentorInfo.birthdate,
     speciality: mentorInfo.speciality || { id: '', name: '' }, 
     categories: mentorInfo.categories || [],
   });
-
 
   const fetchSpecialities = async () => {
     try {
@@ -88,21 +86,17 @@ const UpdateMentorProfile = () => {
   const handleChange = (field, value) => {
     setEditedInfo((prevInfo) => {
       let updatedValue = value;
-  
       if (field === 'birthdate' && value instanceof Date) {
         updatedValue = value;
       } else if (field === 'speciality') {
         updatedValue = value;
       }
-  
       return {
         ...prevInfo,
         [field]: updatedValue,
       };
     });
   };
-  
-  
   
   const handleSaveChanges = async () => {
     try {
@@ -193,57 +187,42 @@ const UpdateMentorProfile = () => {
                   ))}
                 </Select>
             </FormControl>
-          <Link to={`/modifyMentorSpeciality`} state={{ mentorInfo }}>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  style={{ marginLeft: 8 }}
-                >
-                  Modificar Especilidad
-                </Button>
-            </Link>
             <div>
-  <FormControl sx={{ m: 1, width: 300 }}>
-    <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
-    <Select
-      labelId="demo-multiple-chip-label"
-      id="demo-multiple-chip"
-      multiple
-      value={editedInfo.categories.map((category) => category.name)}
-      onChange={(e) => {
-        const selectedCategories = e.target.value.map((categoryName) => ({
-          id: categories.find((cat) => cat.name === categoryName)?.id || '',
-          name: categoryName,
-        }));
-        handleChange('categories', selectedCategories);
-      }}
-      input={<OutlinedInput id="select-multiple-chip" label="Categorías" />}
-      renderValue={(selected) => (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-          {selected.map((value, index) => (
-            <Chip key={index} label={value} />
-          ))}
-        </Box>
-      )}
-    >
-      {categories.map((category) => (
-        <MenuItem
-          key={category.id}
-          value={category.name}
-          style={getStyles(category.name, editedInfo.categories, customTheme)}
-        >
-          {category.name}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-  <Link to={`/modifyMentorCategories`} state={{ mentorInfo }}>
-    <Button variant="outlined" color="secondary" style={{ marginLeft: 8 }}>
-      Modificar Categorías
-    </Button>
-  </Link>
-</div>
-
+          <FormControl sx={{ m: 1, width: 300 }}>
+            <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
+            <Select
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              multiple
+              value={editedInfo.categories.map((category) => category.name)}
+              onChange={(e) => {
+                const selectedCategories = e.target.value.map((categoryName) => ({
+                  id: categories.find((cat) => cat.name === categoryName)?.id || '',
+                  name: categoryName,
+                }));
+                handleChange('categories', selectedCategories);
+              }}
+              input={<OutlinedInput id="select-multiple-chip" label="Categorías" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value, index) => (
+                    <Chip key={index} label={value} />
+                  ))}
+                </Box>
+              )}
+            >
+              {categories.map((category) => (
+                <MenuItem
+                  key={category.id}
+                  value={category.name}
+                  style={getStyles(category.name, editedInfo.categories, customTheme)}
+                >
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
           <Grid item sx={{ mt: 3, mb: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker

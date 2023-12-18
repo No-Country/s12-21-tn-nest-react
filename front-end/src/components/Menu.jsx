@@ -11,8 +11,7 @@ export default function Menu({ navLinksArray }) {
   const { isAuthenticated, user } = useAuth(); 
   const isMentor = isAuthenticated && user && user.role.name === "mentor";
   const isStudent = isAuthenticated && user && user.role.name === "student";
-
-
+  
   return (
     <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }} data-aos="fade-down">
       <Container>

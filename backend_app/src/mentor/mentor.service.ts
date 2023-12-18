@@ -114,6 +114,7 @@ export class MentorService {
         const upload = await uploadCloudinary(file);
         mentor_add['image'] = upload['url'];
       }
+      console.log(post.mentor_availability)
       const list = await add_in_list_element(
         post.mentor_availability,
         this.availabilityRepository,

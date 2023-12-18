@@ -1,56 +1,87 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import SchedulerComponent from './SchedulerComponent';
-import { Box, Button, TextareaAutosize } from '@mui/material';
+import React, { useState } from 'react';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { urlApi } from '../../config/axios';
+
+const CalendarWrapper = ({ children }) => (
+  <div style={{ borderRadius: '8px', overflow: 'hidden' }}>
+    {children}
+  </div>
+);
 
 const ContactMentor = () => {
+  const { userId, studentId } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
   const mentorId = location.state?.id || {};
-  const [schedulerInfo, setSchedulerInfo] = useState([]);
-  const [comments, setComments] = useState('');
-  const idStudent = "0c7a806a-a6a1-4dfb-8218-4aa4fdee8097";
-  //capturar id estudiante cuando arreglen el login
-  //capturar rol name. Si es mentor, va a poder ver todos los campos. Si es estudiante, 
-  // solo va a ver el calendario y un textarea de "comentarios"
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState('');
+  const navigate = useNavigate();
 
-  const handleSchedulerInfoChange = (info) => {
-    setSchedulerInfo(info);
+  const handleDateChange = (date) => {
+    if (date >= new Date()) {
+      setSelectedDate(date);
+      const isoFormattedDate = date.toISOString().split('T')[0];
+      setFormattedDate(isoFormattedDate);
+      console.log(isoFormattedDate);
+    }
   };
 
-  const handleChange = (value) => {
-    setComments(value);
-  }
-
-  const submit = async () => {
+  const handleSubmit = async (e) => {
+   /*  e.preventDefault();
+    const requestData = {
+      studentId: studentId,
+      mentorId: mentorId,
+      selectedDate: formattedDate,
+    };
     try {
-      let url = `` //agregar la url
-      const response = await urlApi.post(url);//enviar la variable con la info
-      } catch (error) {
-        console.error('Error updating mentor information:', error);
+      let url = ''
+      const response = await urlApi.post( url, requestData );
+      console.log('Respuesta.data del servidor:', response.data);
+      console.log('Respuesta del servidor:', response);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        console.error('Validation Error:', error.response.data.message);
+      } else {
+        console.error('Error:', error);
+      }
     }
-
-  }
-  
+    navigate('/'); */
+  };
 
   return (
-    <div>
-      <Box>
-        <SchedulerComponent onSchedulerInfoChange={handleSchedulerInfoChange} />
-        <TextareaAutosize
-          label="Comentarios para el mentor..."
-          minRows={7}
-          style={{ width: '100%', margin: '16px' }}
-          value={comments}
-          onChange={(e) => handleChange(e.target.value)}
-          margin="normal"
-        />
-          <Button onClick={submit}>
-            Enviar
-          </Button>
-      </Box>
-    </div>
-  )
-}
+    <div
+      style={{
+        color: '#FFF',
+        padding: '20px',
+        borderRadius: '8px',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+        textAlign: 'center',
+        border: '2px solid #00FF00', 
+      }}
+    >
+      <h2 style={{ color: '#FFA500' }}>Selecciona la fecha para tu cita</h2>
 
-export default ContactMentor
+      <div style={{ margin: '10px auto 20px', maxWidth: '300px' }}>
+        <CalendarWrapper>
+          <Calendar
+            onChange={handleDateChange}
+            value={selectedDate}
+            minDate={new Date()}
+          />
+        </CalendarWrapper>
+      </div>
+
+      <div style={{ fontWeight: 'bold' }}>
+        <p style={{ color: '#00FF00' }}>Fecha seleccionada: {formattedDate}</p>
+      </div>
+
+      <button onClick={handleSubmit} style={{ marginTop: '10px' }}>
+        Enviar solicitud
+      </button>
+    </div>
+  );
+};
+
+export default ContactMentor;
