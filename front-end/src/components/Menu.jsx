@@ -9,8 +9,8 @@ import { useAuth } from '../context/AuthContext';
 export default function Menu({ navLinksArray }) {
   const [open, setOpen] = useState(false);
   const { isAuthenticated, user } = useAuth(); 
-  const isMentor = isAuthenticated && user && user.role.name === "mentor";
-  const isStudent = isAuthenticated && user && user.role.name === "student";
+  const isMentor =  user && user.role.name === "mentor";
+  const isStudent =  user && user.role.name === "student";
   
   return (
     <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }} data-aos="fade-down">
@@ -28,7 +28,7 @@ export default function Menu({ navLinksArray }) {
               <img src={logo} style={{ width: '100%' }} />
             </Box>
             <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
-              {isAuthenticated ? (
+              {user != null ? (
                 // Render links for authenticated users
                 <>
                   {navLinksArray
