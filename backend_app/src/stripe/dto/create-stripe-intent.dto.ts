@@ -26,7 +26,7 @@ export class CreateStripeIntentDto {
     example: '15.00',
   })
   @IsNotEmpty({ message: 'Mentorship value is required' })
-  @IsNumber()
+  @IsString()
   amount: number;
 
   @ApiProperty({

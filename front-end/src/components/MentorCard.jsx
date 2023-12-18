@@ -96,7 +96,7 @@ export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, pr
                     <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} mentorPrice={mentorPrice} mentorData={mentorData} />
 
                     {userId ? ( 
-                        <Link to={`/contactMentor`} state={id}>
+                        <Link to={`/contactMentor`} state={{id}}>
                             <Button variant='contained' color='success'>
                                 Contactar
                             </Button>
