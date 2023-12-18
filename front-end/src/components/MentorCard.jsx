@@ -4,7 +4,7 @@ import { PagosDonativos } from './PagosDonativos';
 import {Link} from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
 
-export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage, userId, mentorPrice }) => {
+export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage, mentorPrice }) => {
     const [showDonativos, setShowDonativos] = useState(false)
     const { userId, studentId } = useAuth();
 
