@@ -13,7 +13,7 @@ export default function CardMentorSection({title,description,textButton}) {
         <Typography variant="subtitle1" sx={{ color: '#F9F9F9', mt: 1 }}>
           {description}
         </Typography>
-        <Button to="/signUp" component={Link} variant="contained" sx={{ width: 130, mt: 1, py: 1 }}>
+        <Button to="/signUp" component={Link} variant="contained" sx={{ width: 130, mt: 1, py: 1,backgroundColor:"#25D366",color:"#fff" }}>
           {textButton}
         </Button>
       </Box>
