@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class SaveMpagoDto {
   @ApiProperty({
@@ -7,14 +7,15 @@ export class SaveMpagoDto {
     nullable: false,
     example: '13239157-6f7ece7b-52a5-4338-8cd2-3138bcf1d515',
   })
-  @IsNotEmpty({ message: 'mpago_preference_id is required' })
+  @IsOptional({ message: 'mpago_preference_id is required but not mandatory' })
   @IsString()
-  mpago_preference_id: string;
+  mpago_preference_id?: string;
 
   @ApiProperty({
     description: 'Order status',
     nullable: false,
     example: 'APPROVED',
+    default: 'PENDING',
   })
   @IsNotEmpty({ message: 'status is required' })
   @IsString()
@@ -24,6 +25,7 @@ export class SaveMpagoDto {
     description: 'Order status detail',
     nullable: false,
     example: 'ACREDITED',
+    default: 'PENDING',
   })
   @IsNotEmpty({ message: 'status_detail is required' })
   @IsString()

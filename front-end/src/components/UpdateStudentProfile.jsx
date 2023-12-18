@@ -7,10 +7,12 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { urlApi } from '../../config/axios';
+import { useAuth } from '../context/AuthContext';
 
 const UpdateStudentProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { userId , studentId} = useAuth();
   const studentInfo = location.state?.studentInfo || {};
   const [specialities, setSpecialities] = useState([]); //opciones del select
   const [categories, setCategories] = useState([]);  //opciones del select
@@ -82,7 +84,7 @@ const UpdateStudentProfile = () => {
   
   const handleSaveChanges = async () => {
     try {
-      let url = `alumn/0c7a806a-a6a1-4dfb-8218-4aa4fdee8097`
+      let url = `alumn/${studentId}`
       console.log('Saving changes:', editedInfo);
       const categoryIds = editedInfo.categoriesId.map((category) => category.id);
       console.log('Category IDs:', categoryIds);
