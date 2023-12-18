@@ -3,9 +3,6 @@ import { urlApi } from '../../config/axios';
 
 export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice }) => {
     const isMobile = useMediaQuery('(max-width:600px)');
-console.log(name)
-console.log(mentorPrice)
-console.log(mentorData)
     
     const redirectPaymentGateway = async (gateway) => {
 
