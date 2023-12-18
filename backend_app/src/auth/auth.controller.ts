@@ -26,8 +26,7 @@ export class AuthController {
     @Body() registerDto: RegisterDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(registerDto)
-    // return await this.authService.mentorRegister(registerDto, file);
+    return await this.authService.mentorRegister(registerDto, file);
   }
 
   @Post('register/student')

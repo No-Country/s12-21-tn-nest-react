@@ -19,7 +19,7 @@ import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, signIn, errors: loginErrors } = useAuth();
+  const { isAuthenticated, signIn, errors: loginErrors, user } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -36,10 +36,10 @@ const Login = () => {
   } = useForm();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (user != null) {
       navigate("/");
     }
-  }, [isAuthenticated]);
+  }, [user]);
 
   const login = handleSubmit((data) => {
     signIn(data);

@@ -4,14 +4,10 @@ import { QuotesService } from './quotes.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { State } from './models/state.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
-import { Scheduler } from './models/schedule.entity';
-import { Days } from './models/days.entity';
-import { Availability } from './models/availability.entity';
+import { Quotes } from './models/quotes.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([State, Mentor, Scheduler, Days, Availability]),
-  ],
+  imports: [TypeOrmModule.forFeature([State, Mentor, Quotes])],
   controllers: [QuotesController],
   providers: [QuotesService],
 })

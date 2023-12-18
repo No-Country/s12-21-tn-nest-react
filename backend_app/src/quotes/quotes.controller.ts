@@ -1,5 +1,16 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { QuotesService } from './quotes.service';
+import { createQuotes } from './class/quotes.dto';
+import { refuser } from './class/quotesRefuser.dto';
+import { Accept } from './class/quotesAccept.dto';
 
 @Controller('quotes')
 export class QuotesController {
@@ -22,40 +33,38 @@ export class QuotesController {
       };
     }
   }
-  @Get('hour')
-  async get_hour() {
-    return await this.repositoryService.getScheduler();
+  @Post('create')
+  async create_quotes(@Body() post: createQuotes) {
+    return this.repositoryService.postQuotes(post);
   }
-  @Get('hour/create')
-  async post_hour() {
-    if (await this.repositoryService.postScheduler()) {
-      return {
-        status: HttpStatus.CREATED,
-        message: 'Las horas fueron cargadadas correctamente',
-      };
-    } else {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: 'Las hora ya se encuentran cargada correctamente',
-      };
-    }
+  @Get('filter/accept/:id')
+  async get_quotes_accept(@Param('id') idUser: string) {
+    return this.repositoryService.get_quotes_accept(idUser);
   }
-  @Get('days')
-  async get_days() {
-    return await this.repositoryService.getDays();
+  @Get('filter/refused/:id')
+  async get_quotes_refused(@Param('id') idUser: string) {
+    return this.repositoryService.get_quotes_refused(idUser);
   }
-  @Get('days/create')
-  async post_days() {
-    if (await this.repositoryService.postDays()) {
-      return {
-        status: HttpStatus.CREATED,
-        message: 'Los dias fueron cargadadas correctamente',
-      };
-    } else {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: 'Los dias ya se encuentran cargada correctamente',
-      };
-    }
+  @Get('filter/pending/:id')
+  async get_quotes_pending(@Param('id') idUser: string) {
+    return this.repositoryService.get_quotes_pending(idUser);
+  }
+  @Get('filter/all/:id')
+  async get_quotes_all(@Param('id') idUser: string) {
+    return this.repositoryService.get_quotes_all(idUser);
+  }
+  @Patch('update/:id')
+  async get_quotes_update(
+    @Param('id') idQuotes: string,
+    @Body() accept: Accept,
+  ) {
+    return this.repositoryService.quotes_update(idQuotes, accept);
+  }
+  @Patch('refused/:id')
+  async quotes_refused(
+    @Param('id') idQuotes: string,
+    @Body() refused: refuser,
+  ) {
+    return this.repositoryService.quotes_refused(idQuotes, refused);
   }
 }

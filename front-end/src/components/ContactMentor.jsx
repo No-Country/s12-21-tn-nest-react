@@ -24,16 +24,16 @@ const ContactMentor = () => {
       setSelectedDate(date);
       const isoFormattedDate = date.toISOString().split('T')[0];
       setFormattedDate(isoFormattedDate);
-      console.log(isoFormattedDate);
+      console.log(formattedDate);
     }
   };
 
   const handleSubmit = async (e) => {
    /*  e.preventDefault();
     const requestData = {
-      studentId: studentId,
+      alumnId: studentId,
       mentorId: mentorId,
-      selectedDate: formattedDate,
+      appointmentDate: formattedDate,
     };
     try {
       let url = ''

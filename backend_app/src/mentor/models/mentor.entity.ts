@@ -13,7 +13,7 @@ import {
 import { Category } from './categories.entity';
 import { Speciality } from './especializaciones';
 import { User } from 'src/auth/user/entities/user.entity';
-import { Availability } from 'src/quotes/models/availability.entity';
+import { Quotes } from 'src/quotes/models/quotes.entity';
 
 @Entity({ name: 'mentor' })
 export class Mentor extends BaseEntity {
@@ -57,15 +57,7 @@ export class Mentor extends BaseEntity {
     name: 'user',
   })
   userId: User;
-  @ManyToMany(() => Availability, (availability) => availability.mentors)
-  @JoinTable({
-    name: 'mentors_availability',
-    joinColumn: {
-      name: 'mentors_id',
-    },
-    inverseJoinColumn: {
-      name: 'availability_id',
-    },
-  })
-  availables: Availability[];
+
+  @OneToMany(() => Quotes, (quotes) => quotes.mentor)
+  public quotes: Quotes[];
 }
