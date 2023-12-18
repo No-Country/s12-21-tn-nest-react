@@ -17,23 +17,22 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [name, setName] = useState(null);
+  const [rolName, setRolName] = useState(null);
+  const [rolId, setRolId] = useState(null);
   const [userId, setUserId] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [mentorId, setMentorId] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
 
-  
   const obtenerIdDelMentor = async (userId) => {
     try {
-      let url = `auth/filter/${userId}`
+      let url = `auth/filter/${userId}`;
       const response = await urlApi.get(url);
-      console.log("response",response);
+      console.log("response", response);
       return response.data;
-
     } catch (error) {
-      console.error('Error fetching mentor ID:', error);
+      console.error("Error fetching mentor ID:", error);
     }
   };
 
@@ -44,12 +43,10 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (user) => {
     try {
       const res = await loginRequest(user);
-      console.log(res);
+      console.log(res.data);
       if (res && res.data) {
-        setIsAuthenticated(true);
         setUser(res.data);
         setUserId(res.data.userId);
-
 
         if (res.data.role.name == "mentor") {
           const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);

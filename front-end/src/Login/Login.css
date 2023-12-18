@@ -3,8 +3,8 @@
   flex-direction: column;
   justify-content: center;
   margin: 5rem auto;
-  width: 30vw;
-  height: 70vh;
+  max-width: 92vw;
+  max-height: 80vh;
   padding: 0.8rem;
   background-color: rgba(12, 14, 12, 0.432);
   border-radius: 5rem;
@@ -22,6 +22,12 @@
 
 .login-box :first-child {
   font-size: 1.4rem !important;
+}
+
+.container-login__box {
+  display: flex;
+  align-items: flex-start;
+  margin: 3rem 0 3rem 0;
 }
 
 .link-registerp {
@@ -54,7 +60,7 @@
   align-items: center;
   justify-content: space-between;
   background: #25d366;
-  min-width: 250px;
+  min-width: 2.5rem;
   border: 0;
   border-radius: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -90,5 +96,20 @@
     box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.1),
       0 0 0 40px rgba(255, 255, 255, 0.1), 0 0 0 60px rgba(255, 255, 255, 0.1),
       0 0 0 80px rgba(255, 255, 255, 0);
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .container-login {
+    margin: 5rem auto;
+    max-width: 30vw;
+    max-height: 70vh;
+    padding: 0.8rem;
+  }
+
+  .btn {
+    font-size: 12px;
+    width: 20vw;
+    padding: 16px 20px;
   }
 }
