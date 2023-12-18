@@ -3,7 +3,7 @@ import { CardMedia, Box, Card, Typography, CardContent, Chip, Rating, Button, Ca
 import { PagosDonativos } from './PagosDonativos';
 
 
-export const MentorCard = ({ name, speciality, date, aboutMe, categories, price, mentorImage }) => {
+export const MentorCard = ({ name, speciality, date, aboutMe, categories, price, mentorImage, userId, mentorPrice }) => {
     const [showDonativos, setShowDonativos] = useState(false)
 
     const handleShowDonativos = () => {
@@ -92,7 +92,7 @@ export const MentorCard = ({ name, speciality, date, aboutMe, categories, price,
                     <Button variant='contained' color='success' onClick={handleShowDonativos} >
                         Donar
                     </Button>
-                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} />
+                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} userData={userId} mentorPrice={mentorPrice} />
                     <Button variant='contained' color='success' >
                         Contactar
                     </Button>

@@ -21,7 +21,7 @@ export const MentoresPage = () => {
     const handleOrderChange = (selectedOrder) => {
         setSelectedOrder(selectedOrder);
     };
-
+    
     //Filtro de categoria:
     const handleCategoryChange = (categoryName) => {
         let updateCategories = [...selectedCategory]
