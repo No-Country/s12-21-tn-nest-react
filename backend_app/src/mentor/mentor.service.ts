@@ -17,6 +17,7 @@ import { updateMentor } from './class/Mentor/updateMentor.dto';
 import * as bcrypt from 'bcryptjs';
 import { SALT_ROUNDS } from '../common/constants';
 import { UserService } from 'src/auth/user/user.service';
+import { State } from 'src/quotes/models/state.entity';
 @Injectable()
 export class MentorService {
   constructor(
@@ -26,6 +27,7 @@ export class MentorService {
     @InjectRepository(Speciality)
     private specialityRepository: Repository<Speciality>,
     private readonly userService: UserService,
+    @InjectRepository(State) private stateRepository: Repository<State>,
   ) {}
   async get_categories_all() {
     try {
@@ -104,7 +106,6 @@ export class MentorService {
         post.Categories,
       );
       const mentor_add = this.mentorRepository.create(object_mentor);
-
       if (file) {
         const upload = await uploadCloudinary(file);
         mentor_add['image'] = upload['url'];
@@ -127,11 +128,7 @@ export class MentorService {
   ) {
     try {
       let mentors = await this.mentorRepository.find({
-        relations: {
-          categories: true,
-          speciality: true,
-          userId: true,
-        },
+        relations: ['categories', 'speciality', 'userId'],
       });
 
       if (categoryName && categoryName.length > 0) {
@@ -155,7 +152,6 @@ export class MentorService {
           return mentors.sort((a, b) =>
             a.userId.firstName.localeCompare(b.userId.firstName),
           );
-          console.log(mentors);
         case 'descAlf':
           return mentors.sort((a, b) =>
             b.userId.firstName.localeCompare(a.userId.firstName),
@@ -217,12 +213,7 @@ export class MentorService {
   async mentor_find(id: string) {
     return await this.mentorRepository.findOne({
       where: { id: id },
-      relations: {
-        categories: true,
-        speciality: true,
-        userId: true,
-        availables: true,
-      },
+      relations: ['categories', 'speciality', 'userId'],
     });
   }
 
@@ -258,10 +249,19 @@ export class MentorService {
     if (!id) {
       return {
         status: HttpStatus.NOT_FOUND,
-        mesage: 'id not found',
+        message: 'id not found',
       };
     }
 
+    if (
+      !updateProfile.mentor_availability ||
+      updateProfile.mentor_availability.length === 0
+    ) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'enter availability',
+      };
+    }
     const object_update_mentor = await update_object_mentor(
       updateProfile,
       file,
@@ -332,9 +332,10 @@ export class MentorService {
       }
       if (newCategoriesToadd.length > 0) {
         searchMentor.categories.push(...newCategoriesToadd);
-        this.mentorRepository.save(searchMentor);
       }
     }
+
+    this.mentorRepository.save(searchMentor);
     return {
       status: HttpStatus.ACCEPTED,
       message: 'profile has been updated',

@@ -136,9 +136,10 @@ export class AuthService {
       if (categories.length == 0) {
         return {
           status: HttpStatus.NOT_FOUND,
-          message: 'enter the project categories',
+          message: 'enter the categories',
         };
       }
+
       const newUser = await this.userService.createMentor({
         firstName,
         lastName,
@@ -175,7 +176,24 @@ export class AuthService {
   async find_User(id: string) {
     const seachUser = await this.userRepository.findOne({
       where: { id },
+      relations: {
+        mentor: true,
+        alumn: true,
+      },
     });
+
+    delete seachUser.firstName;
+    delete seachUser.id;
+    delete seachUser.createdAt;
+    delete seachUser.updatedAt;
+    delete seachUser.deletedAt;
+    delete seachUser.lastName;
+    delete seachUser.email;
+    delete seachUser.phone;
+    delete seachUser.role['id'];
+    delete seachUser.role['updatedAt'];
+    delete seachUser.role['deletedAt'];
+
     return seachUser;
   }
 }

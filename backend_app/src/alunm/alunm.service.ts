@@ -162,6 +162,7 @@ export class AlumnService {
       );
       return await this.saveMentorHire(alumn, mentor, category);
     } catch (error) {
+      console.log(error)
       throw new Error('Error hiring mentor');
     }
   }
@@ -196,6 +197,7 @@ export class AlumnService {
 
       return await this.alumnHireMentorRepository.save(alumnHireMentor);
     } catch (error) {
+      console.log(error)
       throw new Error('Error saving mentor hire');
     }
   }
@@ -207,21 +209,21 @@ export class AlumnService {
     if (!find) throw 'Hire not found';
 
     try {
-      find.finished = true;
+      //find.finished = true;
       return await this.alumnHireMentorRepository.save(find);
     } catch (error) {
       throw 'Error finishing mentor hire';
     }
   }
 
-  async calificateMentor(id: string, calification: number) {
+  async calificateMentor(id: string, calification: number, msg: string) {
     const find = await this.alumnHireMentorRepository.findOne({
       where: { id },
     });
-    if (!find || !find.finished)
-      throw new Error('Hire not found or Mentory not finished');
+    if (!find) throw new Error('Hire not found or Mentory not finished');
     try {
       find.calification = calification;
+      find.comment = msg;
       return await this.alumnHireMentorRepository.save(find);
     } catch (error) {
       throw new Error('Error calificating mentor hire');

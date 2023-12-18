@@ -31,8 +31,11 @@ export class AlumnHireMentor extends BaseEntity {
   @Column()
   date: Date;
 
-  @Column({ default: false })
-  finished: boolean;
+  //@Column({ default: false })
+  //finished: boolean;
+
+  @Column({ default: '', nullable: true })
+  comment: string;
 
   @ManyToOne(() => Category, (Category) => Category.AlumnHireMentors)
   categoryjoin: Category;

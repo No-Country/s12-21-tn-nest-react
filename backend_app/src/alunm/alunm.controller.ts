@@ -59,7 +59,11 @@ export class AlunmController {
 
   @Post('/calificate')
   async calificate(@Body() request: CalificationDto) {
-    return this.alunmService.calificateMentor(request.id, request.calification);
+    return this.alunmService.calificateMentor(
+      request.id,
+      request.calification,
+      request.msg,
+    );
   }
 
   @Patch('/restore/:id')
