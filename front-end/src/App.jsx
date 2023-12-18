@@ -20,7 +20,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import SchoolIcon from "@mui/icons-material/School";
 import MentorProfileTest from "./components/MentorProfileTest";
 import ContactMentor from "./components/ContactMentor";
-//import SchedulerComponent from "./components/SchedulerComponent";
 
 import Score from "./score/Score";
 
@@ -65,6 +64,7 @@ function App() {
                 <Route path="/mentorshipForm" element={<Mentorship />} />
                 <Route path="/studentForm" element={<StudentForm />} />
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
+                <Route path="/contactMentor" element={<ContactMentor />} />
                 <Route
                   path="/studentProfile/:id"
                   element={<StudentProfile />}

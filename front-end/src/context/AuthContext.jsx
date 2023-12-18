@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setUser(res.data);
         setUserId(res.data.userId);
+        setIsAuthenticated(true)
 
         if (res.data.role.name == "mentor") {
           const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
