@@ -87,7 +87,7 @@ const MentorProfileTest = () => {
                 <Link to={`/updateMentorProfile/${mentorId}`} state={{ mentorInfo }}>
                   <Button
                     variant="contained"
-                    sx={{ mt: 1, mb: 2, width: "50%" }}
+                    sx={{ mt: 1, mb: 2, width: "50%" ,backgroundColor:"#25D366"}}
                   >
                     Editar
                   </Button>
