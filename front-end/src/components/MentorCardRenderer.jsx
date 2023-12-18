@@ -20,6 +20,7 @@ export const MentorCardRenderer = ({ mentorsData }) => {
           {currentMentors.map((mentor) => (
             <MentorCard
               key={mentor.id}
+              id={mentor.id}
               name={mentor.userId.firstName + ' ' + mentor.userId.lastName}
               speciality={mentor.speciality.name}
               date={new Date(mentor.updatedAt).toLocaleDateString('es-ES', {

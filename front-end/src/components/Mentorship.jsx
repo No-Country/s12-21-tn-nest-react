@@ -4,13 +4,13 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useLocation, Link , useNavigate} from "react-router-dom";
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
 import { urlApi } from '../../config/axios';
 
 const Mentorship = ({ location }) => {
   const { newUser, newMentor } = useLocation().state || {};
+  const navigate = useNavigate()
   const [categoryIds, setCategoryIds] = useState([]);
   const [newMentorship, setNewMentorship] = useState({
     mentorSpeciality: "", 
@@ -18,64 +18,22 @@ const Mentorship = ({ location }) => {
   })
   const [specialities, setSpecialities] = useState([]); //opciones especialidades
   const [categories, setCategories] = useState([]);  //opciones categorias
-  const [dayOptions, setDayOptions] = useState([]); //opciones dias
-  const [hoursOptions, setHoursOptions] = useState([]); //opciones horas
   const { mentorSpeciality, mentorCategory } = newMentorship
-
-  const [selectedDays, setSelectedDays] = useState([]);
-  const [daySchedules, setDaySchedules] = useState([]);
- 
-  const handleDayChange = (event) => {
-    const selectedDays = event.target.value;
-    setSelectedDays(selectedDays);
-    setDaySchedules((prevSchedules) => {
-      const newSchedules = { ...prevSchedules };
-      selectedDays.forEach((day) => {
-        if (!newSchedules[day]) {
-          newSchedules[day] = [{ start: "", end: "" }];
-        }
-      });
-      return newSchedules;
-    });
-  };
-
-  const handleScheduleChange = (day, index, field, value) => {
-    setDaySchedules((prevSchedules) => {
-      const newSchedules = { ...prevSchedules };
-      newSchedules[day][index] = {
-        ...newSchedules[day][index],
-        [field]: value,
-      };
-      console.log(newSchedules);
-      return newSchedules;
-    });
-  };
-
-  const addSchedule = (day) => {
-    setDaySchedules((prevSchedules) => {
-      const newSchedules = { ...prevSchedules };
-      newSchedules[day] = [...newSchedules[day], { start: "", end: "" }];
-      return newSchedules;
-    });
-  };
-
-  const removeSchedule = (day, index) => {
-    setDaySchedules((prevSchedules) => {
-      const newSchedules = { ...prevSchedules };
-      newSchedules[day] = newSchedules[day].filter((_, i) => i !== index);
-      return newSchedules;
-    });
-  };
-
-
-
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setNewMentorship({
+    if (name === "mentorSpeciality") {
+      const selectedSpeciality = specialities.find((speciality) => speciality.name === value);
+      setNewMentorship({
+        ...newMentorship,
+        mentorSpeciality: selectedSpeciality ? selectedSpeciality.id : "",
+      });
+    } else {
+      setNewMentorship({
         ...newMentorship,
         [name]: value,
-    });
+      });
+    }
   };
 
   const handleCategoryChange = (event) => {
@@ -105,84 +63,51 @@ const Mentorship = ({ location }) => {
       console.error("Error al obtener las categorias:", error);
     }
   };
-  const fetchDayOptions = async () => {
-    try {
-      let URLDaysOptions = `quotes/hour`
-      const response = await urlApi.get(URLDaysOptions);
-      setDayOptions(response.data);
-    } catch (error) {
-      console.error("Error al obtener las opciones de días:", error);
-    }
-  };
-  const fetchHoursOptions = async () => {
-    try {
-      let URLHoursOptions = `quotes/hour`
-      const response = await urlApi.get(URLHoursOptions);
-      setHoursOptions(response.data);
-    } catch (error) {
-      console.error("Error al obtener las opciones de horas:", error);
-    }
-  };
 
   useEffect(() => {
     fetchSpecialities();
     fetchCategories();
-    fetchDayOptions();
-    fetchHoursOptions();
   }, []); 
 
   const submit = async (e) => {
     e.preventDefault();
-
-    const formattedSchedules = Object.entries(daySchedules).reduce((acc, [day, schedules]) => {
-      schedules.forEach((schedule) => {
-        acc.push({
-          day: day.toLowerCase(),
-          timeStart: schedule.start,
-          timeEnd: schedule.end,
-        });
-      });
-      return acc;
-    }, []);
-  
-    console.log('Formatted Schedules:', formattedSchedules);
-
     const formData = new FormData();
     formData.append('file', newMentor.mentorImage, newMentor.mentorImage.name);
+    formData.append('mentorDescription', newMentor.mentorDescription);
     const { mentorSpeciality, mentorCategory } = newMentorship;
-
     formData.append('firstName', newUser.firstName);
     formData.append('lastName', newUser.lastName);
     formData.append('email', newUser.email);
     formData.append('phone', newUser.phone);
     formData.append('password', newUser.password);
     formData.append('role', newUser.role);
-    formData.append('mentorDescription', newMentor.mentorDescription);
-    formData.append('aboutMe', newMentor.aboutMe);
+    formData.append('aboutMe', newMentor.mentorAboutMe);
     formData.append('birthDate', newMentor.mentorDate);
     formData.append('price', newMentor.mentorPrice);
+    formData.append('speciality', mentorSpeciality);
     mentorCategory.forEach(val => {
       formData.append('categories[]', val);
     });
-    //formData.append('categories', studentCategories);
-    formData.append('speciality', mentorSpeciality);
-  
-    try {
-      let url = 'Auth/register/mentor'
-      const response = await urlApi.post( url , formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data', 
-        }
-      });
-  
-      console.log('Respuesta.data del servidor:', response.data);
-      console.log('Respuesta del servidor:', response);
-    } catch (error) {
-      console.error('Error al enviar la información al servidor:', error);
-    }
-  };
-  
 
+    console.log('FormData before sending:');
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    }); 
+
+    try {
+        let url = 'Auth/register/mentor'
+        const response = await urlApi.post( url , formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', 
+          }
+        });
+        console.log('Respuesta.data del servidor:', response.data);
+        console.log('Respuesta del servidor:', response);
+        navigate('/login');
+      } catch (error) {
+        console.error('Error al enviar la información al servidor:', error);
+      }
+    };
 
   return (
     <div style={{ backgroundColor: '#FFFFFF', color: '#FFFFFF' }}>
@@ -191,7 +116,7 @@ const Mentorship = ({ location }) => {
         <Select
           labelId="demo-simple-select-autowidth-label"
           id="demo-simple-select-autowidth"
-          value={mentorSpeciality}
+          value={mentorSpeciality || specialities[0]}
           onChange={handleChange}
           autoWidth
           label="Especialidad"
@@ -233,70 +158,6 @@ const Mentorship = ({ location }) => {
               ))}
           </Select>
       </FormControl>
-
-
-
- {/* Day selection */}
- <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-select-label">Días de la semana</InputLabel>
-        <Select
-          labelId="demo-multiple-select-label"
-          id="demo-multiple-select"
-          multiple
-          value={selectedDays}
-          onChange={handleDayChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((day) => (
-                <Chip key={day} label={day} />
-              ))}
-            </Box>
-          )}
-        >
-          {/* Use options from the fetched data */}
-          {dayOptions.map((day) => (
-            <MenuItem key={day} value={day}>
-              {day}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
- {/* Day schedule inputs */}
- {selectedDays.map((day) => (
-        <div key={day}>
-          <Box sx={{ m: 1, width: 300 }}>
-            <InputLabel id={`day-label-${day}`}>{day}</InputLabel>
-            {daySchedules[day].map((schedule, index) => (
-              <div key={index}>
-                <FormControl>
-                  <InputLabel id={`start-label-${day}-${index}`}>Desde</InputLabel>
-                  <OutlinedInput
-                    id={`start-input-${day}-${index}`}
-                    value={schedule.start}
-                    onChange={(e) => handleScheduleChange(day, index, 'start', e.target.value)}
-                    label={`Desde ${day}`}
-                  />
-                </FormControl>
-                <FormControl>
-                  <InputLabel id={`end-label-${day}-${index}`}>Hasta</InputLabel>
-                  <OutlinedInput
-                    id={`end-input-${day}-${index}`}
-                    value={schedule.end}
-                    onChange={(e) => handleScheduleChange(day, index, 'end', e.target.value)}
-                    label={`Hasta ${day}`}
-                  />
-                </FormControl>
-                <Button onClick={() => removeSchedule(day, index)}>Eliminar</Button>
-              </div>
-            ))}
-            <Button onClick={() => addSchedule(day)}>Agregar horario</Button>
-          </Box>
-        </div>
-      ))}
-
-
       <Grid item>
         <Button
           type="submit"
@@ -305,14 +166,9 @@ const Mentorship = ({ location }) => {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Siguiente
-                    </Button>
-                </Grid>
-   
-
-
-
-   
+          Terminar Registro
+        </Button>
+      </Grid>
     </div>
   );
 }

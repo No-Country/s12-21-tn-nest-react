@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { CardMedia, Box, Card, Typography, CardContent, Chip, Rating, Button, CardActions } from '@mui/material'
 import { PagosDonativos } from './PagosDonativos';
+import {Link} from 'react-router-dom'
+import { useAuth } from '../context/AuthContext';
 
-
-export const MentorCard = ({ name, speciality, date, aboutMe, categories, price, mentorImage }) => {
+export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage }) => {
     const [showDonativos, setShowDonativos] = useState(false)
+    const { userId, studentId } = useAuth();
 
     const handleShowDonativos = () => {
         setShowDonativos(true)
@@ -88,14 +90,18 @@ export const MentorCard = ({ name, speciality, date, aboutMe, categories, price,
                     </Box>
                 </CardContent>
                 <CardActions sx={{ display: 'flex', justifyContent: 'space-around', paddingBottom: '1.5rem' }}>
-
-                    <Button variant='contained' color='success' onClick={handleShowDonativos} >
+                    <Button variant='contained' color='success' onClick={handleShowDonativos}>
                         Donar
                     </Button>
                     <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} />
-                    <Button variant='contained' color='success' >
-                        Contactar
-                    </Button>
+
+                    {userId ? ( 
+                        <Link to={`/contactMentor`} state={id}>
+                            <Button variant='contained' color='success'>
+                                Contactar
+                            </Button>
+                        </Link>
+                    ) : null}
                 </CardActions>
             </Box>
         </Card>

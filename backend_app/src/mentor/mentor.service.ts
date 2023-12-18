@@ -17,7 +17,6 @@ import { updateMentor } from './class/Mentor/updateMentor.dto';
 import * as bcrypt from 'bcryptjs';
 import { SALT_ROUNDS } from '../common/constants';
 import { UserService } from 'src/auth/user/user.service';
-import { Availability } from '../quotes/models/availability.entity';
 import { State } from 'src/quotes/models/state.entity';
 @Injectable()
 export class MentorService {
@@ -28,8 +27,6 @@ export class MentorService {
     @InjectRepository(Speciality)
     private specialityRepository: Repository<Speciality>,
     private readonly userService: UserService,
-    @InjectRepository(Availability)
-    private availabilityRepository: Repository<Availability>,
     @InjectRepository(State) private stateRepository: Repository<State>,
   ) {}
   async get_categories_all() {
@@ -288,7 +285,6 @@ export class MentorService {
         categories: true,
         speciality: true,
         userId: true,
-        availables: true,
       },
     });
     const object_user_actualiazar = {};

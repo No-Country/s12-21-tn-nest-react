@@ -12,11 +12,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { urlApi } from '../../config/axios';
-
+import { useAuth } from '../context/AuthContext';
+import SchedulerComponent from './ContactCalendar';
 
 const UpdateMentorProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { mentorId } = useAuth();
   const mentorInfo = location.state?.mentorInfo || {};
   const [specialities, setSpecialities] = useState([]); //opciones del select
   const [categories, setCategories] = useState([]);  //opciones del select
@@ -26,15 +28,13 @@ const UpdateMentorProfile = () => {
     mentorDescription: mentorInfo.mentorDescription || '', 
     aboutMe: mentorInfo.aboutMe || '',
     price: mentorInfo.price || '',
-/*     categories: mentorInfo.categories.map((category) => category.name) || [],
- */    firstName: mentorInfo.userId.firstName || '',
+    firstName: mentorInfo.userId.firstName || '',
     lastName: mentorInfo.userId.lastName || '',
     phone: mentorInfo.userId.phone || '', 
     birthdate: mentorInfo.birthdate,
     speciality: mentorInfo.speciality || { id: '', name: '' }, 
     categories: mentorInfo.categories || [],
   });
-
 
   const fetchSpecialities = async () => {
     try {
@@ -86,13 +86,11 @@ const UpdateMentorProfile = () => {
   const handleChange = (field, value) => {
     setEditedInfo((prevInfo) => {
       let updatedValue = value;
-  
       if (field === 'birthdate' && value instanceof Date) {
         updatedValue = value;
       } else if (field === 'speciality') {
         updatedValue = value;
       }
-  
       return {
         ...prevInfo,
         [field]: updatedValue,
@@ -100,11 +98,9 @@ const UpdateMentorProfile = () => {
     });
   };
   
-  
-  
   const handleSaveChanges = async () => {
     try {
-      let url = `mentor/profile/update/5d93e6fd-8d99-47d8-884a-ce71faf78552`
+      let url = `mentor/profile/update/${mentorId}`
       console.log(editedInfo);
       const categoryIds = editedInfo.categories.map((category) => category.id);
       console.log('Category IDs:', categoryIds);
@@ -151,7 +147,7 @@ const UpdateMentorProfile = () => {
           <TextareaAutosize
             label="Descripción"
             minRows={7}
-            style={{ width: '100%', marginBottom: '16px' }}  // Establece el ancho al 100% y agrega margen inferior
+            style={{ width: '100%', marginBottom: '16px' }}
             value={editedInfo.mentorDescription}
             onChange={(e) => handleChange('mentorDescription', e.target.value)}
             margin="normal"
@@ -159,7 +155,7 @@ const UpdateMentorProfile = () => {
           <TextareaAutosize
             label="aboutMe"
             minRows={5}
-            style={{ width: '100%', marginBottom: '16px' }}  // Establece el ancho al 100% y agrega margen inferior
+            style={{ width: '100%', marginBottom: '16px' }} 
             value={editedInfo.aboutMe}
             onChange={(e) => handleChange('aboutMe', e.target.value)}
             margin="normal"
@@ -191,57 +187,42 @@ const UpdateMentorProfile = () => {
                   ))}
                 </Select>
             </FormControl>
-          <Link to={`/modifyMentorSpeciality`} state={{ mentorInfo }}>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  style={{ marginLeft: 8 }}
-                >
-                  Modificar Especilidad
-                </Button>
-            </Link>
             <div>
-  <FormControl sx={{ m: 1, width: 300 }}>
-    <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
-    <Select
-      labelId="demo-multiple-chip-label"
-      id="demo-multiple-chip"
-      multiple
-      value={editedInfo.categories.map((category) => category.name)}
-      onChange={(e) => {
-        const selectedCategories = e.target.value.map((categoryName) => ({
-          id: categories.find((cat) => cat.name === categoryName)?.id || '',
-          name: categoryName,
-        }));
-        handleChange('categories', selectedCategories);
-      }}
-      input={<OutlinedInput id="select-multiple-chip" label="Categorías" />}
-      renderValue={(selected) => (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-          {selected.map((value, index) => (
-            <Chip key={index} label={value} />
-          ))}
-        </Box>
-      )}
-    >
-      {categories.map((category) => (
-        <MenuItem
-          key={category.id}
-          value={category.name}
-          style={getStyles(category.name, editedInfo.categories, customTheme)}
-        >
-          {category.name}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-  <Link to={`/modifyMentorCategories`} state={{ mentorInfo }}>
-    <Button variant="outlined" color="secondary" style={{ marginLeft: 8 }}>
-      Modificar Categorías
-    </Button>
-  </Link>
-</div>
-
+          <FormControl sx={{ m: 1, width: 300 }}>
+            <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
+            <Select
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              multiple
+              value={editedInfo.categories.map((category) => category.name)}
+              onChange={(e) => {
+                const selectedCategories = e.target.value.map((categoryName) => ({
+                  id: categories.find((cat) => cat.name === categoryName)?.id || '',
+                  name: categoryName,
+                }));
+                handleChange('categories', selectedCategories);
+              }}
+              input={<OutlinedInput id="select-multiple-chip" label="Categorías" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value, index) => (
+                    <Chip key={index} label={value} />
+                  ))}
+                </Box>
+              )}
+            >
+              {categories.map((category) => (
+                <MenuItem
+                  key={category.id}
+                  value={category.name}
+                  style={getStyles(category.name, editedInfo.categories, customTheme)}
+                >
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
           <Grid item sx={{ mt: 3, mb: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker

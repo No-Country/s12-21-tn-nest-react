@@ -18,23 +18,13 @@ const StudentForm = ({ location }) => {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [categoryIds, setCategoryIds] = useState([]);
   const [categories, setCategories] = useState([]); 
-/*   const [specialities, setSpecialities] = useState([]); 
- */  const [newStudent, setNewStudent] = useState({
+  const [newStudent, setNewStudent] = useState({
     studentImage: null,
     studentSpecility: "",
     studentCategories: [],
   })
-  const { studentImage, studentCategories, studentSpecility} = newStudent
+  const { studentImage, studentCategories} = newStudent
 
-/*   const fetchSpecialities = async () => {
-    try {
-      let URLSpecialties = `mentor/speciality/filter`
-      const response = await urlApi.get(URLSpecialties);
-      setSpecialities(response.data); 
-    } catch (error) {
-      console.error("Error al obtener las especialidades:", error);
-    }
-  }; */
   const fetchCategories = async () => {
     try {
       const URLCategories = `mentor/categories/filter`
@@ -64,8 +54,7 @@ const StudentForm = ({ location }) => {
   };
 
   useEffect(() => {
-/*     fetchSpecialities();
- */    fetchCategories();
+    fetchCategories();
   }, []); 
 
   const submit = async (e) => {
@@ -84,9 +73,6 @@ const StudentForm = ({ location }) => {
     studentCategories.forEach(val => {
       formData.append('categories[]', val);
     });
-    //formData.append('categories', studentCategories);
-/*     formData.append('speciality', newStudent.studentSpecility);
- */  
     try {
       let url = 'auth/register/student'
       const response = await urlApi.post( url , formData, {
@@ -104,6 +90,7 @@ const StudentForm = ({ location }) => {
         console.error('Error registering the student:', error);
       }
     }
+    navigate('/login');
   };
   
 
@@ -146,71 +133,45 @@ const StudentForm = ({ location }) => {
                         </Box>
                       </div>
                     )}
-                </Grid>
-      
-    <div>
-      {/* <FormControl sx={{ m: 1, minWidth: 100 }}>
-        <InputLabel id="demo-simple-select-autowidth-label">Especialidad</InputLabel>
-        <Select
-          labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"
-          value={studentSpecility}
-          onChange={handleChange}
-          autoWidth
-          label="Especialidad"
-          name="studentSpecility"
-        >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {specialities.map((speciality) => (
-            <MenuItem key={speciality.id} value={speciality.name}>
-              {speciality.name}
-            </MenuItem>
-        ))}
-        </Select>
-      </FormControl> */}
-      <FormControl sx={{ m: 1, width: 300 }}>
-          <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
-          <Select
-  labelId="demo-multiple-chip-label"
-  id="demo-multiple-chip"
-  multiple
-  value={studentCategories}
-  onChange={handleCategoryChange}
-  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-  renderValue={(selected) => (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-      {selected.map((id) => (
-        <Chip key={id} label={categories.find(category => category.id === id)?.name} />
-      ))}
-    </Box>
-  )}
-  
->
-  {categories.map((category) => (
-    <MenuItem key={category.id} value={category.id}>
-      {category.name}
-    </MenuItem>
-  ))}
-</Select>
-
-        </FormControl>
-     
-   
-    </div>
-                <Grid item>
-        <Button
-          type="submit"
-          onClick={submit} 
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Siguiente
-        </Button>
-      </Grid>
             </Grid>
+           <div>
+              <FormControl sx={{ m: 1, width: 300 }}>
+                  <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
+                  <Select
+                    labelId="demo-multiple-chip-label"
+                    id="demo-multiple-chip"
+                    multiple
+                    value={studentCategories}
+                    onChange={handleCategoryChange}
+                    input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                    renderValue={(selected) => (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((id) => (
+                          <Chip key={id} label={categories.find(category => category.id === id)?.name} />
+                        ))}
+                      </Box>
+                    )}
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category.id} value={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+              </FormControl>
+           </div>
+          <Grid item>
+            <Button
+              type="submit"
+              onClick={submit} 
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Siguiente
+            </Button>
+          </Grid>
+      </Grid>
     </Container>
   );
 }
