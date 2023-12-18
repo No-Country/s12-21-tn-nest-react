@@ -11,13 +11,14 @@ export const PagosDonativos = ({ open, onClose, name, userData, mentorPrice }) =
             switch (gateway) {
                 case 'mercadoPago':
                     const mercadoPagoData = {
-                        external_reference: userData.id,
+                        external_reference: "d9f80740-38f0-11e8-b467-0ed5f89f718b",
                         value: "15.00",
-                        email: userData.email, // Cambia esto por la propiedad correcta de email
-                        brand_name: `${userData.firstName} ${userData.lastName}`,
+                        email: "nn@mail.com",
+                        brand_name: "Javi at MentorSphere"
                     };
                     const responseMercadoPago = await urlApi.post('mpago', mercadoPagoData);
                     console.log('Respuesta de Mercado Pago: ', responseMercadoPago.data);
+                    console.log('Datos a enviar con mercadopagoData: ',  mercadoPagoData)
                     break;
 
                 case 'payPal':
@@ -29,6 +30,7 @@ export const PagosDonativos = ({ open, onClose, name, userData, mentorPrice }) =
                     };
                     const responsePayPal = await urlApi.post('paypal', paypalData);
                     console.log('Respuesta de PayPal: ', responsePayPal.data);
+                    console.log('Datos a enviar con payPalData: ', paypalData)
                     break;
 
                 case 'stripe':
