@@ -27,7 +27,7 @@ export default function HomeSectionTwo() {
             )}
           </Grid>
           
-            <Button to="/mentores" component={Link} endIcon={<KeyboardArrowRightIcon />} variant="contained" sx={{ py: 1, mt: 2,backgroundColor:"#25D366" }} data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300">
+            <Button to="/mentores" component={Link} endIcon={<KeyboardArrowRightIcon />} variant="contained" sx={{ py: 1, mt: 2,backgroundColor:"#25D366",color:"#FFF" }} data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300">
               Ver más
             </Button>
         </Container>
