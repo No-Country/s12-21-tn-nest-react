@@ -5,15 +5,34 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation, Link , useNavigate} from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
 import { urlApi } from '../../config/axios';
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const customTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#25D366',
+    },
+    secondary: {
+      main: '#FFFFFF',
+    },
+    background: {
+      paper: '#111b21',
+      default: '#0B141A',
+    },
+  },
+});
+
 
 const Mentorship = ({ location }) => {
   const { newUser, newMentor } = useLocation().state || {};
   const [categoryIds, setCategoryIds] = useState([]);
   const [newMentorship, setNewMentorship] = useState({
-    mentorSpeciality: "", 
+    mentorSpeciality: "",
     mentorCategory: [],
   })
   const [specialities, setSpecialities] = useState([]); //opciones especialidades
@@ -24,7 +43,7 @@ const Mentorship = ({ location }) => {
 
   const [selectedDays, setSelectedDays] = useState([]);
   const [daySchedules, setDaySchedules] = useState([]);
- 
+
   const handleDayChange = (event) => {
     const selectedDays = event.target.value;
     setSelectedDays(selectedDays);
@@ -73,8 +92,8 @@ const Mentorship = ({ location }) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setNewMentorship({
-        ...newMentorship,
-        [name]: value,
+      ...newMentorship,
+      [name]: value,
     });
   };
 
@@ -91,7 +110,7 @@ const Mentorship = ({ location }) => {
     try {
       let URLSpecialities = `mentor/speciality/filter`
       const response = await urlApi.get(URLSpecialities);
-      setSpecialities(response.data); 
+      setSpecialities(response.data);
     } catch (error) {
       console.error("Error al obtener las especialidades:", error);
     }
@@ -100,7 +119,7 @@ const Mentorship = ({ location }) => {
     try {
       const URLCategories = `mentor/categories/filter`
       const response = await urlApi.get(URLCategories);
-      setCategories(response.data); 
+      setCategories(response.data);
     } catch (error) {
       console.error("Error al obtener las categorias:", error);
     }
@@ -129,7 +148,7 @@ const Mentorship = ({ location }) => {
     fetchCategories();
     fetchDayOptions();
     fetchHoursOptions();
-  }, []); 
+  }, []);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -144,7 +163,7 @@ const Mentorship = ({ location }) => {
       });
       return acc;
     }, []);
-  
+
     console.log('Formatted Schedules:', formattedSchedules);
 
     const formData = new FormData();
@@ -166,154 +185,158 @@ const Mentorship = ({ location }) => {
     });
     //formData.append('categories', studentCategories);
     formData.append('speciality', mentorSpeciality);
-  
+
     try {
       let url = 'Auth/register/mentor'
-      const response = await urlApi.post( url , formData, {
+      const response = await urlApi.post(url, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         }
       });
-  
+
       console.log('Respuesta.data del servidor:', response.data);
       console.log('Respuesta del servidor:', response);
     } catch (error) {
       console.error('Error al enviar la información al servidor:', error);
     }
   };
-  
+
 
 
   return (
-    <div style={{ backgroundColor: '#FFFFFF', color: '#FFFFFF' }}>
-      <FormControl sx={{ m: 1, minWidth: 100 }}>
-        <InputLabel id="demo-simple-select-autowidth-label">Especialidad</InputLabel>
-        <Select
-          labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"
-          value={mentorSpeciality}
-          onChange={handleChange}
-          autoWidth
-          label="Especialidad"
-          name="mentorSpeciality"
-        >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {specialities.map((speciality) => (
-            <MenuItem key={speciality.id} value={speciality.name}>
-              {speciality.name}
+    <ThemeProvider theme={customTheme}>
+      <Container maxWidth="xs" sx={{py:2,mt:10,borderRadius:"8px", backgroundColor:{sm:"#111B21"},xs:"#0B141A",boxShadow:{sm:"0px 0px 5px 0px #FFF",xs:"none"}}}>
+        {/* <div style={{ backgroundColor: '#FFFFFF', color: '#FFFFFF' }}> */}
+        <FormControl sx={{ /* m: 1, */mt:1, width:"100%" }}>
+          <InputLabel id="demo-simple-select-autowidth-label">Especialidad</InputLabel>
+          <Select
+            labelId="demo-simple-select-autowidth-label"
+            id="demo-simple-select-autowidth"
+            value={mentorSpeciality}
+            onChange={handleChange}
+            autoWidth
+            label="Especialidad"
+            name="mentorSpeciality"
+          >
+            <MenuItem value="">
+              <em>None</em>
             </MenuItem>
-        ))}
-        </Select>
-      </FormControl>
-      
-      <FormControl sx={{ m: 1, width: 300 }}>
+            {specialities.map((speciality) => (
+              <MenuItem key={speciality.id} value={speciality.name}>
+                {speciality.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl sx={{ /* m: 1, width: 300 */mt:1,width:"100%" }}>
           <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
           <Select
-              labelId="demo-multiple-chip-label"
-              id="demo-multiple-chip"
-              multiple
-              value={mentorCategory}
-              onChange={handleCategoryChange}
-              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((id) => (
-                    <Chip key={id} label={categories.find(category => category.id === id)?.name} />
-                  ))}
-                </Box>
-              )}
-              
-            >
-              {categories.map((category) => (
-                <MenuItem key={category.id} value={category.id}>
-                  {category.name}
-                </MenuItem>
-              ))}
-          </Select>
-      </FormControl>
+            labelId="demo-multiple-chip-label"
+            id="demo-multiple-chip"
+            multiple
+            value={mentorCategory}
+            onChange={handleCategoryChange}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((id) => (
+                  <Chip key={id} label={categories.find(category => category.id === id)?.name} />
+                ))}
+              </Box>
+            )}
 
-
-
- {/* Day selection */}
- <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-select-label">Días de la semana</InputLabel>
-        <Select
-          labelId="demo-multiple-select-label"
-          id="demo-multiple-select"
-          multiple
-          value={selectedDays}
-          onChange={handleDayChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((day) => (
-                <Chip key={day} label={day} />
-              ))}
-            </Box>
-          )}
-        >
-          {/* Use options from the fetched data */}
-          {dayOptions.map((day) => (
-            <MenuItem key={day} value={day}>
-              {day}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
- {/* Day schedule inputs */}
- {selectedDays.map((day) => (
-        <div key={day}>
-          <Box sx={{ m: 1, width: 300 }}>
-            <InputLabel id={`day-label-${day}`}>{day}</InputLabel>
-            {daySchedules[day].map((schedule, index) => (
-              <div key={index}>
-                <FormControl>
-                  <InputLabel id={`start-label-${day}-${index}`}>Desde</InputLabel>
-                  <OutlinedInput
-                    id={`start-input-${day}-${index}`}
-                    value={schedule.start}
-                    onChange={(e) => handleScheduleChange(day, index, 'start', e.target.value)}
-                    label={`Desde ${day}`}
-                  />
-                </FormControl>
-                <FormControl>
-                  <InputLabel id={`end-label-${day}-${index}`}>Hasta</InputLabel>
-                  <OutlinedInput
-                    id={`end-input-${day}-${index}`}
-                    value={schedule.end}
-                    onChange={(e) => handleScheduleChange(day, index, 'end', e.target.value)}
-                    label={`Hasta ${day}`}
-                  />
-                </FormControl>
-                <Button onClick={() => removeSchedule(day, index)}>Eliminar</Button>
-              </div>
+          >
+            {categories.map((category) => (
+              <MenuItem key={category.id} value={category.id}>
+                {category.name}
+              </MenuItem>
             ))}
-            <Button onClick={() => addSchedule(day)}>Agregar horario</Button>
-          </Box>
-        </div>
-      ))}
-
-
-      <Grid item>
-        <Button
-          type="submit"
-          onClick={submit} 
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Siguiente
-                    </Button>
-                </Grid>
-   
+          </Select>
+        </FormControl>
 
 
 
-   
-    </div>
+        {/* Day selection */}
+        <FormControl sx={{ /* m: 1, width: 300 */mt:1, width:"100%"}}>
+          <InputLabel id="demo-multiple-select-label">Días de la semana</InputLabel>
+          <Select
+            labelId="demo-multiple-select-label"
+            id="demo-multiple-select"
+            multiple
+            value={selectedDays}
+            onChange={handleDayChange}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((day) => (
+                  <Chip key={day} label={day} />
+                ))}
+              </Box>
+            )}
+          >
+            {/* Use options from the fetched data */}
+            {dayOptions.map((day) => (
+              <MenuItem key={day} value={day}>
+                {day}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Day schedule inputs */}
+        {selectedDays.map((day) => (
+          <div key={day}>
+            <Box sx={{ m: 1, width: 300 }}>
+              <InputLabel id={`day-label-${day}`}>{day}</InputLabel>
+              {daySchedules[day].map((schedule, index) => (
+                <div key={index}>
+                  <FormControl>
+                    <InputLabel id={`start-label-${day}-${index}`}>Desde</InputLabel>
+                    <OutlinedInput
+                      id={`start-input-${day}-${index}`}
+                      value={schedule.start}
+                      onChange={(e) => handleScheduleChange(day, index, 'start', e.target.value)}
+                      label={`Desde ${day}`}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <InputLabel id={`end-label-${day}-${index}`}>Hasta</InputLabel>
+                    <OutlinedInput
+                      id={`end-input-${day}-${index}`}
+                      value={schedule.end}
+                      onChange={(e) => handleScheduleChange(day, index, 'end', e.target.value)}
+                      label={`Hasta ${day}`}
+                    />
+                  </FormControl>
+                  <Button onClick={() => removeSchedule(day, index)}>Eliminar</Button>
+                </div>
+              ))}
+              <Button onClick={() => addSchedule(day)}>Agregar horario</Button>
+            </Box>
+          </div>
+        ))}
+
+
+        <Grid item>
+          <Button
+            type="submit"
+            onClick={submit}
+            fullWidth
+            variant="contained"
+            sx={{ mt: 5, mb: 2,color:"#FFF" }}
+          >
+            Siguiente
+          </Button>
+        </Grid>
+
+
+
+
+
+        {/* </div> */}
+      </Container>
+    </ThemeProvider>
   );
 }
 export default Mentorship
