@@ -249,7 +249,7 @@ export class MentorService {
     if (!id) {
       return {
         status: HttpStatus.NOT_FOUND,
-        mesage: 'id not found',
+        message: 'id not found',
       };
     }
 
@@ -259,7 +259,7 @@ export class MentorService {
     ) {
       return {
         status: HttpStatus.NOT_FOUND,
-        mesage: 'enter availability',
+        message: 'enter availability',
       };
     }
     const object_update_mentor = await update_object_mentor(

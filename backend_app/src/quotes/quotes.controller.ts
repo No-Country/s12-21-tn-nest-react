@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { QuotesService } from './quotes.service';
 import { createQuotes } from './class/quotes.dto';
+import { refuser } from './class/quotesRefuser.dto';
+import { Accept } from './class/quotesAccept.dto';
 
 @Controller('quotes')
 export class QuotesController {
@@ -52,7 +54,17 @@ export class QuotesController {
     return this.repositoryService.get_quotes_all(idUser);
   }
   @Patch('update/:id')
-  async get_quotes_update(@Param('id') idQuotes: string) {
-    return this.repositoryService.quotes_update(idQuotes);
+  async get_quotes_update(
+    @Param('id') idQuotes: string,
+    @Body() accept: Accept,
+  ) {
+    return this.repositoryService.quotes_update(idQuotes, accept);
+  }
+  @Patch('refused/:id')
+  async quotes_refused(
+    @Param('id') idQuotes: string,
+    @Body() refused: refuser,
+  ) {
+    return this.repositoryService.quotes_refused(idQuotes, refused);
   }
 }
