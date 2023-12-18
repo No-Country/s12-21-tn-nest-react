@@ -58,14 +58,7 @@ export class PaypalService {
         url: response.result.links[1].href,
       };
     } catch (error) {
-      console.log(error);
-      throw new HttpException(
-        `Can't proccess new payment.`,
-        HttpStatus.BAD_REQUEST,
-        {
-          cause: new Error(error.message),
-        },
-      );
+      this.paypalErrorHandler(error, createPaypalOrderDto.reference_id);
     }
   }
 
@@ -93,17 +86,7 @@ export class PaypalService {
         mentorship: response.result.purchase_units[0].reference_id,
       };
     } catch (error) {
-      console.log(error.message);
-      const message =
-        JSON.parse(error._originalError.text).details[0].description ||
-        `Can't proccess ${token} order. For more details, see server console log`;
-      throw new HttpException(
-        message,
-        error.statusCode || HttpStatus.BAD_REQUEST,
-        {
-          cause: new Error(error.message),
-        },
-      );
+      this.paypalErrorHandler(error, token);
     }
   }
 
@@ -126,14 +109,7 @@ export class PaypalService {
         mentorship: response.result.purchase_units[0].reference_id,
       };
     } catch (error) {
-      console.log(error);
-      throw new HttpException(
-        `Can't proccess ${token} payment.`,
-        HttpStatus.BAD_REQUEST,
-        {
-          cause: new Error(error.message),
-        },
-      );
+      this.paypalErrorHandler(error, token);
     }
   }
 
@@ -184,6 +160,20 @@ export class PaypalService {
     throw new HttpException(
       `#${id}: You can't delete any payment`,
       HttpStatus.FORBIDDEN,
+    );
+  }
+
+  private paypalErrorHandler(error: Error | any, token: string) {
+    console.log(error.message);
+    const message =
+      JSON.parse(error._originalError.text).details[0].description ||
+      `Can't proccess ${token} order. For more details, see server console log`;
+    throw new HttpException(
+      message,
+      error.statusCode || HttpStatus.BAD_REQUEST,
+      {
+        cause: new Error(error.message),
+      },
     );
   }
 }
