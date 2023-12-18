@@ -8,11 +8,11 @@ import { addScore } from "../db/auth";
 import "./Score.css";
 const Score = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(1);
   const [hover, setHover] = useState(null);
-  const [msg, setMsg] = useState("");
+  const [comment, setComment] = useState("");
   const [error, setError] = useState(false);
-  const [id, setId] = useState(1);
+  const [idScore, setIdScore] = useState("");
 
   const labels = {
     1: "Useless",
@@ -26,17 +26,17 @@ const Score = () => {
     setValue(newValue);
   };
 
-  const changeMsg = (event) => {
-    setMessage(event.target.value);
+  const changeComment = (event) => {
+    setComment(event.target.value);
   };
 
   const changeError = () => {
     setError(!error);
   };
 
-  const addingScore = async (id, value, msg) => {
+  const addingScore = async (idScore, comment, value) => {
     try {
-      const res = await addScore(id, value, msg);
+      const res = await addScore(idScore, value, comment);
     } catch (err) {
       console.log(err);
     }
@@ -45,8 +45,13 @@ const Score = () => {
   const submitScore = (e) => {
     e.preventDefault();
     if (value != null) {
-      console.log(value, msg);
-      addingScore(id, msg, value);
+      console.log(
+        "idScore: " + idScore,
+        "value: " + value,
+        "Message: " + comment
+      );
+      console.log(typeof value);
+      addingScore(idScore, comment, value);
       navigate("/");
     } else {
       changeError();
@@ -61,6 +66,10 @@ const Score = () => {
   useEffect(() => {
     setHover(labels[value]);
   }, [value]);
+
+  useEffect(() => {
+    setIdScore("649dc590-b61d-4436-bd65-7a9a67e99c72");
+  }, []);
 
   return (
     <>
@@ -106,7 +115,7 @@ const Score = () => {
               id=""
               cols="30"
               rows="40"
-              onChange={changeMsg}
+              onChange={changeComment}
             ></textarea>
             <button
               onClick={submitScore}

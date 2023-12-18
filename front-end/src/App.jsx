@@ -87,7 +87,7 @@ function App() {
                 {
                   //<Route path="/mentor/:id/score" element={<Score />} />
                 }
-                <Route path="/score" element={<Score />} />
+                {<Route path="/score" element={<Score />} />}
               </Routes>
             </div>
           </BrowserRouter>
