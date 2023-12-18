@@ -162,6 +162,7 @@ export class AlumnService {
       );
       return await this.saveMentorHire(alumn, mentor, category);
     } catch (error) {
+      console.log(error)
       throw new Error('Error hiring mentor');
     }
   }
@@ -196,6 +197,7 @@ export class AlumnService {
 
       return await this.alumnHireMentorRepository.save(alumnHireMentor);
     } catch (error) {
+      console.log(error)
       throw new Error('Error saving mentor hire');
     }
   }

@@ -34,7 +34,7 @@ export class AlumnHireMentor extends BaseEntity {
   //@Column({ default: false })
   //finished: boolean;
 
-  @Column()
+  @Column({default:"", nullable:true})
   comment: string;
 
   @ManyToOne(() => Category, (Category) => Category.AlumnHireMentors)
