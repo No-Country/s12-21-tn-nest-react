@@ -4,10 +4,10 @@ import { PagosDonativos } from './PagosDonativos';
 import {Link} from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
 
-export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage, mentorPrice }) => {
+export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage, mentorPrice, mentorData }) => {
     const [showDonativos, setShowDonativos] = useState(false)
     const { userId, studentId } = useAuth();
-
+    
     const handleShowDonativos = () => {
         setShowDonativos(true)
     }
@@ -93,7 +93,7 @@ export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, pr
                     <Button variant='contained' color='success' onClick={handleShowDonativos}>
                         Donar
                     </Button>
-                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} />
+                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} mentorPrice={mentorPrice} mentorData={mentorData} />
 
                     {userId ? ( 
                         <Link to={`/contactMentor`} state={id}>

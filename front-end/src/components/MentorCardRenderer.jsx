@@ -8,7 +8,7 @@ export const MentorCardRenderer = ({ mentorsData }) => {
   const indexOfLastMentor = currentPage * mentorsPerPage
   const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage
   const currentMentors = mentorsData.slice(indexOfFirstMentor, indexOfLastMentor)
-
+  
   const handlePageChange = (event, value) => {
     setCurrentPage(value)
   }
@@ -34,6 +34,8 @@ export const MentorCardRenderer = ({ mentorsData }) => {
               mentorImage={mentor.image}
               userId={mentor.userId}
               mentorPrice={mentor.price}
+              mentorData={mentor.userId}
+              
             />
           ))}
         </Grid>

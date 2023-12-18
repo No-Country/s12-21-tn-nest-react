@@ -1,9 +1,11 @@
 import { Modal, Box, Typography, useMediaQuery } from '@mui/material';
 import { urlApi } from '../../config/axios';
 
-export const PagosDonativos = ({ open, onClose, name, userData, mentorPrice }) => {
+export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice }) => {
     const isMobile = useMediaQuery('(max-width:600px)');
-
+console.log(name)
+console.log(mentorPrice)
+console.log(mentorData)
     
     const redirectPaymentGateway = async (gateway) => {
 
@@ -11,10 +13,10 @@ export const PagosDonativos = ({ open, onClose, name, userData, mentorPrice }) =
             switch (gateway) {
                 case 'mercadoPago':
                     const mercadoPagoData = {
-                        external_reference: "d9f80740-38f0-11e8-b467-0ed5f89f718b",
+                        external_reference: mentorData.id,
                         value: "15.00",
-                        email: "nn@mail.com",
-                        brand_name: "Javi at MentorSphere"
+                        email: mentorData.email,
+                        brand_name: name
                     };
                     const responseMercadoPago = await urlApi.post('mpago', mercadoPagoData);
                     console.log('Respuesta de Mercado Pago: ', responseMercadoPago.data);
@@ -23,10 +25,10 @@ export const PagosDonativos = ({ open, onClose, name, userData, mentorPrice }) =
 
                 case 'payPal':
                     const paypalData = {
-                        reference_id: userData.id,
+                        reference_id: mentorData.id,
                         currency_code: 'USD',
                         value: "15.00",
-                        brand_name: `${userData.firstName} ${userData.lastName}`,
+                        brand_name: name
                     };
                     const responsePayPal = await urlApi.post('paypal', paypalData);
                     console.log('Respuesta de PayPal: ', responsePayPal.data);
@@ -35,10 +37,10 @@ export const PagosDonativos = ({ open, onClose, name, userData, mentorPrice }) =
 
                 case 'stripe':
                     const stripeData = {
-                        reference_id: userData.id,
-                        currency_code: "MXN",
+                        reference_id: mentorData.id,
+                        currency_code: "USD",
                         amount: Number(mentorPrice),
-                        brand_name: `${userData.firstName} ${userData.lastName}`
+                        brand_name: name
                     };
                     try {
                         const responseStripe = await urlApi.post('stripe', stripeData);
