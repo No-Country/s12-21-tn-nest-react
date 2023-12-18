@@ -47,7 +47,7 @@ export class PaypalController {
 
   @Get('cancel')
   cancelOrder(@Query('token') token: string) {
-    return this.paypalService.captureUnpaidOrder(token);
+    return this.paypalService.getOrderStatus(token);
   }
 
   @ApiForbiddenResponse()
