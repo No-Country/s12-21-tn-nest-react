@@ -4,7 +4,6 @@ import {
   MaxLength,
   IsDateString,
   IsArray,
-  ValidateNested,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -74,10 +73,4 @@ export class createMentor {
   @IsString()
   @IsNotEmpty()
   userId: string;
-
-  @ApiProperty()
-  @IsArray()
-  @IsNotEmpty()
-  @ValidateNested({ each: true })
-  mentor_availability?: any[];
 }
