@@ -253,15 +253,6 @@ export class MentorService {
       };
     }
 
-    if (
-      !updateProfile.mentor_availability ||
-      updateProfile.mentor_availability.length === 0
-    ) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        message: 'enter availability',
-      };
-    }
     const object_update_mentor = await update_object_mentor(
       updateProfile,
       file,
