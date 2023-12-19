@@ -10,6 +10,6 @@ export class createCategories {
   })
   @IsString()
   @IsNotEmpty()
-  @MinLength(4)
+  @MinLength(3)
   name: string;
 }

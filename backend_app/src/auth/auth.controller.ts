@@ -26,8 +26,7 @@ export class AuthController {
     @Body() registerDto: RegisterDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(registerDto)
-    // return await this.authService.mentorRegister(registerDto, file);
+    return await this.authService.mentorRegister(registerDto, file);
   }
 
   @Post('register/student')
@@ -38,7 +37,10 @@ export class AuthController {
   ) {
     try {
       await this.authService.studentRegister(registerDto, file);
-      return;
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'student registration',
+      };
     } catch (error) {
       throw new HttpException(
         error.message || 'error registering student',

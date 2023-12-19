@@ -14,7 +14,7 @@ import { ErrorManager } from 'src/Config/error.manager';
 import { MentorService } from 'src/mentor/mentor.service';
 import { AlumnService } from 'src/alunm/alunm.service';
 import { send } from 'src/Config/nodeMailer';
-import { verify_ages } from 'src/functions/general';
+import { verify_ages } from '../functions/General';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -115,7 +115,6 @@ export class AuthService {
       aboutMe,
       birthDate,
       speciality,
-      mentor_availability,
     }: RegisterDto,
     file: Express.Multer.File,
   ) {
@@ -141,12 +140,6 @@ export class AuthService {
         };
       }
 
-      if (mentor_availability.length == 0) {
-        return {
-          status: HttpStatus.NOT_FOUND,
-          message: 'enter the availability',
-        };
-      }
       const newUser = await this.userService.createMentor({
         firstName,
         lastName,
@@ -163,7 +156,6 @@ export class AuthService {
         Categories: categories,
         idSpeciality: speciality,
         userId: newUser['id'],
-        mentor_availability,
       };
 
       const mentor = await this.mentorService.post_create_mentor(

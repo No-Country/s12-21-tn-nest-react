@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setUser(res.data);
         setUserId(res.data.userId);
+        setIsAuthenticated(true)
 
         if (res.data.role.name == "mentor") {
           const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
@@ -61,6 +62,14 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       setErrors(err.response.data);
     }
+  };
+
+  const signOut = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    setUserId(null);
+    setMentorId(null);
+    setStudentId(null);
   };
 
   useEffect(() => {
@@ -109,6 +118,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         signIn,
+        signOut,
         user,
         name,
         isAuthenticated,

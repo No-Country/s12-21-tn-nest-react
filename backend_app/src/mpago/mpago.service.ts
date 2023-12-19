@@ -64,6 +64,13 @@ export class MpagoService {
       return { id: checkoutData.id, url: checkoutData.init_point };
     } catch (error) {
       console.log({ message: error });
+      throw new HttpException(
+        { message: error },
+        error.statusCode || HttpStatus.BAD_REQUEST,
+        {
+          cause: new Error(error.message),
+        },
+      );
     }
   }
 

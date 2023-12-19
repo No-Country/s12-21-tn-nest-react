@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Availability } from './availability.entity';
+import { Quotes } from './quotes.entity';
 @Entity({ name: 'state' })
 export class State {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
   name: string;
-  @OneToMany(() => Availability, (availability) => availability.state)
-  availabilities: Availability[];
+  @OneToMany(() => Quotes, (quotes) => quotes.state)
+  quotes: Quotes[];
 }
