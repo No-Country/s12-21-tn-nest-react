@@ -16,7 +16,6 @@ import { urlApi } from '../../config/axios';
 
 export const CalendarWrapper = ({ appointmentDate }) => {
   const formattedDate = new Date(appointmentDate);
-
   return (
     <div style={{ borderRadius: '8px', overflow: 'hidden', marginBottom: '40px' }}>
       <Calendar
@@ -36,38 +35,102 @@ export const CalendarWrapper = ({ appointmentDate }) => {
 const MyMentorships = () => {
   const [mentorshipData, setMentorshipData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [showAcceptInput, setShowAcceptInput] = useState(false);
+  const [showRejectInput, setShowRejectInput] = useState(false);
+  const [hour, setHour] = useState('');
+  const [refused, setRefused] = useState('');
   const { userId, studentId, mentorId } = useAuth();
+  const currentUser = studentId ? studentId : mentorId;
+  const [showInput, setShowInput] = useState({});
+  const [openInputs, setOpenInputs] = useState({});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/quotes/filter/all/${studentId}`);
-        const data = await response.json();
-        setMentorshipData(data);
-      } catch (error) {
-        console.error('Error fetching mentorship data', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const handleButtonClick = (mentorshipId, type) => {
+    setOpenInputs(prevState => ({
+      ...prevState,
+      [mentorshipId]: {
+        accept: type === 'accept' ? !prevState[mentorshipId]?.accept : false,
+        reject: type === 'reject' ? !prevState[mentorshipId]?.reject : false,
+      },
+    }));
+  };
 
   const getColorByState = (stateName) => {
     switch (stateName) {
-      case 'Pendiente':
+      case 'pendiente':
         return { bgColor: 'yellow', borderColor: 'yellow', textColor: 'black' };
-      case 'Aceptada':
+      case 'aceptado':
         return { bgColor: 'green', borderColor: 'green', textColor: 'white' };
-      case 'Rechazada':
+      case 'rechazado':
         return { bgColor: 'red', borderColor: 'red', textColor: 'white' };
       default:
         return { bgColor: 'white', borderColor: 'white', textColor: 'black' };
     }
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/quotes/filter/all/${currentUser}`);
+        const data = await response.json();
+        setMentorshipData(data);
+        // Inicializa el objeto de estados de visualización
+        const initialOpenInputsState = data.reduce((acc, mentorship) => {
+          acc[mentorship.id] = {
+            accept: false,
+            reject: false,
+          };
+          return acc;
+        }, {});
+        setOpenInputs(initialOpenInputsState);
+      } catch (error) {
+        console.error('Error fetching mentorship data', error);
+      }
+    };
+
+    fetchData();
+  }, [currentUser]);
+
+  const handleAcceptClick = async (mentorshipId) => {
+    try {
+      console.log("cita", mentorshipId);
+      let url = `quotes/update/${mentorshipId}`;
+      console.log('Hour:', hour);
+      await urlApi.patch(url, { hour: String(hour) });
+      // Actualiza el estado para ocultar el input de aceptar
+      setOpenInputs(prevState => ({
+        ...prevState,
+        [mentorshipId]: {
+          ...prevState[mentorshipId],
+          accept: false,
+        },
+      }));
+      setHour('');
+      fetchData();
+    } catch (error) {
+      console.error('Error updating mentorship hour: ', error);
+    }
   };
+
+  const handleRejectClick = async (mentorshipId) => {
+    try {
+      let url = `quotes/refused/${mentorshipId}`;
+      console.log('refused:', refused);
+      await urlApi.patch(url, { refused: String(refused) });
+      // Actualiza el estado para ocultar el input de rechazar
+      setOpenInputs(prevState => ({
+        ...prevState,
+        [mentorshipId]: {
+          ...prevState[mentorshipId],
+          reject: false,
+        },
+      }));
+      setRefused('');
+      fetchData();
+    } catch (error) {
+      console.error('Error updating mentorship refused: ', error);
+    }
+  };
+
 
   return (
     <Grid container spacing={4}>
@@ -75,13 +138,14 @@ const MyMentorships = () => {
         <Grid item key={mentorship.id} xs={12} sm={6} md={4}>
           <Card
             style={{
-              backgroundColor: 'black',
-              color: 'white',
-              border: `1px solid ${getColorByState(mentorship.state.name).borderColor}`,
-              margin: '16px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center', // Centro todos los elementos
+                backgroundColor: 'black',
+                color: 'white',
+                border: `1px solid ${getColorByState(mentorship.state.name).borderColor}`,
+                margin: '16px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                height: '100%', // Establecer altura del 100%
             }}
           >
             <Box
@@ -106,17 +170,22 @@ const MyMentorships = () => {
               <Grid container spacing={2} justifyContent="center">
                 <Grid item>
                   <Avatar
-                    src={mentorship.alumn.profileImg}
-                    alt={`${mentorship.alumn.user.firstName} ${mentorship.alumn.user.lastName}`}
+                    src={currentUser === studentId ? mentorship.mentor.image : mentorship.alumn.profileImg}
+                    alt={
+                      currentUser === studentId
+                        ? `${mentorship.mentor.userId.firstName} ${mentorship.mentor.userId.lastName}`
+                        : `${mentorship.alumn.user.firstName} ${mentorship.alumn.user.lastName}`
+                    }
                     style={{ width: '50px', height: '50px', borderRadius: '50%' }}
                   />
                 </Grid>
                 <Grid item>
                   <Typography variant="body2" style={{ color: 'white', marginBottom: '8px' }}>
-                    Alumno: {mentorship.alumn.user.firstName} {mentorship.alumn.user.lastName}
+                    {currentUser === studentId ? 'Mentor' : 'Alumno'}:{' '}
+                    {currentUser === studentId ? `${mentorship.mentor.userId.firstName} ${mentorship.mentor.userId.lastName}` : `${mentorship.alumn.user.firstName} ${mentorship.alumn.user.lastName}`}
                   </Typography>
                   <Typography variant="body2" style={{ color: 'white', marginBottom: '8px' }}>
-                    Email: {mentorship.alumn.user.email}
+                    Email: {currentUser === studentId ? mentorship.mentor.userId.email : mentorship.alumn.user.email}
                   </Typography>
                 </Grid>
               </Grid>
@@ -135,6 +204,91 @@ const MyMentorships = () => {
               </Typography>
             </CardContent>
             <CalendarWrapper appointmentDate={mentorship.appointmentDate} />
+            {mentorship.state.name === 'pendiente' && studentId === null && (
+              <div style={{ margin: '8px' }}>
+                <button
+                  style={{
+                    backgroundColor: 'green',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    marginRight: '8px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleButtonClick(mentorship.id, 'accept')}
+                >
+                  Aceptar
+                </button>
+                <button
+                  style={{
+                    backgroundColor: 'red',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleButtonClick(mentorship.id, 'reject')}
+                >
+                  Rechazar
+                </button>
+              </div>
+            )}
+            {openInputs[mentorship.id]?.accept && (
+              <div>
+                <label>Hora:</label>
+                <input
+                  type="text"
+                  value={hour}
+                  onChange={(e) => setHour(e.target.value)}
+                  style={{
+                    borderRadius: '8px',
+                    padding: '8px',
+                    margin: '8px 0',
+                  }}
+                />
+                <button
+                  style={{
+                    backgroundColor: 'green',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    marginTop: '8px',
+                  }}
+                  onClick={() => handleAcceptClick(mentorship.id)}
+                >
+                  Enviar
+                </button>
+              </div>
+            )}
+            {openInputs[mentorship.id]?.reject && (
+              <div>
+                <label>Razón de rechazo:</label>
+                <input
+                  type="text"
+                  value={refused}
+                  onChange={(e) => setRefused(e.target.value)}
+                  style={{
+                    borderRadius: '8px',
+                    padding: '8px',
+                    margin: '8px 0',
+                  }}
+                />
+                <button
+                  style={{
+                    backgroundColor: 'red',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    marginTop: '8px',
+                  }}
+                  onClick={() => handleRejectClick(mentorship.id)}
+                >
+                  Enviar
+                </button>
+              </div>
+            )}
           </Card>
         </Grid>
       ))}

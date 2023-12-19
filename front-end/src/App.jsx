@@ -8,7 +8,6 @@ import { MentoresPage } from "./MentoresPage/MentoresPage";
 import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
-import MentorProfile from "./components/MentorProfile";
 import StudentProfile from "./components/StudentProfile";
 import UpdateMentorProfile from "./components/UpdateMentorProfile";
 import UpdateStudentProfile from "./components/UpdateStudentProfile";
@@ -18,7 +17,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import HomeIcon from "@mui/icons-material/Home";
 import SchoolIcon from "@mui/icons-material/School";
-import MentorProfileTest from "./components/MentorProfileTest";
+import MentorProfile from "./components/MentorProfile";
 import ContactMentor from "./components/ContactMentor";
 import MyMentorships from "./components/MyMentorships";
 
@@ -31,20 +30,15 @@ const navLinksArray = [
   { title: "Login", path: "/login", icon: <LoginIcon /> },
   { title: "Register", path: "/signup", icon: <HowToRegIcon /> },
   {
-    title: "MentorProfile",
-    path: "/mentorProfile/:id",
-    icon: <HowToRegIcon />,
-  },
-  {
     title: "StudentProfile",
     path: "/studentProfile/:id",
     icon: <HowToRegIcon />,
   },
   {
-    title: "MentorProfileTest",
-    path: "/mentorProfileTest/:id",
+    title: "MentorProfile",
+    path: "/mentorProfile/:id",
     icon: <HowToRegIcon />,
-  }, //test perfil mentor
+  }, 
 ];
 
 function App() {
@@ -82,11 +76,6 @@ function App() {
                 {
                   //<Route path="/calendar" element={<SchedulerComponent />} />
                 }
-                <Route
-                  path="/mentorProfileTest/:id"
-                  element={<MentorProfileTest />}
-                />{" "}
-                //test perfil mentor
                 {
                   //<Route path="/mentor/:id/score" element={<Score />} />
                 }
