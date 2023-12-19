@@ -38,15 +38,15 @@
     * Los estudiantes podrán calificar a los mentores en una escala del 1 al 5 para ayudar a otros a encontrar a su mentor perfecto.
 
 ## Tecnologías Utilizadas
-ReactJS
-NestJS
-Material UI
-Vite
-TypeScript
-MySQL
-Cloudinary
-Multer
-Crypto-JS
+* ReactJS
+* NestJS
+* Material UI
+* Vite
+* TypeScript
+* MySQL
+* Cloudinary
+* Multer
+* Crypto-JS
 
 # Únete a mentorSphere
 ¡Potencia tu crecimiento académico y profesional con mentorSphere! Regístrate hoy y descubre un mundo de aprendizaje personalizado y mentorías enriquecedoras.
