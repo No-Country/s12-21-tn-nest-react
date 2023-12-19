@@ -17,7 +17,7 @@ import { urlApi } from '../../config/axios';
 export const CalendarWrapper = ({ appointmentDate }) => {
   const formattedDate = new Date(appointmentDate);
   return (
-    <div style={{ borderRadius: '8px', overflow: 'hidden', marginBottom: '40px' }}>
+    <div style={{ borderRadius: '8px', overflow: 'hidden', marginBottom: '80px' , height: '280px' }}>
       <Calendar
         value={formattedDate}
         calendarType="US"
@@ -138,14 +138,15 @@ const MyMentorships = () => {
         <Grid item key={mentorship.id} xs={12} sm={6} md={4}>
           <Card
             style={{
-                backgroundColor: 'black',
-                color: 'white',
-                border: `1px solid ${getColorByState(mentorship.state.name).borderColor}`,
-                margin: '16px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                height: '100%', // Establecer altura del 100%
+              backgroundColor: 'black',
+              color: 'white',
+              border: `1px solid ${getColorByState(mentorship.state.name).borderColor}`,
+              margin: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              height: '720px',
+              justifyContent: 'space-between',
             }}
           >
             <Box
@@ -155,7 +156,6 @@ const MyMentorships = () => {
                 borderRadius: '4px 4px 0 0',
                 width: '100%',
                 boxSizing: 'border-box',
-                marginBottom: '8px',
               }}
             >
               <Chip
@@ -166,7 +166,7 @@ const MyMentorships = () => {
                 }}
               />
             </Box>
-            <CardContent style={{ textAlign: 'center', flex: '1', width: '100%', boxSizing: 'border-box', marginBottom: '16px' }}>
+            <CardContent style={{ textAlign: 'center', width: '100%', boxSizing: 'border-box', marginBottom: '16px', height: '140px' }}>
               <Grid container spacing={2} justifyContent="center">
                 <Grid item>
                   <Avatar
@@ -204,37 +204,44 @@ const MyMentorships = () => {
               </Typography>
             </CardContent>
             <CalendarWrapper appointmentDate={mentorship.appointmentDate} />
-            {mentorship.state.name === 'pendiente' && studentId === null && (
-              <div style={{ margin: '8px' }}>
-                <button
-                  style={{
-                    backgroundColor: 'green',
-                    color: 'white',
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    marginRight: '8px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleButtonClick(mentorship.id, 'accept')}
-                >
-                  Aceptar
-                </button>
-                <button
-                  style={{
-                    backgroundColor: 'red',
-                    color: 'white',
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleButtonClick(mentorship.id, 'reject')}
-                >
-                  Rechazar
-                </button>
-              </div>
-            )}
+            <div style={{ margin: '8px', marginTop: '0px', width: '100%', display: 'flex', flexDirection: 'column', height:'90px' }}>
+              {mentorship.state.name !== 'rechazado' && studentId === null && (
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+                  {/* Botón de aceptar */}
+                  {mentorship.state.name === 'pendiente'  && (
+                    <button
+                      style={{
+                        backgroundColor: 'green',
+                        color: 'white',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        marginRight: '8px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleButtonClick(mentorship.id, 'accept')}
+                    >
+                      Aceptar
+                    </button>
+                  )}
+
+                  {/* Botón de rechazar */}
+                  <button
+                    style={{
+                      backgroundColor: 'red',
+                      color: 'white',
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => handleButtonClick(mentorship.id, 'reject')}
+                  >
+                    Rechazar
+                  </button>
+                </div>
+              )}
+            </div>
             {openInputs[mentorship.id]?.accept && (
-              <div>
+              <div style={{ width: '100%' }}>
                 <label>Hora:</label>
                 <input
                   type="text"
@@ -244,6 +251,7 @@ const MyMentorships = () => {
                     borderRadius: '8px',
                     padding: '8px',
                     margin: '8px 0',
+                    width: '100%',
                   }}
                 />
                 <button
@@ -254,6 +262,7 @@ const MyMentorships = () => {
                     borderRadius: '8px',
                     cursor: 'pointer',
                     marginTop: '8px',
+                    width: '100%',
                   }}
                   onClick={() => handleAcceptClick(mentorship.id)}
                 >
@@ -262,7 +271,7 @@ const MyMentorships = () => {
               </div>
             )}
             {openInputs[mentorship.id]?.reject && (
-              <div>
+              <div style={{ width: '100%' }}>
                 <label>Razón de rechazo:</label>
                 <input
                   type="text"
@@ -272,6 +281,7 @@ const MyMentorships = () => {
                     borderRadius: '8px',
                     padding: '8px',
                     margin: '8px 0',
+                    width: '100%',
                   }}
                 />
                 <button
@@ -282,6 +292,7 @@ const MyMentorships = () => {
                     borderRadius: '8px',
                     cursor: 'pointer',
                     marginTop: '8px',
+                    width: '100%',
                   }}
                   onClick={() => handleRejectClick(mentorship.id)}
                 >
