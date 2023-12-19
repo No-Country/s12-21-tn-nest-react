@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Generated,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -30,14 +29,9 @@ export class Chat {
   @JoinColumn({ name: 'mentorId' })
   mentor: User;
 
-  @OneToMany(() => Message, (message) => message.id)
-  message: string[];
+  @OneToMany(() => Message, (message) => message.chat)
+  message: Message[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
-}
-function GeneratedColumn(
-  arg0: string,
-): (target: Chat, propertyKey: 'id') => void {
-  throw new Error('Function not implemented.');
 }

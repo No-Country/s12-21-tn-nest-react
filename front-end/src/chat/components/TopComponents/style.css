@@ -43,3 +43,13 @@
   width: 35px;
   cursor: pointer;
 }
+
+
+.chat__with p{
+  color: #fff;
+  font-size: 18px;
+  margin: 0;
+  padding: 10px;
+  cursor: pointer;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}

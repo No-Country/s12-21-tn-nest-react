@@ -2,28 +2,29 @@ import { useContext, useEffect, useState } from "react";
 import SocketContext from "../../context/SocketContext";
 import { EVENTS } from "../constants";
 import AuthContext from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const useCreateChat = () => {
-  const { socket } = useContext(SocketContext);
+  const { socket, setChat, chat } = useContext(SocketContext);
   const { user } = useContext(AuthContext);
   const [localSocket, setSocket] = useState(socket);
 
   const getCurrentUserId = () => user.userId;
+  const navigate = useNavigate();
 
   useEffect(() => {
     localSocket.on(EVENTS.CHAT_CREATED, (data) => {
-      console.log("Chat created", data);
       localSocket.emit(EVENTS.JOIN_CHAT, {
-        id: data.chatId,
+        id: data.id,
         alumnId: data.alumnId,
         mentorId: data.mentorId,
       });
+
+      setChat(data);
+      navigate(`/chat/${data.id}`);
+
       localSocket.off(EVENTS.CHAT_CREATED);
     });
-
-    return () => {
-      setSocket(null);
-    };
   }, []);
 
   const createChat = (mentorId) => {

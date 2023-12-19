@@ -10,6 +10,7 @@ export const SocketProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   const [socket, setSocket] = useState(null);
+  const [chat, setChat] = useState(null);
 
   useEffect(() => {
     const socket = io(BASE_URL, {
@@ -21,7 +22,9 @@ export const SocketProvider = ({ children }) => {
   }, []);
 
   return (
-    <SocketConext.Provider value={{ socket }}>{children}</SocketConext.Provider>
+    <SocketConext.Provider value={{ socket, setChat, chat }}>
+      {children}
+    </SocketConext.Provider>
   );
 };
 

@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { Chat } from './entities/chat.entity';
 import { Alumn } from 'src/alunm/models/alumn.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
+import { Message } from './entities/message.entity';
 
 @Injectable()
 export class ChatService {
@@ -14,6 +15,7 @@ export class ChatService {
     @InjectRepository(Chat) private chatRepository: Repository<Chat>,
     @InjectRepository(Alumn) private alumnRepository: Repository<Alumn>,
     @InjectRepository(Mentor) private mentorRepository: Repository<Mentor>,
+    @InjectRepository(Message) private messageRepository: Repository<Message>,
   ) {}
 
   async create(createChatDto: CreateChatDto) {
@@ -24,8 +26,12 @@ export class ChatService {
         },
       });
 
+      const mentor = await this.mentorRepository.findOne({
+        where: { userId: { id: createChatDto.mentorId } },
+      });
+
       if (chat) {
-        return chat;
+        return { ...chat, mentor };
       }
 
       const chatToSave = this.chatRepository.create(createChatDto);
@@ -33,7 +39,10 @@ export class ChatService {
         chatToSave.alumnId,
         chatToSave.mentorId,
       );
-      this.chatRepository.save(chatToSave);
+      //save and return relationship
+      const created = await this.chatRepository.save(chatToSave);
+
+      return { ...created, mentor };
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +60,7 @@ export class ChatService {
     try {
       return await this.chatRepository.find({
         where: [{ alumnId: id }, { mentorId: id }],
-        relations: ['userOne', 'userTwo'],
+        relations: ['mentor'],
       });
     } catch (error) {
       console.log(error);
@@ -66,8 +75,15 @@ export class ChatService {
     return `This action removes a #${id} chat`;
   }
 
-  sendMessage(message: CreateMessageDto) {
-    return `This action sends this message '${message}' to a chat`;
+  async saveMessage(message) {
+    console.log(message);
+    try {
+      const messageToSave = this.messageRepository.create(message);
+      const saved = await this.messageRepository.save(messageToSave);
+      return saved;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   updateMessage(message: UpdateMessageDto) {

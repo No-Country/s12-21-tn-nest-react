@@ -1,14 +1,14 @@
 import "./style.css";
 
-export const ItemListChat = () => {
+export const ItemListChat = ({ onClick, item }) => {
   return (
     <>
-      <div className="item__list">
+      <div onClick={onClick} className="item__list">
         <div className="item__list-img">
           <img src="" alt="" />
         </div>
         <div className="item__list-name">
-          <p>Name</p>
+          <p>{item?.mentor?.firstName + " " + item?.mentor?.lastName}</p>
         </div>
       </div>
     </>

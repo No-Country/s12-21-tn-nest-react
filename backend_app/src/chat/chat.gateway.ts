@@ -13,6 +13,7 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
+import { join } from 'path';
 
 @WebSocketGateway({
   cors: {
@@ -69,18 +70,25 @@ export class ChatGateway
   @SubscribeMessage('createChat')
   async create(@MessageBody() createChatDto) {
     const chat = await this.chatService.create(createChatDto);
-    console.log(chat);
     this.server.emit('chatCreated', JSON.parse(JSON.stringify(chat)));
+  }
+
+  @SubscribeMessage('joinChat')
+  async joinChat(
+    client: Socket,
+    chat: { id: string; alumnId: string; mentorId: string },
+  ) {
+    const token = client.handshake.auth.token;
+    if (!token) {
+      client.disconnect();
+      return 'disconnected';
+    }
+    client.join(chat.id);
   }
 
   @SubscribeMessage('findAllChat')
   findAll() {
     return this.chatService.findAll();
-  }
-
-  @SubscribeMessage('findOneChat')
-  findOne(@MessageBody() id: number) {
-    return this.chatService.findOne(id);
   }
 
   @SubscribeMessage('removeChat')
@@ -89,12 +97,15 @@ export class ChatGateway
   }
 
   @SubscribeMessage('message')
-  sendMessage(message: CreateMessageDto) {
-    this.chatService.sendMessage(message);
-  }
+  async sendMessage(socket: Socket, @MessageBody() message) {
+    const token = socket.handshake.auth.token;
+    if (!token) {
+      socket.disconnect();
+      return 'disconnected';
+    }
+    const userId = this.getUserIdFromToken(token);
+    message.sender = userId;
 
-  @SubscribeMessage('message')
-  updateMessage(message: UpdateMessageDto) {
-    this.chatService.updateMessage(message);
+    await this.chatService.saveMessage(message);
   }
 }
