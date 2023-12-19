@@ -29,7 +29,7 @@ export class Chat {
   @ManyToOne(() => User, (user) => user)
   @JoinColumn({ name: 'mentorId' })
   mentor: User;
-
+  // todo: change relationship to chat
   @OneToMany(() => Message, (message) => message.id)
   message: string[];
 
