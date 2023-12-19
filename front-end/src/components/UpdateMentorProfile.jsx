@@ -6,7 +6,6 @@ import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,6 +13,23 @@ import dayjs from 'dayjs';
 import { urlApi } from '../../config/axios';
 import { useAuth } from '../context/AuthContext';
 import SchedulerComponent from './ContactCalendar';
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+const customTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#25D366',
+    },
+    secondary: {
+      main: '#FFFFFF',
+    },
+    background: {
+      paper: '#111b21',
+      default: '#0B141A',
+    },
+  },
+});
 
 const UpdateMentorProfile = () => {
   const location = useLocation();
@@ -25,14 +41,14 @@ const UpdateMentorProfile = () => {
   const [loadingSpecialities, setLoadingSpecialities] = useState(true);
 
   const [editedInfo, setEditedInfo] = useState({
-    mentorDescription: mentorInfo.mentorDescription || '', 
+    mentorDescription: mentorInfo.mentorDescription || '',
     aboutMe: mentorInfo.aboutMe || '',
     price: mentorInfo.price || '',
     firstName: mentorInfo.userId.firstName || '',
     lastName: mentorInfo.userId.lastName || '',
-    phone: mentorInfo.userId.phone || '', 
+    phone: mentorInfo.userId.phone || '',
     birthdate: mentorInfo.birthdate,
-    speciality: mentorInfo.speciality || { id: '', name: '' }, 
+    speciality: mentorInfo.speciality || { id: '', name: '' },
     categories: mentorInfo.categories || [],
   });
 
@@ -51,27 +67,17 @@ const UpdateMentorProfile = () => {
     try {
       const URLCategories = `mentor/categories/filter`
       const response = await urlApi.get(URLCategories);
-      setCategories(response.data); 
+      setCategories(response.data);
     } catch (error) {
       console.error("Error al obtener las categorias:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchSpecialities();
     fetchCategories();
   }, []);
 
-  const customTheme = createTheme({
-    palette: {
-      background: {
-        default: '#FFFFFF', // Fondo blanco
-      },
-      text: {
-        primary: '#000000', // Texto negro
-      },
-    },
-  });
   function getStyles(name, selectedCategories, theme) {
     return {
       fontWeight:
@@ -80,8 +86,8 @@ const UpdateMentorProfile = () => {
           : theme.typography.fontWeightMedium,
     };
   }
-  
-  
+
+
 
   const handleChange = (field, value) => {
     setEditedInfo((prevInfo) => {
@@ -97,149 +103,161 @@ const UpdateMentorProfile = () => {
       };
     });
   };
-  
+
   const handleSaveChanges = async () => {
     try {
       let url = `mentor/profile/update/${mentorId}`
       console.log(editedInfo);
       const categoryIds = editedInfo.categories.map((category) => category.id);
       console.log('Category IDs:', categoryIds);
-      
-      await urlApi.put(url , {
+
+      await urlApi.put(url, {
         ...editedInfo,
         speciality: editedInfo.speciality.id,
-        categories: categoryIds, 
+        categories: categoryIds,
       });
-      } catch (error) {
-        console.error('Error updating mentor information:', error);
+    } catch (error) {
+      console.error('Error updating mentor information:', error);
     }
   };
-      
+
 
   return (
     <ThemeProvider theme={customTheme} >
-      <div style={{ backgroundColor: '#FFFFFF', color: '#FFFFFF' }}>
-        <Container component="main" maxWidth="xs">
-          <Grid item xs={12} sm={6}>
-            <Avatar src={mentorInfo.image} className=""/>
+      <Container component="main" maxWidth="sm" sx={{ border: { sm: "2px solid #25D366", xs: "none" }, borderRadius: "1rem", py: 3, mt: 7 }}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Avatar src={mentorInfo.image} sx={{ width: "100px", height: "100px", border:"2px solid #25D366" }} />
           </Grid>
-          <TextField
-            label="Nombre"
-            fullWidth
-            value={editedInfo.firstName}
-            onChange={(e) => handleChange('firstName', e.target.value)}
-            margin="normal"
-          />
-          <TextField
-            label="Apellido"
-            fullWidth
-            value={editedInfo.lastName}
-            onChange={(e) => handleChange('lastName', e.target.value)}
-            margin="normal"
-          />
-          <TextField
-            label="Número de teléfono"
-            fullWidth
-            value={editedInfo.phone}
-            onChange={(e) => handleChange('phone', e.target.value)}
-            margin="normal"
-          />
-          <TextareaAutosize
-            label="Descripción"
-            minRows={7}
-            style={{ width: '100%', marginBottom: '16px' }}
-            value={editedInfo.mentorDescription}
-            onChange={(e) => handleChange('mentorDescription', e.target.value)}
-            margin="normal"
-          />
-          <TextareaAutosize
-            label="aboutMe"
-            minRows={5}
-            style={{ width: '100%', marginBottom: '16px' }} 
-            value={editedInfo.aboutMe}
-            onChange={(e) => handleChange('aboutMe', e.target.value)}
-            margin="normal"
-          />
-          <TextField
-            label="price"
-            fullWidth
-            value={editedInfo.price}
-            onChange={(e) => handleChange('price', e.target.value)}
-            margin="normal"
-          />
-          <FormControl sx={{ m: 1, minWidth: 200 }}>
-              <InputLabel id="mentorSpeciality-label">Especialidad</InputLabel>
-              <Select
-                  labelId="mentorSpeciality-label"
-                  id="demo-simple-select-autowidth"
-                  value={editedInfo.speciality.name}
-                  onChange={(e) => handleChange('speciality', {
-                    id: specialities.find((s) => s.name === e.target.value)?.id || '',
-                    name: e.target.value,
-                  })}
-                  name="mentorInfo.speciality.name"
-                  label="Especialidad"
-                >
-                  {specialities.map((specialityOption) => (
-                    <MenuItem key={specialityOption.id} value={specialityOption.name}>
-                      {specialityOption.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-            </FormControl>
-            <div>
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
-            <Select
-              labelId="demo-multiple-chip-label"
-              id="demo-multiple-chip"
-              multiple
-              value={editedInfo.categories.map((category) => category.name)}
-              onChange={(e) => {
-                const selectedCategories = e.target.value.map((categoryName) => ({
-                  id: categories.find((cat) => cat.name === categoryName)?.id || '',
-                  name: categoryName,
-                }));
-                handleChange('categories', selectedCategories);
-              }}
-              input={<OutlinedInput id="select-multiple-chip" label="Categorías" />}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value, index) => (
-                    <Chip key={index} label={value} />
-                  ))}
-                </Box>
-              )}
-            >
-              {categories.map((category) => (
-                <MenuItem
-                  key={category.id}
-                  value={category.name}
-                  style={getStyles(category.name, editedInfo.categories, customTheme)}
-                >
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-          <Grid item sx={{ mt: 3, mb: 2 }}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Nombre"
+              fullWidth
+              value={editedInfo.firstName}
+              onChange={(e) => handleChange('firstName', e.target.value)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Apellido"
+              fullWidth
+              value={editedInfo.lastName}
+              onChange={(e) => handleChange('lastName', e.target.value)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
+              <DatePicker sx={{ width: "100%" }}
                 label="Fecha de Nacimiento"
-                value={dayjs(editedInfo.birthdate)} 
+                value={dayjs(editedInfo.birthdate)}
                 onChange={(date) => setEditedInfo({ ...editedInfo, birthdate: date.toISOString() })}
                 slotProps={{ textField: { variant: 'outlined' } }}
-                />
+              />
             </LocalizationProvider>
-           </Grid>
-           <Link to={`/mentorProfile/${mentorInfo.id}`}>
-            <Button variant="contained" color="primary" onClick={handleSaveChanges}>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Número de teléfono"
+              fullWidth
+              value={editedInfo.phone}
+              onChange={(e) => handleChange('phone', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <TextareaAutosize
+              label="Descripción"
+              minRows={7}
+              style={{ width: '100%', backgroundColor: "#263035", outline: 'none', border: "2px solid #25D366", color: "#FFF" }}
+              value={editedInfo.mentorDescription}
+              onChange={(e) => handleChange('mentorDescription', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <TextareaAutosize
+              label="aboutMe"
+              minRows={5}
+              style={{ width: '100%',backgroundColor: "#263035", outline: 'none', border: "2px solid #25D366", color: "#FFF" }}
+              value={editedInfo.aboutMe}
+              onChange={(e) => handleChange('aboutMe', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel id="mentorSpeciality-label">Especialidad</InputLabel>
+              <Select
+                labelId="mentorSpeciality-label"
+                id="demo-simple-select-autowidth"
+                value={editedInfo.speciality.name}
+                onChange={(e) => handleChange('speciality', {
+                  id: specialities.find((s) => s.name === e.target.value)?.id || '',
+                  name: e.target.value,
+                })}
+                name="mentorInfo.speciality.name"
+                label="Especialidad"
+              >
+                {specialities.map((specialityOption) => (
+                  <MenuItem key={specialityOption.id} value={specialityOption.name}>
+                    {specialityOption.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="price"
+              fullWidth
+              value={editedInfo.price}
+              onChange={(e) => handleChange('price', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>
+              <Select
+                labelId="demo-multiple-chip-label"
+                id="demo-multiple-chip"
+                multiple
+                value={editedInfo.categories.map((category) => category.name)}
+                onChange={(e) => {
+                  const selectedCategories = e.target.value.map((categoryName) => ({
+                    id: categories.find((cat) => cat.name === categoryName)?.id || '',
+                    name: categoryName,
+                  }));
+                  handleChange('categories', selectedCategories);
+                }}
+                input={<OutlinedInput id="select-multiple-chip" label="Categorías" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selected.map((value, index) => (
+                      <Chip key={index} label={value} />
+                    ))}
+                  </Box>
+                )}
+              >
+                {categories.map((category) => (
+                  <MenuItem
+                    key={category.id}
+                    value={category.name}
+                    style={getStyles(category.name, editedInfo.categories, customTheme)}
+                  >
+                    {category.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <Link to={`/mentorProfile/${mentorInfo.id}`}>
+              <Button variant="contained" color="primary" onClick={handleSaveChanges} sx={{width:"100%" ,color:"#FFF"}}>
                 Guardar Cambios
-            </Button>
-           </Link>
-        </Container>
-      </div>
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
+      </Container>
     </ThemeProvider>
   );
 };
