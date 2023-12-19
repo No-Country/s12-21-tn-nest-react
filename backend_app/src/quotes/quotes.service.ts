@@ -169,6 +169,7 @@ export class QuotesService {
         state: true,
       },
     });
+    console.log(quotes)
     const status = await this.StateRepository.findOne({
       where: { name: 'aceptado' },
     });
