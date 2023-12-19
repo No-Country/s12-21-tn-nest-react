@@ -76,11 +76,6 @@ function App() {
                 {
                   //<Route path="/calendar" element={<SchedulerComponent />} />
                 }
-                <Route
-                  path="/mentorProfileTest/:id"
-                  element={<MentorProfileTest />}
-                />{" "}
-                //test perfil mentor
                 {<Route path="/score/:idScoreParams" element={<Score />} />}
                 {
                   //<Route path="/score" element={<Score />} />
