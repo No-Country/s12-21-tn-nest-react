@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [mentorId, setMentorId] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
 
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children }) => {
       let url = `auth/filter/${userId}`;
       const response = await urlApi.get(url);
       console.log("response", response);
+      setUserData(response.data.mentor[0].userId)
       return response.data;
     } catch (error) {
       console.error("Error fetching mentor ID:", error);
@@ -47,14 +49,21 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setUser(res.data);
         setUserId(res.data.userId);
-        setIsAuthenticated(true)
-
-        if (res.data.role.name == "mentor") {
-          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
-          setMentorId(mentorIdResponse.mentor[0].id);
-        } else {
-          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
-          setStudentId(mentorIdResponse.alumn[0].id);
+        setIsAuthenticated(true);
+  
+        const mentorIdsResponse = await obtenerIdDelMentor(res.data.userId);
+        const mentorIds = mentorIdsResponse.mentor.map((mentor) => mentor.id);
+        const studentIds = mentorIdsResponse.alumn.map((alumn) => alumn.id);
+  
+        if (mentorIds.length > 0 && studentIds.length > 0) {
+          setMentorId(mentorIds);
+          setStudentId(studentIds);
+        } else if (mentorIds.length > 0) {
+          setMentorId(mentorIds);
+          setStudentId(null);
+        } else if (studentIds.length > 0) {
+          setMentorId(null);
+          setStudentId(studentIds);
         }
       } else {
         console.error("Respuesta inesperada", res);
@@ -63,6 +72,7 @@ export const AuthProvider = ({ children }) => {
       setErrors(err.response.data);
     }
   };
+  
 
   const signOut = () => {
     setIsAuthenticated(false);
@@ -129,6 +139,7 @@ export const AuthProvider = ({ children }) => {
         userId,
         mentorId,
         studentId,
+        userData,
       }}
     >
       {children}

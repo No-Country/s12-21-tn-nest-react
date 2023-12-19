@@ -13,6 +13,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useAuth } from '../context/AuthContext';
 import { urlApi } from '../../config/axios';
+import { useNavigate } from 'react-router-dom';
 
 export const CalendarWrapper = ({ appointmentDate }) => {
   const formattedDate = new Date(appointmentDate);
@@ -33,10 +34,12 @@ export const CalendarWrapper = ({ appointmentDate }) => {
 };
 
 const MyMentorships = () => {
+  const navigate = useNavigate();
   const [mentorshipData, setMentorshipData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [showAcceptInput, setShowAcceptInput] = useState(false);
   const [showRejectInput, setShowRejectInput] = useState(false);
+  const [showPayButton, setShowPayButton] = useState(false);
   const [hour, setHour] = useState('');
   const [refused, setRefused] = useState('');
   const { userId, studentId, mentorId } = useAuth();
@@ -96,7 +99,6 @@ const MyMentorships = () => {
       let url = `quotes/update/${mentorshipId}`;
       console.log('Hour:', hour);
       await urlApi.patch(url, { hour: String(hour) });
-      // Actualiza el estado para ocultar el input de aceptar
       setOpenInputs(prevState => ({
         ...prevState,
         [mentorshipId]: {
@@ -130,7 +132,6 @@ const MyMentorships = () => {
       console.error('Error updating mentorship refused: ', error);
     }
   };
-
 
   return (
     <Grid container spacing={4}>
@@ -299,6 +300,22 @@ const MyMentorships = () => {
                   Enviar
                 </button>
               </div>
+            )}
+            {/* Nuevo bloque para el botón de pagar */}
+            
+            {mentorship.state.name === 'aceptado' && studentId !== null && (
+              <button
+                style={{
+                backgroundColor: 'blue',
+                color: 'white',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                marginLeft: '8px',
+                cursor: 'pointer',
+                }}
+              >
+                Pagar
+              </button>
             )}
           </Card>
         </Grid>

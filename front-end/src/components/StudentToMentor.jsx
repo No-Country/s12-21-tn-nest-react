@@ -7,9 +7,15 @@ import { useState, useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
 import { urlApi } from '../../config/axios';
-
-
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import TextField from '@mui/material/TextField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useAuth } from '../context/AuthContext';
+import { Typography } from '@mui/material';
 
 const customTheme = createTheme({
   palette: {
@@ -31,22 +37,22 @@ const customTheme = createTheme({
 const StudentToMentor = ({ location }) => {
 /*   const { newUser, newMentor } = useLocation().state || {};
  */  const navigate = useNavigate()
+ const { userId } = useAuth();
   const [categoryIds, setCategoryIds] = useState([]);
   const [newMentorship, setNewMentorship] = useState({
     mentorSpeciality: "",
     mentorCategory: [],
-  })
-  const [selectedFile, setSelectedFile] = React.useState(null);
-  const [newMentor, setNewMentor] = useState({
     mentorImage: null,
     mentorDescription: "",
     mentorAboutMe: "",
     mentorDate: "",
     mentorPrice: "",
   })
+  const [selectedFile, setSelectedFile] = React.useState(null);
+
   const [specialities, setSpecialities] = useState([]); //opciones especialidades
   const [categories, setCategories] = useState([]);  //opciones categorias
-  const { mentorSpeciality, mentorCategory } = newMentorship
+  const { mentorSpeciality, mentorCategory, mentorImage, mentorDescription, mentorAboutMe, mentorDate, mentorPrice } = newMentorship
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -71,7 +77,7 @@ const StudentToMentor = ({ location }) => {
     if (file) {
       setSelectedFile(file);
       setNewMentor({
-        ...newMentor,
+        ...newMentorship,
         mentorImage: file,
       });
     }
@@ -113,16 +119,15 @@ const StudentToMentor = ({ location }) => {
   const submit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file', newMentor.mentorImage, newMentor.mentorImage.name);
-    formData.append('mentorDescription', newMentor.mentorDescription);
-    const { mentorSpeciality, mentorCategory } = newMentorship;
-    formData.append('role', newUser.role);
-    formData.append('aboutMe', newMentor.mentorAboutMe);
-    formData.append('birthDate', newMentor.mentorDate);
-    formData.append('price', newMentor.mentorPrice);
-    formData.append('speciality', mentorSpeciality);
+/*     formData.append('file', mentorImage);
+ */    formData.append('mentorDescription', mentorDescription);
+    formData.append('userId', userId);
+    formData.append('aboutMe', mentorAboutMe);
+    formData.append('birthdate', mentorDate);
+    formData.append('price', mentorPrice);
+    formData.append('idSpeciality', mentorSpeciality);
     mentorCategory.forEach(val => {
-      formData.append('categories[]', val);
+      formData.append('Categories[]', val);
     });
 
     console.log('FormData before sending:');
@@ -131,7 +136,7 @@ const StudentToMentor = ({ location }) => {
     });
 
     try {
-      let url = ''
+      let url = 'mentor/create'
       const response = await urlApi.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -221,7 +226,7 @@ const StudentToMentor = ({ location }) => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={['DatePicker']}>
                     <DatePicker label="Basic date picker" value={mentorDate} sx={{ color: "#25D366" }}
-                      onChange={(date) => setNewMentor({ ...newMentor, mentorDate: date.toISOString() })} />
+                      onChange={(date) => setNewMentorship({ ...newMentorship, mentorDate: date.toISOString() })} />
                   </DemoContainer>
                 </LocalizationProvider>
               </Grid>

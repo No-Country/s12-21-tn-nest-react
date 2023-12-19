@@ -11,6 +11,7 @@ import { Typography } from '@mui/material';
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
 import { urlApi } from '../../config/axios';
+import { useAuth } from '../context/AuthContext';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 const customTheme = createTheme({
@@ -31,6 +32,7 @@ const customTheme = createTheme({
 
 const MentorToStudent = ({ location }) => {
   const navigate = useNavigate();
+  const { userId, userData } = useAuth();
 /*   const { newUser } = useLocation().state || {};
  */  const [selectedFile, setSelectedFile] = React.useState(null);
   const [categoryIds, setCategoryIds] = useState([]);
@@ -41,6 +43,7 @@ const MentorToStudent = ({ location }) => {
     studentCategories: [],
   })
   const { studentImage, studentCategories } = newStudent
+  console.log("user: ", userData);
 
   const fetchCategories = async () => {
     try {
@@ -78,13 +81,13 @@ const MentorToStudent = ({ location }) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', newStudent.studentImage, newStudent.studentImage.name);
-    const { role } = newUser;
-    formData.append('role', role);
+/*     userData.forEach(val => {formData.append('user', val)})
+ */    formData.append('user', userData);
     studentCategories.forEach(val => {
-      formData.append('categories[]', val);
+      formData.append('categoriesId[]', val);
     });
     try {
-      let url = ''
+      let url = 'alumn'
       const response = await urlApi.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',

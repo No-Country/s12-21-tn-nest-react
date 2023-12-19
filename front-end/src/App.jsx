@@ -20,7 +20,8 @@ import SchoolIcon from "@mui/icons-material/School";
 import MentorProfile from "./components/MentorProfile";
 import ContactMentor from "./components/ContactMentor";
 import MyMentorships from "./components/MyMentorships";
-
+import StudentToMentor from "./components/StudentToMentor";
+import MentorToStudent from "./components/MentorToStudent";
 import Score from "./score/Score";
 
 const navLinksArray = [
@@ -61,6 +62,8 @@ function App() {
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
                 <Route path="/contactMentor" element={<ContactMentor />} />
                 <Route path="/myMentorships" element={<MyMentorships />} />
+                <Route path="/studentToMentor" element={<StudentToMentor />} />
+                <Route path="/mentorToStudent" element={<MentorToStudent />} />
                 <Route
                   path="/studentProfile/:id"
                   element={<StudentProfile />}
