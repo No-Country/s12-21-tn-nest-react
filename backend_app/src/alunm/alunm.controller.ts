@@ -18,7 +18,6 @@ import { ApiTags } from '@nestjs/swagger';
 import { hireMentorRequestDto } from './dtos/hireMentor.dto';
 import { CalificationDto } from './dtos/calification.dto';
 import { AlunmUpdateRequestDto } from './dtos/alumnUpdate.dto';
-import { privateDecrypt } from 'crypto';
 import { UserService } from 'src/auth/user/user.service';
 
 @Controller('alumn')
@@ -36,7 +35,6 @@ export class AlunmController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     try {
-      console.log(request);
       const user = await this.userService.findOne(request.userId);
       request.user = user;
       return this.alunmService.create(request, file);
