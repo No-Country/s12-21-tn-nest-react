@@ -18,11 +18,15 @@ import { ApiTags } from '@nestjs/swagger';
 import { hireMentorRequestDto } from './dtos/hireMentor.dto';
 import { CalificationDto } from './dtos/calification.dto';
 import { AlunmUpdateRequestDto } from './dtos/alumnUpdate.dto';
+import { UserService } from 'src/auth/user/user.service';
 
 @Controller('alumn')
 @ApiTags('Alumn')
 export class AlunmController {
-  constructor(private alunmService: AlumnService) {}
+  constructor(
+    private alunmService: AlumnService,
+    private userService: UserService,
+  ) {}
 
   @Post('/')
   @UseInterceptors(FileInterceptor('file'))
@@ -31,6 +35,8 @@ export class AlunmController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     try {
+      const user = await this.userService.findOne(request.userId);
+      request.user = user;
       return this.alunmService.create(request, file);
     } catch (error) {
       return new HttpException('Error creating alumn', 400);

@@ -39,7 +39,7 @@ const navLinksArray = [
     title: "MentorProfile",
     path: "/mentorProfile/:id",
     icon: <HowToRegIcon />,
-  }, 
+  },
 ];
 
 function App() {
@@ -80,9 +80,13 @@ function App() {
                   //<Route path="/calendar" element={<SchedulerComponent />} />
                 }
                 {
-                  //<Route path="/mentor/:id/score" element={<Score />} />
+                  //<Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />{" "}
+                  //test perfil mentor
                 }
-                {<Route path="/score" element={<Score />} />}
+                {<Route path="/score/:idScoreParams" element={<Score />} />}
+                {
+                  //<Route path="/score" element={<Score />} />
+                }
               </Routes>
             </div>
           </BrowserRouter>
