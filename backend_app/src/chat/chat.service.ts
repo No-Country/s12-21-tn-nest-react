@@ -21,28 +21,37 @@ export class ChatService {
   async create(createChatDto: CreateChatDto) {
     try {
       const chat = await this.chatRepository.findOne({
-        where: {
-          id: this.formatChatId(createChatDto.alumnId, createChatDto.mentorId),
-        },
+        where: [
+          {
+            alumnId: createChatDto.alumnId,
+            mentorId: createChatDto.mentorId,
+          },
+          {
+            alumnId: createChatDto.mentorId,
+            mentorId: createChatDto.alumnId,
+          },
+        ],
+        relations: ['mentor', 'alumn'],
       });
+
+      if (chat) {
+        return { ...chat };
+      }
+
+      const chatToSave = this.chatRepository.create(createChatDto);
+
+      //save and return relationship
+      const created = await this.chatRepository.save(chatToSave);
 
       const mentor = await this.mentorRepository.findOne({
         where: { userId: { id: createChatDto.mentorId } },
       });
 
-      if (chat) {
-        return { ...chat, mentor };
-      }
+      const alumn = await this.alumnRepository.findOne({
+        where: { user: { id: createChatDto.alumnId } },
+      });
 
-      const chatToSave = this.chatRepository.create(createChatDto);
-      chatToSave.id = this.formatChatId(
-        chatToSave.alumnId,
-        chatToSave.mentorId,
-      );
-      //save and return relationship
-      const created = await this.chatRepository.save(chatToSave);
-
-      return { ...created, mentor };
+      return { ...created, mentor, alumn };
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +69,7 @@ export class ChatService {
     try {
       return await this.chatRepository.find({
         where: [{ alumnId: id }, { mentorId: id }],
-        relations: ['mentor'],
+        relations: ['mentor', 'alumn'],
       });
     } catch (error) {
       console.log(error);

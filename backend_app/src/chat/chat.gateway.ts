@@ -6,6 +6,8 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   WebSocketServer,
+  ConnectedSocket,
+  WsException,
 } from '@nestjs/websockets';
 import { ChatService } from './chat.service';
 import { CreateChatDto } from './dto/create-chat.dto';
@@ -13,7 +15,6 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import { join } from 'path';
 
 @WebSocketGateway({
   cors: {
@@ -69,6 +70,12 @@ export class ChatGateway
 
   @SubscribeMessage('createChat')
   async create(@MessageBody() createChatDto) {
+    if (!createChatDto.alumnId || !createChatDto.mentorId)
+      return new WsException('You must provide an alumnId and a mentorId');
+
+    if (createChatDto.alumnId === createChatDto.mentorId)
+      return new WsException('You cannot create a chat with yourself');
+
     const chat = await this.chatService.create(createChatDto);
     this.server.emit('chatCreated', JSON.parse(JSON.stringify(chat)));
   }
@@ -97,15 +104,26 @@ export class ChatGateway
   }
 
   @SubscribeMessage('message')
-  async sendMessage(socket: Socket, @MessageBody() message) {
-    const token = socket.handshake.auth.token;
+  async sendMessage(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() message: any,
+  ) {
+    const token = client?.handshake?.auth?.token;
+
     if (!token) {
-      socket.disconnect();
+      client.disconnect();
       return 'disconnected';
     }
-    const userId = this.getUserIdFromToken(token);
-    message.sender = userId;
 
+    const userId = this.getUserIdFromToken(token);
+    //message.sender = userId;
+    message.senderId = userId;
     await this.chatService.saveMessage(message);
+    console.log(message);
+
+    client
+      .to(message.chatId)
+      .emit('message', { ...message, res: 'SERVER CHAT' });
+    console.log('EVIADO');
   }
 }

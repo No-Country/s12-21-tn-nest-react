@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import "./style.css";
+import AuthContext from "../../../context/AuthContext";
 
 export const ItemListChat = ({ onClick, item }) => {
+  const { user } = useContext(AuthContext);
+
   return (
     <>
       <div onClick={onClick} className="item__list">
@@ -8,7 +12,11 @@ export const ItemListChat = ({ onClick, item }) => {
           <img src="" alt="" />
         </div>
         <div className="item__list-name">
-          <p>{item?.mentor?.firstName + " " + item?.mentor?.lastName}</p>
+          <p>
+            {user.userId == item.mentor.id
+              ? item?.alumn?.firstName + " " + item?.alumn?.lastName
+              : item?.mentor?.firstName + " " + item?.mentor?.lastName}
+          </p>
         </div>
       </div>
     </>

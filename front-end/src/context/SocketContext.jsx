@@ -7,18 +7,20 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const SocketConext = createContext();
 
 export const SocketProvider = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user, isAuthenticated } = useContext(AuthContext);
 
   const [socket, setSocket] = useState(null);
   const [chat, setChat] = useState(null);
 
   useEffect(() => {
-    const socket = io(BASE_URL, {
-      auth: {
-        token: user?.token,
-      },
-    });
-    setSocket(socket);
+    if (isAuthenticated && !socket) {
+      const socket = io(BASE_URL, {
+        auth: {
+          token: user?.token,
+        },
+      });
+      setSocket(socket);
+    }
   }, []);
 
   return (
