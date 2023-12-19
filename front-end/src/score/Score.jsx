@@ -2,12 +2,13 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Typography, Rating, Box } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { addScore } from "../db/auth";
 
 import "./Score.css";
 const Score = () => {
   const navigate = useNavigate();
+  const { idScoreParams } = useParams();
   const [value, setValue] = useState(1);
   const [hover, setHover] = useState(null);
   const [comment, setComment] = useState("");
@@ -68,8 +69,8 @@ const Score = () => {
   }, [value]);
 
   useEffect(() => {
-    setIdScore("649dc590-b61d-4436-bd65-7a9a67e99c72");
-  }, []);
+    setIdScore(idScoreParams);
+  }, [idScoreParams]);
 
   return (
     <>

@@ -85,10 +85,10 @@ function App() {
                   element={<MentorProfileTest />}
                 />{" "}
                 //test perfil mentor
+                {<Route path="/score/:idScoreParams" element={<Score />} />}
                 {
-                  //<Route path="/mentor/:id/score" element={<Score />} />
+                  //<Route path="/score" element={<Score />} />
                 }
-                {<Route path="/score" element={<Score />} />}
               </Routes>
             </div>
           </BrowserRouter>
