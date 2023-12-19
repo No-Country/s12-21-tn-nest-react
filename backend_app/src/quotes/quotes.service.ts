@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { State } from './models/state.entity';
-import { add_list_in_model } from '../functions/general';
+import { add_list_in_model } from '../functions/General';
 import { createQuotes } from './class/quotes.dto';
 import { Quotes } from './models/quotes.entity';
 import { create_object_quotes } from 'src/functions/DeepPartial';
