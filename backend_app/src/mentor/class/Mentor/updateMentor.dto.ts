@@ -29,6 +29,4 @@ export class updateMentor {
   @IsString()
   @IsOptional()
   phone?: string;
-  @IsOptional()
-  mentor_availability?: any[];
 }

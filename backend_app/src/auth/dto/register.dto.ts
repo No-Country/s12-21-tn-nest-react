@@ -45,10 +45,6 @@ export default class RegisterDto extends CreateUserDto {
   @IsOptional()
   @IsString()
   speciality?: string;
-
-  @ApiProperty()
-  @IsOptional()
-  mentor_availability?: any[];
 }
 
 export class RegisterAlumnDto extends CreateUserDto {

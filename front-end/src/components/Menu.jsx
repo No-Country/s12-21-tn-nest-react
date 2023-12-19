@@ -5,12 +5,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../images/logo-page.png'
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; 
+import { useNavigate } from 'react-router-dom';
 
 export default function Menu({ navLinksArray }) {
   const [open, setOpen] = useState(false);
-  const { isAuthenticated, user } = useAuth(); 
-  const isMentor = isAuthenticated && user && user.role.name === "mentor";
-  const isStudent = isAuthenticated && user && user.role.name === "student";
+  const { isAuthenticated, user, signOut  } = useAuth(); 
+  const isMentor =  user && user.role.name === "mentor";
+  const isStudent =  user && user.role.name === "student";
+  const navigate = useNavigate();
   
   return (
     <Box component='header' sx={{ width: '100%', bgcolor: '#202C33' }} data-aos="fade-down">
@@ -28,27 +30,24 @@ export default function Menu({ navLinksArray }) {
               <img src={logo} style={{ width: '100%' }} />
             </Box>
             <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
-              {isAuthenticated ? (
-                // Render links for authenticated users
+              {user != null ? (
                 <>
                   {navLinksArray
                     .filter(item => item.title !== 'Login' && item.title !== 'Register')
                     .map(item => (
-                      // Render MentorProfile for mentors, and StudentProfile for students
                       (isStudent && item.title === 'MentorProfile') ||
                       (isMentor && item.title === 'StudentProfile') ? null : (
-                        <Button color='inherit' 
-                          component={NavLink} 
-                          key={item.title} 
-                          to={item.path}
-                        >
+                        <Button color='inherit' component={NavLink} key={item.title} to={item.path}>
                           {item.title}
                         </Button>
                       )
                     ))}
+                  {/* Agrega el botón de cierre de sesión */}
+                  <Button color='inherit' onClick={() => { signOut(); navigate('/'); }}>
+                    Cerrar Sesión
+                  </Button>
                 </>
               ) : (
-                // Render links for non-authenticated users
                 <>
                   {navLinksArray
                     .filter(item => item.title === 'Login' || item.title === 'Register' || item.title === 'Home' || item.title === 'Mentores')

@@ -4,7 +4,10 @@ import { createMentor } from 'src/mentor/class/Mentor/createMentor.dto';
 import { updateMentor } from 'src/mentor/class/Mentor/updateMentor.dto';
 import { Category } from 'src/mentor/models/categories.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
+import { createQuotes } from 'src/quotes/class/quotes.dto';
 import { DeepPartial } from 'typeorm';
+import { Alumn } from '../alunm/models/alumn.entity';
+import { Quotes } from 'src/quotes/models/quotes.entity';
 
 export const create_object_category_update = async (
   categories: updateCategories,
@@ -34,6 +37,16 @@ export const create_object_mentor = async (post: createMentor) => {
   return mentor;
 };
 
+export const create_object_quotes = async (post: createQuotes) => {
+  const quote: DeepPartial<Quotes> = {
+    mentor: { id: post.mentorId },
+    alumn: { id: post.alumnId },
+    appointmentDate: post['appointmentDate'],
+    state: post['state'],
+  };
+  return quote;
+};
+
 export const update_object_mentor = async (
   put: updateMentor,
   file: Express.Multer.File,
@@ -55,8 +68,7 @@ export const update_object_mentor = async (
           key !== 'lastName' &&
           key !== 'phone' &&
           key !== 'birthday' &&
-          key !== 'password' &&
-          key !== 'mentor_availability'
+          key !== 'password'
         ) {
           object_update[key] = put[key];
         }

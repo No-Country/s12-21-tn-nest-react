@@ -17,8 +17,6 @@ import { updateMentor } from './class/Mentor/updateMentor.dto';
 import * as bcrypt from 'bcryptjs';
 import { SALT_ROUNDS } from '../common/constants';
 import { UserService } from 'src/auth/user/user.service';
-import { Availability } from '../quotes/models/availability.entity';
-import { add_in_list_element } from 'src/functions/general';
 import { State } from 'src/quotes/models/state.entity';
 @Injectable()
 export class MentorService {
@@ -29,8 +27,6 @@ export class MentorService {
     @InjectRepository(Speciality)
     private specialityRepository: Repository<Speciality>,
     private readonly userService: UserService,
-    @InjectRepository(Availability)
-    private availabilityRepository: Repository<Availability>,
     @InjectRepository(State) private stateRepository: Repository<State>,
   ) {}
   async get_categories_all() {
@@ -114,13 +110,6 @@ export class MentorService {
         const upload = await uploadCloudinary(file);
         mentor_add['image'] = upload['url'];
       }
-      console.log(post.mentor_availability)
-      const list = await add_in_list_element(
-        post.mentor_availability,
-        this.availabilityRepository,
-        this.stateRepository,
-      );
-      mentor_add.availables = list;
       mentor_add.categories = categoriesSearch;
       await this.mentorRepository.save(mentor_add);
       return {
@@ -139,13 +128,7 @@ export class MentorService {
   ) {
     try {
       let mentors = await this.mentorRepository.find({
-        relations: [
-          'categories',
-          'speciality',
-          'userId',
-          'availables',
-          'availables.state',
-        ],
+        relations: ['categories', 'speciality', 'userId'],
       });
 
       if (categoryName && categoryName.length > 0) {
@@ -169,7 +152,6 @@ export class MentorService {
           return mentors.sort((a, b) =>
             a.userId.firstName.localeCompare(b.userId.firstName),
           );
-          console.log(mentors);
         case 'descAlf':
           return mentors.sort((a, b) =>
             b.userId.firstName.localeCompare(a.userId.firstName),
@@ -231,13 +213,7 @@ export class MentorService {
   async mentor_find(id: string) {
     return await this.mentorRepository.findOne({
       where: { id: id },
-      relations: [
-        'categories',
-        'speciality',
-        'userId',
-        'availables',
-        'availables.state',
-      ],
+      relations: ['categories', 'speciality', 'userId'],
     });
   }
 
@@ -273,19 +249,10 @@ export class MentorService {
     if (!id) {
       return {
         status: HttpStatus.NOT_FOUND,
-        mesage: 'id not found',
+        message: 'id not found',
       };
     }
 
-    if (
-      !updateProfile.mentor_availability ||
-      updateProfile.mentor_availability.length === 0
-    ) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        mesage: 'enter availability',
-      };
-    }
     const object_update_mentor = await update_object_mentor(
       updateProfile,
       file,
@@ -309,7 +276,6 @@ export class MentorService {
         categories: true,
         speciality: true,
         userId: true,
-        availables: true,
       },
     });
     const object_user_actualiazar = {};
@@ -360,16 +326,6 @@ export class MentorService {
       }
     }
 
-    if (updateProfile.mentor_availability.length > 0) {
-      searchMentor.availables = [];
-      const list = await add_in_list_element(
-        updateProfile.mentor_availability,
-        this.availabilityRepository,
-        this.stateRepository,
-      );
-      console.log('llege');
-      searchMentor.availables = list;
-    }
     this.mentorRepository.save(searchMentor);
     return {
       status: HttpStatus.ACCEPTED,

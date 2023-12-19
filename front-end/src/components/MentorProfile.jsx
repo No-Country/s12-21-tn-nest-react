@@ -2,34 +2,37 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
-import Grid from '@mui/material/Grid';
 import { useAuth } from '../context/AuthContext';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import {useNavigate, Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Button from '@mui/material/Button';
-import { TextField } from '@mui/material';
+import { Card,  CardContent,  Paper } from '@mui/material';
+/* MiniComponete para los textos del perfil */
+import ContentBlock from './mini-components/ContentBlock';
 
-const Profile = () => {
-  const defaultTheme = createTheme();
-  const navigate = useNavigate()
-  const [mentorInfo, setMentorInfo] = useState(null);
-  const { userId, mentorId } = useAuth();
-
- const customTheme = createTheme({
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+const customTheme = createTheme({
   palette: {
-    background: {
-      default: '#FFFFFF', // Fondo blanco
+    mode: 'dark',
+    primary: {
+      main: '#25D366',
     },
-    text: {
-      primary: '#000000', // Texto negro
+    secondary: {
+      main: '#FFFFFF',
+    },
+    background: {
+      paper: '#111b21',
+      default: '#0B141A',
     },
   },
 });
 
+const MentorProfile = () => {
+  const navigate = useNavigate()
+  const [mentorInfo, setMentorInfo] = useState(null);
+  const { userId, mentorId } = useAuth();
 
   useEffect(() => {
     const fetchMentorInfo = async () => {
@@ -45,58 +48,74 @@ const Profile = () => {
   }, []);
 
   return (
-    <>
-    <div className="profileContainer">
-      <ThemeProvider theme={customTheme}>
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-            sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}
-            >
-               <Box sx={{ mt: 3 }}>
-        {mentorInfo && (
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <Avatar alt={`${mentorInfo.userId.firstName} ${mentorInfo.lastName}`} src={mentorInfo.image} className=""/>
-            </Grid>
-            <Grid item xs={12} md={9}>
-              <Typography variant="h4">MENTOR: {`${mentorInfo.userId.firstName} ${mentorInfo.userId.lastName}`}</Typography>
-              <Typography variant="subtitle1">Mentor email: {mentorInfo.userId.email}</Typography>
-              <Typography variant="subtitle1">Mentor phone: {mentorInfo.userId.phone}</Typography>
-              <Typography variant="subtitle1">Nacimiento: {mentorInfo.birthdate}</Typography>
-              <Typography variant="subtitle1">Precio: {mentorInfo.price}</Typography>
-            
-              <Typography variant="body1">{`Descripción: ${mentorInfo.mentorDescription}`}</Typography>
-              <Typography variant="body1">{`About Me: ${mentorInfo.aboutMe}`}</Typography>
-              <Typography variant="body1">{`Especilidad: ${mentorInfo.speciality.name}`}</Typography>
-              <Typography variant="body1">{`Categorias: ${mentorInfo.categories.map((category) => category.name).join(', ')}`}</Typography>
+    <ThemeProvider theme={customTheme}>
+    <Container component="main" maxWidth="lg" sx={{ mt: 5 }}>
+      <Typography component="h2" variant="h3" sx={{ color: "#25D366", fontSize: { xs: "2rem", md: "3rem" } }}>Perfil de Mentor</Typography>
+      <Container component="section" maxWidth="sm" sx={{ display: "flex", justifyContent: "center"/*,  alignItems: "center" */, userSelect: "none" }}>
+        <Box component="div" sx={{ height: "100%", width: "90%", mt: 10, border: "2px solid #25D366", borderRadius: "1rem", position: "relative", mb: 5 }}>
+          {mentorInfo && (
+            <Card sx={{ borderRadius: "1rem", width: "100%", height: "100%", backgroundColor: "#0B141A", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+              <Paper
+                sx={{
 
-            </Grid>
-            <Grid item xs={12} sm={6}>
-            <Link to={`/updateMentorProfile/${mentorId}`} state={{ mentorInfo }}>
+                  width: "100%", height: "7rem", filter: "blur(5px)",
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  backgroundImage: `url(${mentorInfo.image})`,
+                }}
+              />
+              <Box sx={{ position: "absolute", top: { xs: "-3rem", sm: "-4rem" } }}>
+                <Avatar sx={{ width: { xs: "8rem", md: "10rem" }, height: { xs: "8rem", md: "10rem" }, border: "3px solid #25D366" }} alt={`${mentorInfo.userId.firstName} ${mentorInfo.lastName}`} src={mentorInfo.image} />
+              </Box>
+              <CardContent sx={{ /* marginTop: "6rem", */ width: "100%" }}>
+                <ContentBlock
+                  title="Nombre:"
+                  description={`${mentorInfo.userId.firstName} ${mentorInfo.userId.lastName}`} />
+                <ContentBlock
+                  title="Nacimiento:"
+                  description={mentorInfo.birthdate} />
+                <ContentBlock
+                  title="Especilidad:"
+                  description={`${mentorInfo.speciality.name}`} />
+                <ContentBlock
+                  title="Email:"
+                  description={mentorInfo.userId.email} />
+                <ContentBlock
+                  title="Telefono:"
+                  description={mentorInfo.userId.phone} />
+                <ContentBlock
+                  title="Categorias:"
+                  description={`${mentorInfo.categories.map((category) => category.name).join(', ')}`} />
+                <ContentBlock
+                  title="About Me:"
+                  description={`${mentorInfo.aboutMe}`} />
+                <ContentBlock
+                  title="Descripción:"
+                  description={`${mentorInfo.mentorDescription}`} />
+                <ContentBlock
+                  title="Precio:"
+                  description={mentorInfo.price} />
+              </CardContent>
+
+              <Box sx={{ width: "100%", textAlign: "center" }}>
+                <Link to={`/updateMentorProfile/${mentorId}`} state={{ mentorInfo }}>
                   <Button
-                    fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    >
+                    sx={{ mt: 1, mb: 2, width: "50%" ,backgroundColor:"#25D366",color:"#FFF"}}
+                  >
                     Editar
-                    </Button>
-              </Link>
-            </Grid>
-          </Grid>
-        )}
+                  </Button>
+                </Link>
+              </Box>
+
+            </Card>
+          )}
         </Box>
-        </Box>
-        </Container>
+      </Container>
+    </Container>
     </ThemeProvider>
-    </div>
-    </>
   );
 };
 
-export default Profile;
+export default MentorProfile;
