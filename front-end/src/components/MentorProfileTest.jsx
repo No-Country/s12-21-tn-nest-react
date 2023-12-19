@@ -12,6 +12,22 @@ import { Card,  CardContent,  Paper } from '@mui/material';
 /* MiniComponete para los textos del perfil */
 import ContentBlock from './mini-components/ContentBlock';
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+const customTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#25D366',
+    },
+    secondary: {
+      main: '#FFFFFF',
+    },
+    background: {
+      paper: '#111b21',
+      default: '#0B141A',
+    },
+  },
+});
 
 const MentorProfileTest = () => {
 
@@ -34,6 +50,7 @@ const MentorProfileTest = () => {
   }, []);
 
   return (
+    <ThemeProvider theme={customTheme}>
     <Container component="main" maxWidth="lg" sx={{ mt: 5 }}>
       <Typography component="h2" variant="h3" sx={{ color: "#25D366", fontSize: { xs: "2rem", md: "3rem" } }}>Perfil de Mentor</Typography>
       <Container component="section" maxWidth="sm" sx={{ display: "flex", justifyContent: "center"/*,  alignItems: "center" */, userSelect: "none" }}>
@@ -87,7 +104,7 @@ const MentorProfileTest = () => {
                 <Link to={`/updateMentorProfile/${mentorId}`} state={{ mentorInfo }}>
                   <Button
                     variant="contained"
-                    sx={{ mt: 1, mb: 2, width: "50%" }}
+                    sx={{ mt: 1, mb: 2, width: "50%" ,backgroundColor:"#25D366",color:"#FFF"}}
                   >
                     Editar
                   </Button>
@@ -99,6 +116,7 @@ const MentorProfileTest = () => {
         </Box>
       </Container>
     </Container>
+    </ThemeProvider>
   );
 };
 
