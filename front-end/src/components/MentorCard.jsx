@@ -32,7 +32,7 @@ export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, pr
                 <Box style={{ position: 'relative', width: '100%' }}>
                     <CardMedia
                         component="img"
-                        height='100%'
+                        height='500px'
                         alt={`Imagen de ${name}`}
                         src={mentorImage}
                         sx={{

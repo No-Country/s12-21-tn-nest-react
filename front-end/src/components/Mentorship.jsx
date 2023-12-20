@@ -47,7 +47,7 @@ const Mentorship = ({ location }) => {
 
   const fetchSpecialities = async () => {
     try {
-      let URLSpecialities = `mentor/speciality/filter`
+      let URLSpecialities = `/mentor/speciality/filter`
       const response = await urlApi.get(URLSpecialities);
       setSpecialities(response.data); 
     } catch (error) {

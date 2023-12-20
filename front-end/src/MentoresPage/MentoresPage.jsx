@@ -36,7 +36,7 @@ export const MentoresPage = () => {
     const handleFilterClick = async () => {
         //Aqui vamos a crear la funcion para el llamado al backend.
         try {
-            let url = `mentor/filter?idSpeciality=${selectedSpeciality}&order=${selectedOrder}&categoryName=${selectedCategory}`;
+            let url = `/mentor/filter?idSpeciality=${selectedSpeciality}&order=${selectedOrder}&categoryName=${selectedCategory}`;
             const response = await urlApi.get(url);
             setMentorsData(response.data);
         } catch (error) {

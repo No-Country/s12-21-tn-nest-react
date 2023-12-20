@@ -10,7 +10,7 @@ export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice })
             switch (gateway) {
                 case 'mercadoPago':
                     const mercadoPagoData = {
-                        external_reference: mentorData.id,
+                        external_reference: "a0963252-9ded-11ee-801e-ace2d37bcdbb",
                         value: "15.00",
                         email: mentorData.email,
                         brand_name: name
@@ -22,7 +22,7 @@ export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice })
 
                 case 'payPal':
                     const paypalData = {
-                        reference_id: mentorData.id,
+                        reference_id: "7ede8acc-9dec-11ee-801e-ace2d37bcdbb", //id alumn_hire_mentor
                         currency_code: 'USD',
                         value: "15.00",
                         brand_name: name
@@ -34,9 +34,9 @@ export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice })
 
                 case 'stripe':
                     const stripeData = {
-                        reference_id: mentorData.id,
+                        reference_id: "7ede8acc-9dec-11ee-801e-ace2d37bcdbb",
                         currency_code: "USD",
-                        amount: Number(mentorPrice),
+                        amount: mentorPrice,
                         brand_name: name
                     };
                     try {
