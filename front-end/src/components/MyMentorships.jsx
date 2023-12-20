@@ -47,6 +47,7 @@ const MyMentorships = () => {
   const currentUser = studentId ? studentId : mentorId;
   const [showInput, setShowInput] = useState({});
   const [openInputs, setOpenInputs] = useState({});
+  const [acceptButtonClicked, setAcceptButtonClicked] = useState(false);
 
   const handleButtonClick = (mentorshipId, type) => {
     setOpenInputs(prevState => ({
@@ -70,28 +71,29 @@ const MyMentorships = () => {
         return { bgColor: 'white', borderColor: 'white', textColor: 'black' };
     }
   };
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/quotes/filter/all/${currentUser}`);
-      const data = await response.json();
-      setMentorshipData(data);
-      // Inicializa el objeto de estados de visualización
-      const initialOpenInputsState = data.reduce((acc, mentorship) => {
-        acc[mentorship.id] = {
-          accept: false,
-          reject: false,
-        };
-        return acc;
-      }, {});
-      setOpenInputs(initialOpenInputsState);
-    } catch (error) {
-      console.error('Error fetching mentorship data', error);
-    }
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/quotes/filter/all/${currentUser}`);
+        const data = await response.json();
+        setMentorshipData(data);
+        // Inicializa el objeto de estados de visualización
+        const initialOpenInputsState = data.reduce((acc, mentorship) => {
+          acc[mentorship.id] = {
+            accept: false,
+            reject: false,
+          };
+          return acc;
+        }, {});
+        setOpenInputs(initialOpenInputsState);
+      } catch (error) {
+        console.error('Error fetching mentorship data', error);
+      }
+    };
+    setAcceptButtonClicked(prevState => !prevState);
     fetchData();
-  }, []);
+  }, [currentUser , acceptButtonClicked]);
 
   const handleAcceptClick = async (mentorshipId) => {
     try {
@@ -111,6 +113,7 @@ const MyMentorships = () => {
     } catch (error) {
       console.error('Error updating mentorship hour: ', error);
     }
+    navigate(window.location.pathname, { replace: true });
   };
 
   const handleRejectClick = async (mentorshipId) => {
