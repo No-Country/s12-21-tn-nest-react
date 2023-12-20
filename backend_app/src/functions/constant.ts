@@ -29,6 +29,6 @@ export const descriptionMentors = (nameMentor: string) => {
 };
 
 export const url = (id: string) => {
-  const url = `http://localhost:5173/score/${id}`;
+  const url = `https://mentorsphere.vercel.app/score/${id}`;
   return url;
 };
