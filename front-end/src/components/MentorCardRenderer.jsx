@@ -8,14 +8,14 @@ export const MentorCardRenderer = ({ mentorsData }) => {
   const indexOfLastMentor = currentPage * mentorsPerPage
   const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage
   const currentMentors = mentorsData.slice(indexOfFirstMentor, indexOfLastMentor)
-
+  
   const handlePageChange = (event, value) => {
     setCurrentPage(value)
   }
-
+ 
   return (
-    <Box sx={{marginLeft: '10px'}}>
-      <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '6rem'}}>
+    <Box sx={{ marginLeft: '10px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '6rem' }}>
         <Grid container spacing={5} sx={{ justifyContent: 'space-around', alignItems: 'center', gap: '2.5rem' }} >
           {currentMentors.map((mentor) => (
             <MentorCard
@@ -32,6 +32,10 @@ export const MentorCardRenderer = ({ mentorsData }) => {
               categories={mentor.categories}
               price={mentor.price}
               mentorImage={mentor.image}
+              userId={mentor.userId}
+              mentorPrice={mentor.price}
+              mentorData={mentor.userId}
+              
             />
           ))}
         </Grid>
