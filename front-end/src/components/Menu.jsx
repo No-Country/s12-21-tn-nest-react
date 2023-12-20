@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MenuListDrawer from './MenuListDrawer'
 import { AppBar, Box, Button, Container, Drawer, IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
@@ -12,6 +12,9 @@ export default function Menu({ navLinksArray }) {
   const { isAuthenticated, user, signOut, mentorId, studentId } = useAuth();
   const navigate = useNavigate();
   console.log("isStudent", studentId , "isMentor" , mentorId);
+
+  useEffect(() => {
+  }, []);
 
   return (
     <Box component="header" sx={{ width: '100%', bgcolor: '#202C33' }} data-aos="fade-down">
@@ -48,9 +51,9 @@ export default function Menu({ navLinksArray }) {
                         Cerrar Sesión
                       </Button>
                     </>
-                  ) : mentorId ? (
+                  ) : mentorId && studentId == null ? (
                     <>
-                      <Button color="inherit" component={NavLink} to="/home">
+                      <Button color="inherit" component={NavLink} to="/">
                         Home
                       </Button>
                       <Button color="inherit" component={NavLink} to="/mentores">
@@ -59,7 +62,7 @@ export default function Menu({ navLinksArray }) {
                       <Button color="inherit" component={NavLink} to="/myMentorships">
                         Mentorías
                       </Button>
-                      <Button color="inherit" component={NavLink} to={`/mentorProfile/${user.id}`}>
+                      <Button color="inherit" component={NavLink} to={`/mentorProfile/:id`}>
                         Mentor Profile
                       </Button>
                       <Button color="inherit" component={NavLink} to="/mentorToStudent">
@@ -69,9 +72,9 @@ export default function Menu({ navLinksArray }) {
                         Cerrar Sesión
                       </Button>
                     </>
-                  ) : studentId ? (
+                  ) : studentId && mentorId == null ? (
                     <>
-                      <Button color="inherit" component={NavLink} to="/home">
+                      <Button color="inherit" component={NavLink} to="/">
                         Home
                       </Button>
                       <Button color="inherit" component={NavLink} to="/mentores">
@@ -80,10 +83,10 @@ export default function Menu({ navLinksArray }) {
                       <Button color="inherit" component={NavLink} to="/myMentorships">
                         Mentorías
                       </Button>
-                      <Button color="inherit" component={NavLink} to={`/studentProfile/${user.id}`}>
+                      <Button color="inherit" component={NavLink} to={`/studentProfile/:id`}>
                         Student Profile
                       </Button>
-                      <Button color="inherit" component={NavLink} to="/mentorToStudent">
+                      <Button color="inherit" component={NavLink} to="/studentToMentor">
                         Quiero ser mentor
                       </Button>
                       <Button color="inherit" onClick={() => { signOut(); navigate('/'); }}>
@@ -94,41 +97,16 @@ export default function Menu({ navLinksArray }) {
                 </>
               ) : (
                 <>
-                  <Button color="inherit" component={NavLink} to="/home">
+                  <Button color="inherit" component={NavLink} to="/">
                     Home
                   </Button>
                   <Button color="inherit" component={NavLink} to="/mentores">
                     Mentores
                   </Button>
-                  {mentorId || studentId ? (
-                    <>
-                      <Button color="inherit" component={NavLink} to="/myMentorships">
-                        Mentorías
-                      </Button>
-                      {isMentor ? (
-                        <Button color="inherit" component={NavLink} to={`/mentorProfile/${user.id}`}>
-                          Mentor Profile
-                        </Button>
-                      ) : (
-                        <Button color="inherit" component={NavLink} to={`/studentProfile/${user.id}`}>
-                          Student Profile
-                        </Button>
-                      )}
-                    </>
-                  ) : null}
-                  {mentorId ? (
-                    <Button color="inherit" component={NavLink} to="/studentToMentor">
-                      Quiero ser estudiante
-                    </Button>
-                  ) : studentId ? (
-                    <Button color="inherit" component={NavLink} to="/mentorToStudent">
-                      Quiero ser mentor
-                    </Button>
-                  ) : null}
                   <Button color="inherit" component={NavLink} to="/login">
                     Login
                   </Button>
-                  <Button color="inherit" component={NavLink} to="/register">
+                  <Button color="inherit" component={NavLink} to="/signUp">
                     Registro
                   </Button>
                 </>

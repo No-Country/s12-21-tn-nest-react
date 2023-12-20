@@ -13,7 +13,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useAuth } from '../context/AuthContext';
 import { urlApi } from '../../config/axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const CalendarWrapper = ({ appointmentDate }) => {
   const formattedDate = new Date(appointmentDate);
@@ -304,6 +304,7 @@ const MyMentorships = () => {
             {/* Nuevo bloque para el botón de pagar */}
             
             {mentorship.state.name === 'aceptado' && studentId !== null && (
+              <Link to={`/`} state={mentorship?.alumnoHireMentor?.id}>
               <button
                 style={{
                 backgroundColor: 'blue',
@@ -316,6 +317,7 @@ const MyMentorships = () => {
               >
                 Pagar
               </button>
+              </Link>
             )}
           </Card>
         </Grid>

@@ -35,9 +35,8 @@ const customTheme = createTheme({
 
 
 const StudentToMentor = ({ location }) => {
-/*   const { newUser, newMentor } = useLocation().state || {};
- */  const navigate = useNavigate()
- const { userId } = useAuth();
+  const navigate = useNavigate()
+ const { userId , signOut } = useAuth();
   const [categoryIds, setCategoryIds] = useState([]);
   const [newMentorship, setNewMentorship] = useState({
     mentorSpeciality: "",
@@ -49,7 +48,6 @@ const StudentToMentor = ({ location }) => {
     mentorPrice: "",
   })
   const [selectedFile, setSelectedFile] = React.useState(null);
-
   const [specialities, setSpecialities] = useState([]); //opciones especialidades
   const [categories, setCategories] = useState([]);  //opciones categorias
   const { mentorSpeciality, mentorCategory, mentorImage, mentorDescription, mentorAboutMe, mentorDate, mentorPrice } = newMentorship
@@ -119,8 +117,8 @@ const StudentToMentor = ({ location }) => {
   const submit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-/*     formData.append('file', mentorImage);
- */    formData.append('mentorDescription', mentorDescription);
+    formData.append('profileImg', mentorImage);
+    formData.append('mentorDescription', mentorDescription);
     formData.append('userId', userId);
     formData.append('aboutMe', mentorAboutMe);
     formData.append('birthdate', mentorDate);
@@ -144,6 +142,7 @@ const StudentToMentor = ({ location }) => {
       });
       console.log('Respuesta.data del servidor:', response.data);
       console.log('Respuesta del servidor:', response);
+      signOut();
       navigate('/login');
     } catch (error) {
       console.error('Error al enviar la información al servidor:', error);
@@ -182,7 +181,6 @@ const StudentToMentor = ({ location }) => {
                 </Button>
                 {selectedFile && (
                   <Box sx={{ mx:"auto"}} style={{ width: "200px"}}>
-                    <Typography sx={{color:"#FFF"}}>Archivo: {selectedFile.name}</Typography>
                     <Box
                       sx={{
                         margin: 'auto',

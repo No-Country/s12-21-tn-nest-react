@@ -32,9 +32,8 @@ const customTheme = createTheme({
 
 const MentorToStudent = ({ location }) => {
   const navigate = useNavigate();
-  const { userId, userData } = useAuth();
-/*   const { newUser } = useLocation().state || {};
- */  const [selectedFile, setSelectedFile] = React.useState(null);
+  const { userId } = useAuth();
+  const [selectedFile, setSelectedFile] = React.useState(null);
   const [categoryIds, setCategoryIds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newStudent, setNewStudent] = useState({
@@ -43,7 +42,6 @@ const MentorToStudent = ({ location }) => {
     studentCategories: [],
   })
   const { studentImage, studentCategories } = newStudent
-  console.log("user: ", userData);
 
   const fetchCategories = async () => {
     try {
@@ -65,13 +63,6 @@ const MentorToStudent = ({ location }) => {
       });
     }
   };
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setNewStudent({
-      ...newStudent,
-      [name]: value,
-    });
-  };
 
   useEffect(() => {
     fetchCategories();
@@ -81,8 +72,7 @@ const MentorToStudent = ({ location }) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', newStudent.studentImage, newStudent.studentImage.name);
-/*     userData.forEach(val => {formData.append('user', val)})
- */    formData.append('user', userData);
+    formData.append('user', userId);
     studentCategories.forEach(val => {
       formData.append('categoriesId[]', val);
     });
@@ -105,7 +95,6 @@ const MentorToStudent = ({ location }) => {
     }
     navigate('/login');
   };
-
 
   const handleCategoryChange = (event) => {
     const selectedCategoryIds = event.target.value;
@@ -137,14 +126,13 @@ const MentorToStudent = ({ location }) => {
             </Button>
             {selectedFile && (
               <div style={{ width: "200px", margin: "auto" }}>
-                <p>Archivo: {selectedFile.name}</p>
                 <Box
                   sx={{
                     margin: 'auto',
                     overflow: 'hidden',
                   }}
                 >
-                  <img src={URL.createObjectURL(selectedFile)} alt="Vista previa de la imagen" style={{ width: '100%', height: '100%' }} />
+                  <img src={URL.createObjectURL(selectedFile)} style={{ width: '100%', height: '100%' }} />
                 </Box>
               </div>
             )}
