@@ -93,6 +93,12 @@ export class ChatGateway
     this.logger.log('User joined chat ', chat);
     client.join(chat);
     const messages = await this.getMessgesByChat(chat);
+
+    //sort messages by date
+    messages.sort((a, b) => {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
+
     client.emit('getAllMessages', messages);
   }
 
