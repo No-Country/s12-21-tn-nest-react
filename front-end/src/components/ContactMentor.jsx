@@ -14,10 +14,11 @@ const CalendarWrapper = ({ children }) => (
 const ContactMentor = () => {
   const { userId, studentId } = useAuth();
   const location = useLocation();
-  const mentorId = location.state?.id || {};
+  const mentorId = location.state?.id || "";
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState('');
   const navigate = useNavigate();
+  console.log("mentorId:", mentorId);
 
   const handleDateChange = (date) => {
     if (date >= new Date()) {
@@ -25,18 +26,19 @@ const ContactMentor = () => {
       const isoFormattedDate = date.toISOString().split('T')[0];
       setFormattedDate(isoFormattedDate);
       console.log(formattedDate);
+      console.log("mentroId",mentorId);
     }
   };
 
   const handleSubmit = async (e) => {
-   /*  e.preventDefault();
+    e.preventDefault();
     const requestData = {
-      alumnId: studentId,
-      mentorId: mentorId,
+      alumnId:String(studentId),
+      mentorId: String(mentorId),
       appointmentDate: formattedDate,
     };
     try {
-      let url = ''
+      let url = 'quotes/create'
       const response = await urlApi.post( url, requestData );
       console.log('Respuesta.data del servidor:', response.data);
       console.log('Respuesta del servidor:', response);
@@ -47,7 +49,7 @@ const ContactMentor = () => {
         console.error('Error:', error);
       }
     }
-    navigate('/'); */
+    navigate('/');
   };
 
   return (

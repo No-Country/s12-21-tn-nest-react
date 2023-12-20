@@ -64,6 +64,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const signOut = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    setUserId(null);
+    setMentorId(null);
+    setStudentId(null);
+  };
+
   useEffect(() => {
     if (errors.length > 0) {
       const timer = setTimeout(() => {
@@ -110,6 +118,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         signIn,
+        signOut,
         user,
         name,
         isAuthenticated,

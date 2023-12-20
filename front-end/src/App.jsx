@@ -9,7 +9,6 @@ import { SuccesfullQualify } from './Pages/SuccesfullQualify'
 import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
-import MentorProfile from "./components/MentorProfile";
 import StudentProfile from "./components/StudentProfile";
 import UpdateMentorProfile from "./components/UpdateMentorProfile";
 import UpdateStudentProfile from "./components/UpdateStudentProfile";
@@ -19,32 +18,28 @@ import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import HomeIcon from "@mui/icons-material/Home";
 import SchoolIcon from "@mui/icons-material/School";
-import MentorProfileTest from "./components/MentorProfileTest";
+import MentorProfile from "./components/MentorProfile";
 import ContactMentor from "./components/ContactMentor";
+import MyMentorships from "./components/MyMentorships";
 
 import Score from "./score/Score";
 
 const navLinksArray = [
   { title: "Home", path: "/", icon: <HomeIcon /> },
   { title: "Mentores", path: "/mentores", icon: <GroupAddIcon /> },
-  { title: "Mentorias", path: "#mentorias", icon: <SchoolIcon /> },
+  { title: "Mentorias", path: "/myMentorships", icon: <SchoolIcon /> },
   { title: "Login", path: "/login", icon: <LoginIcon /> },
   { title: "Register", path: "/signup", icon: <HowToRegIcon /> },
-  {
-    title: "MentorProfile",
-    path: "/mentorProfile/:id",
-    icon: <HowToRegIcon />,
-  },
   {
     title: "StudentProfile",
     path: "/studentProfile/:id",
     icon: <HowToRegIcon />,
   },
   {
-    title: "MentorProfileTest",
-    path: "/mentorProfileTest/:id",
+    title: "MentorProfile",
+    path: "/mentorProfile/:id",
     icon: <HowToRegIcon />,
-  }, //test perfil mentor
+  },
 ];
 
 function App() {
@@ -67,6 +62,7 @@ function App() {
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
                 <Route path="/contactMentor" element={<ContactMentor />} />
                 <Route path="/success" element={<SuccesfullQualify />}  />
+                <Route path="/myMentorships" element={<MyMentorships />} />
                 <Route
                   path="/studentProfile/:id"
                   element={<StudentProfile />}
@@ -82,15 +78,14 @@ function App() {
                 {
                   //<Route path="/calendar" element={<SchedulerComponent />} />
                 }
-                <Route
-                  path="/mentorProfileTest/:id"
-                  element={<MentorProfileTest />}
-                />{" "}
-                
                 {
-                  //<Route path="/mentor/:id/score" element={<Score />} />
+                  //<Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />{" "}
+                  //test perfil mentor
                 }
-                {<Route path="/score" element={<Score />} />}
+                {<Route path="/score/:idScoreParams" element={<Score />} />}
+                {
+                  //<Route path="/score" element={<Score />} />
+                }
               </Routes>
             </div>
           </BrowserRouter>

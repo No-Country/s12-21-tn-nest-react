@@ -73,7 +73,6 @@ export class QuotesController {
 
   @Get('rating')
   async get_rating(@Query('id') id: string, @Res() res: Response) {
-    
     res.redirect('https://legalhub-seven.vercel.app/ingreso');
   }
 }
