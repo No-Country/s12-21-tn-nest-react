@@ -57,8 +57,15 @@ export class ChatService {
     }
   }
 
-  private formatChatId(idOne: string, idTwo: string) {
-    return `${idOne}-${idTwo}`;
+  public async getMessageByChat(chatId: string) {
+    try {
+      return await this.messageRepository.find({
+        where: { chat: { id: chatId } },
+        relations: ['sender'],
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   findAll() {

@@ -92,6 +92,16 @@ export class ChatGateway
     }
     this.logger.log('User joined chat ', chat);
     client.join(chat);
+    const messages = await this.getMessgesByChat(chat);
+    client.emit('getAllMessages', messages);
+  }
+
+  private async getMessgesByChat(chatId: string) {
+    try {
+      return await this.chatService.getMessageByChat(chatId);
+    } catch (error) {
+      throw new WsException(error);
+    }
   }
 
   @SubscribeMessage('joinAllChats')
