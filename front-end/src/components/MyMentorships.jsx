@@ -8,6 +8,7 @@ import {
   Avatar,
   Box,
 } from '@mui/material';
+import Cookies from 'js-cookie';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -46,6 +47,7 @@ const MyMentorships = () => {
   const currentUser = studentId ? studentId : mentorId;
   const [showInput, setShowInput] = useState({});
   const [openInputs, setOpenInputs] = useState({});
+  const [acceptButtonClicked, setAcceptButtonClicked] = useState(false);
 
   const handleButtonClick = (mentorshipId, type) => {
     setOpenInputs(prevState => ({
@@ -89,9 +91,9 @@ const MyMentorships = () => {
         console.error('Error fetching mentorship data', error);
       }
     };
-
+    setAcceptButtonClicked(prevState => !prevState);
     fetchData();
-  }, [currentUser]);
+  }, [currentUser , acceptButtonClicked]);
 
   const handleAcceptClick = async (mentorshipId) => {
     try {
@@ -111,7 +113,7 @@ const MyMentorships = () => {
     } catch (error) {
       console.error('Error updating mentorship hour: ', error);
     }
-    window.location.reload();
+    navigate(window.location.pathname, { replace: true });
   };
 
   const handleRejectClick = async (mentorshipId) => {
