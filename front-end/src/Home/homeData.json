@@ -16,17 +16,17 @@
     "description": "Tanto si eres mentor como alumno, tendras la oportunidad de crecer y aprender en un ambiente de apoyo y colaboración."
   },
   {
-    "picture":"./assets/images/home/picture6.jpg",
+    "picture":"src/assets/images/home/picture6.jpg",
     "title": "Horarios Flexibles",
     "description": "Puedes encontrar mentores que se ajusten a tus horarios. Ya no tienes que preocuparte por la falta de tiempo."
   },
   {
-    "picture":"assets/images/home/picture4.jpg",
+    "picture":"src/assets/images/home/picture4.jpg",
     "title": "Notificaciones de clases",
     "description": "Recibe notificaciones para no perderte una sesión de mentoría."
   },
   {
-    "picture":"assets/images/home/picture5.jpg",
+    "picture":"src/assets/images/home/picture5.jpg",
     "title": "Comunicación directa",
     "description": "A través del chat de MentorSphere, podras comunicarte directamente con tus mentores."
   }
