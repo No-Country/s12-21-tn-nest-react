@@ -76,7 +76,8 @@ const MyMentorships = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/quotes/filter/all/${currentUser}`);
+        let URLData = `/quotes/filter/all/${currentUser}`
+        const response = await urlApi.fetch(URLData);
         const data = await response.json();
         setMentorshipData(data);
         // Inicializa el objeto de estados de visualización
