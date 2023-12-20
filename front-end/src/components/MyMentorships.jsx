@@ -50,17 +50,17 @@ export const CalendarWrapper = ({ appointmentDate }) => {
 };
 
 const MyMentorships = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [mentorshipData, setMentorshipData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [showAcceptInput, setShowAcceptInput] = useState(false);
-  const [showRejectInput, setShowRejectInput] = useState(false);
-  const [showPayButton, setShowPayButton] = useState(false);
+  // const [selectedDate, setSelectedDate] = useState(null);
+  // const [showAcceptInput, setShowAcceptInput] = useState(false);
+  // const [showRejectInput, setShowRejectInput] = useState(false);
+  // const [showPayButton, setShowPayButton] = useState(false);
   const [hour, setHour] = useState("");
   const [refused, setRefused] = useState("");
-  const { userId, studentId, mentorId } = useAuth();
+  const { studentId, mentorId } = useAuth();
   const currentUser = studentId ? studentId : mentorId;
-  const [showInput, setShowInput] = useState({});
+  // const [showInput, setShowInput] = useState({});
   const [openInputs, setOpenInputs] = useState({});
   const [acceptButtonClicked, setAcceptButtonClicked] = useState(false);
 
