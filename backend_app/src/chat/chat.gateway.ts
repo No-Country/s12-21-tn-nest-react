@@ -10,12 +10,9 @@ import {
   WsException,
 } from '@nestjs/websockets';
 import { ChatService } from './chat.service';
-import { CreateChatDto } from './dto/create-chat.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
-import { UpdateMessageDto } from './dto/update-message.dto';
 import { Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 @WebSocketGateway({
   cors: {

@@ -18,7 +18,6 @@ import { verify_ages } from '../functions/General';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { verify_ages } from '../functions/General';
 
 @Injectable()
 export class AuthService {

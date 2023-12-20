@@ -18,15 +18,10 @@ import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
-import SchedulerComponent from "./components/SchedulerComponent";
+//import SchedulerComponent from "./components/SchedulerComponent";
 import { ChatHome } from "./chat/pages/ChatHome";
 import { PrivateChat } from "./chat/pages/PrivateChat";
 import { SocketProvider } from "./context/SocketContext";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import LoginIcon from "@mui/icons-material/Login";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
-import HomeIcon from "@mui/icons-material/Home";
-import SchoolIcon from "@mui/icons-material/School";
 import MentorProfile from "./components/MentorProfile";
 import ContactMentor from "./components/ContactMentor";
 import MyMentorships from "./components/MyMentorships";
@@ -109,7 +104,6 @@ function App() {
                   path="/updateStudentProfile/:id"
                   element={<UpdateStudentProfile />}
                 />
-                <Route path="/calendar" element={<SchedulerComponent />} />
                 <Route
                   path="/chat"
                   element={

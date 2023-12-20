@@ -98,7 +98,6 @@ export class ChatService {
         : await this.alumnRepository.findOne({
             where: { user: { id: message.senderId } },
           });
-      console.log({ ...saved, sender });
       return { ...saved, sender };
     } catch (error) {
       console.log(error);
