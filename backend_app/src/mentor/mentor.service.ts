@@ -225,7 +225,6 @@ export class MentorService {
       delete e.stripe_payment;
       delete e.updatedAt;
     });
-    console.log(data)
     return data;
   }
 

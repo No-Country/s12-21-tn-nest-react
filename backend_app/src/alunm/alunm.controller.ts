@@ -13,7 +13,10 @@ import {
 } from '@nestjs/common';
 import { AlumnService } from './alunm.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AlunmCreateRequestDto, AlunmCreateResponseDto } from './dtos/alunmCreateRequest.dto';
+import {
+  AlunmCreateRequestDto,
+  AlunmCreateResponseDto,
+} from './dtos/alunmCreateRequest.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { hireMentorRequestDto } from './dtos/hireMentor.dto';
 import { CalificationDto } from './dtos/calification.dto';
@@ -37,7 +40,7 @@ export class AlunmController {
     try {
       const user = await this.userService.findOne(request.userId);
       request.user = user;
-      
+
       return this.alunmService.create(request, file);
     } catch (error) {
       return new HttpException(error, 400);
@@ -51,7 +54,7 @@ export class AlunmController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     try {
-      console.log(request)
+      console.log(request);
       return this.alunmService.create_alumn(request, file);
     } catch (error) {
       return new HttpException(error, 400);

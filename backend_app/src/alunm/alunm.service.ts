@@ -1,5 +1,8 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { AlunmCreateRequestDto, AlunmCreateResponseDto } from './dtos/alunmCreateRequest.dto';
+import {
+  AlunmCreateRequestDto,
+  AlunmCreateResponseDto,
+} from './dtos/alunmCreateRequest.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Alumn } from './models/alumn.entity';
 import { Repository } from 'typeorm';
@@ -22,7 +25,10 @@ export class AlumnService {
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
   ) {}
-  async create_alumn(request: AlunmCreateResponseDto, file: Express.Multer.File) {
+  async create_alumn(
+    request: AlunmCreateResponseDto,
+    file: Express.Multer.File,
+  ) {
     try {
       const object_alumn = await create_object_alumn(request);
       const categoriesSearch = await this.categoryRepository.findByIds(
@@ -30,8 +36,7 @@ export class AlumnService {
       );
       const alumn_add = this.alumnRepository.create(object_alumn);
       if (file) {
-        const upload 
-        = await uploadCloudinary(file);
+        const upload = await uploadCloudinary(file);
         alumn_add['profileImg'] = upload['url'];
       }
       alumn_add.categories = categoriesSearch;
@@ -69,7 +74,7 @@ export class AlumnService {
         profileImg,
         categories,
       });
-      console.log(alumn)
+
       return await this.alumnRepository.save(alumn);
     } catch (error) {
       throw error;
@@ -78,8 +83,7 @@ export class AlumnService {
 
   async findAll() {
     try {
-      return await this.alumnRepository.find(
-        {
+      return await this.alumnRepository.find({
         relations: [
           'categories',
           'AlumnHireMentors',
