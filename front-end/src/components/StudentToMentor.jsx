@@ -36,12 +36,12 @@ const customTheme = createTheme({
 
 const StudentToMentor = ({ location }) => {
   const navigate = useNavigate()
- const { userId , signOut } = useAuth();
+ const { userId , signOut, obtenerIdDelMentor } = useAuth();
   const [categoryIds, setCategoryIds] = useState([]);
   const [newMentorship, setNewMentorship] = useState({
     mentorSpeciality: "",
     mentorCategory: [],
-    mentorImage: null,
+    file: null,
     mentorDescription: "",
     mentorAboutMe: "",
     mentorDate: "",
@@ -74,9 +74,9 @@ const StudentToMentor = ({ location }) => {
 
     if (file) {
       setSelectedFile(file);
-      setNewMentor({
+      setNewMentorship({
         ...newMentorship,
-        mentorImage: file,
+        file: file,
       });
     }
   };
@@ -117,7 +117,7 @@ const StudentToMentor = ({ location }) => {
   const submit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('profileImg', mentorImage);
+    formData.append('file', selectedFile);
     formData.append('mentorDescription', mentorDescription);
     formData.append('userId', userId);
     formData.append('aboutMe', mentorAboutMe);
@@ -142,7 +142,7 @@ const StudentToMentor = ({ location }) => {
       });
       console.log('Respuesta.data del servidor:', response.data);
       console.log('Respuesta del servidor:', response);
-      signOut();
+      obtenerIdDelMentor(userId)
       navigate('/login');
     } catch (error) {
       console.error('Error al enviar la información al servidor:', error);

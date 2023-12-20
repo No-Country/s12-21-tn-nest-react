@@ -111,6 +111,7 @@ const MyMentorships = () => {
     } catch (error) {
       console.error('Error updating mentorship hour: ', error);
     }
+    window.location.reload();
   };
 
   const handleRejectClick = async (mentorshipId) => {
