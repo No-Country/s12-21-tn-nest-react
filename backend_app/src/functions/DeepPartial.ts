@@ -6,7 +6,6 @@ import { Category } from 'src/mentor/models/categories.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
 import { createQuotes } from 'src/quotes/class/quotes.dto';
 import { DeepPartial } from 'typeorm';
-import { Alumn } from '../alunm/models/alumn.entity';
 import { Quotes } from 'src/quotes/models/quotes.entity';
 
 export const create_object_category_update = async (
@@ -37,12 +36,16 @@ export const create_object_mentor = async (post: createMentor) => {
   return mentor;
 };
 
-export const create_object_quotes = async (post: createQuotes) => {
+export const create_object_quotes = async (
+  post: createQuotes,
+  hire: string,
+) => {
   const quote: DeepPartial<Quotes> = {
     mentor: { id: post.mentorId },
     alumn: { id: post.alumnId },
     appointmentDate: post['appointmentDate'],
     state: post['state'],
+    alumnoHireMentor: { id: hire },
   };
   return quote;
 };

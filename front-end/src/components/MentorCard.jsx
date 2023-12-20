@@ -3,11 +3,13 @@ import { CardMedia, Box, Card, Typography, CardContent, Chip, Rating, Button, Ca
 import { PagosDonativos } from './PagosDonativos';
 import {Link} from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage, mentorPrice, mentorData }) => {
     const [showDonativos, setShowDonativos] = useState(false)
     const { userId, studentId } = useAuth();
-    
+    const navigate = useNavigate();
+
     const handleShowDonativos = () => {
         setShowDonativos(true)
     }
@@ -15,6 +17,14 @@ export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, pr
     const handleCloseDonativos = () => {
         setShowDonativos(false)
     }
+
+    const handleContactMentor = () => {
+        if (userId) {
+            navigate(`/contactMentor`, { state: { id } });
+        } else {
+            navigate('/login');
+        }
+    };
 
     return (
         <Card sx={{
@@ -93,15 +103,10 @@ export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, pr
                     <Button variant='contained' color='success' onClick={handleShowDonativos}>
                         Donar
                     </Button>
-                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} mentorPrice={mentorPrice} mentorData={mentorData} />
-
-                    {userId ? ( 
-                        <Link to={`/contactMentor`} state={{id}}>
-                            <Button variant='contained' color='success'>
-                                Contactar
-                            </Button>
-                        </Link>
-                    ) : null}
+                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} />
+                    <Button variant='contained' color='success' onClick={handleContactMentor}>
+                        Contactar
+                    </Button>
                 </CardActions>
             </Box>
         </Card>
