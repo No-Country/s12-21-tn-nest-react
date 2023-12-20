@@ -15,10 +15,11 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @WebSocketGateway({
   cors: {
-    origin: '*', //frontend url
+    origin: '*',
   },
 })
 export class ChatGateway
@@ -69,7 +70,10 @@ export class ChatGateway
   }
 
   @SubscribeMessage('createChat')
-  async create(@MessageBody() createChatDto) {
+  async create(
+    @MessageBody() createChatDto,
+    @ConnectedSocket() client: Socket,
+  ) {
     if (!createChatDto.alumnId || !createChatDto.mentorId)
       return new WsException('You must provide an alumnId and a mentorId');
 
@@ -77,25 +81,35 @@ export class ChatGateway
       return new WsException('You cannot create a chat with yourself');
 
     const chat = await this.chatService.create(createChatDto);
-    this.server.emit('chatCreated', JSON.parse(JSON.stringify(chat)));
+    this.server
+      .to(client.id)
+      .emit('chatCreated', JSON.parse(JSON.stringify(chat)));
   }
 
   @SubscribeMessage('joinChat')
-  async joinChat(
-    client: Socket,
-    chat: { id: string; alumnId: string; mentorId: string },
-  ) {
+  async joinChat(client: Socket, chat: string) {
     const token = client.handshake.auth.token;
     if (!token) {
       client.disconnect();
       return 'disconnected';
     }
-    client.join(chat.id);
+    this.logger.log('User joined chat ', chat);
+    client.join(chat);
   }
 
-  @SubscribeMessage('findAllChat')
-  findAll() {
-    return this.chatService.findAll();
+  @SubscribeMessage('joinAllChats')
+  async joinAllChats(client: Socket) {
+    const token = client.handshake.auth.token;
+    if (!token) {
+      client.disconnect();
+      return 'disconnected';
+    }
+
+    const userId = this.getUserIdFromToken(token);
+    const chats = await this.chatService.getChatsByUserId(userId);
+    chats.forEach((chat) => client.join(chat.id));
+    this.logger.log('User joined all chats ', userId);
+    this.server.to(client.id).emit('allChatsJoined', chats);
   }
 
   @SubscribeMessage('removeChat')
@@ -106,24 +120,20 @@ export class ChatGateway
   @SubscribeMessage('message')
   async sendMessage(
     @ConnectedSocket() client: Socket,
-    @MessageBody() message: any,
+    @MessageBody() message: CreateMessageDto,
   ) {
     const token = client?.handshake?.auth?.token;
-
     if (!token) {
       client.disconnect();
       return 'disconnected';
     }
 
-    const userId = this.getUserIdFromToken(token);
-    //message.sender = userId;
-    message.senderId = userId;
-    await this.chatService.saveMessage(message);
-    console.log(message);
+    const receiver = this.mapUserIdToSocket.get(message.receiverId);
+    if (receiver) receiver.join(message.chatId);
 
-    client
-      .to(message.chatId)
-      .emit('message', { ...message, res: 'SERVER CHAT' });
-    console.log('EVIADO');
+    const userId = this.getUserIdFromToken(token);
+    message.senderId = userId;
+    const saved = await this.chatService.saveMessage(message);
+    this.server.to([message.chatId]).emit('messageSent', saved);
   }
 }

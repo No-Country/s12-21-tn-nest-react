@@ -15,7 +15,7 @@ export const PrivateChat = () => {
       <div className="private__chat__container">
         <div className="priv__messages">
           {messages.map((msg, i) => (
-            <Message key={i}>{msg}</Message>
+            <Message key={i} msg={msg}></Message>
           ))}
         </div>
         <InputMessages emmitMessage={sendMessage} />

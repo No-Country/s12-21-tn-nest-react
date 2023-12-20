@@ -8,6 +8,7 @@ import { Message } from './entities/message.entity';
 import { Alumn } from 'src/alunm/models/alumn.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
 
+
 @Module({
   imports: [TypeOrmModule.forFeature([Chat, Message, Alumn, Mentor])],
   providers: [ChatGateway, ChatService],

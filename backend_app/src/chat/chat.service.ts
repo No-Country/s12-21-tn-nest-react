@@ -85,11 +85,21 @@ export class ChatService {
   }
 
   async saveMessage(message) {
-    console.log(message);
     try {
       const messageToSave = this.messageRepository.create(message);
       const saved = await this.messageRepository.save(messageToSave);
-      return saved;
+
+      const temp = await this.mentorRepository.findOne({
+        where: { userId: { id: message.senderId } },
+      });
+
+      const sender = temp
+        ? temp
+        : await this.alumnRepository.findOne({
+            where: { user: { id: message.senderId } },
+          });
+      console.log({ ...saved, sender });
+      return { ...saved, sender };
     } catch (error) {
       console.log(error);
     }

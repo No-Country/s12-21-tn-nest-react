@@ -3,6 +3,7 @@ import "./style.css";
 import sendIcon from "../../../images/chat/send-icon.svg";
 import { useRef } from "react";
 
+
 export const InputMessages = ({ emmitMessage }) => {
   const text = useRef(null);
 

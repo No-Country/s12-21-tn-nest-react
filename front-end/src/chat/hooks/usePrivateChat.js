@@ -7,7 +7,7 @@ import AuthContext from "../../context/AuthContext";
 export const usePrivateChat = () => {
   const { socket, chat } = useContext(SocketContext);
   const { user } = useContext(AuthContext);
-  const [messages, setMessages] = useState([1, 2, 3, 4, 5, 6, 6, 7, 8, 8]);
+  const [messages, setMessages] = useState([]);
 
   const sendMessage = (message) => {
     socket.emit(EVENTS.SEND_MESSAGE, buildSocketRequest(message));
@@ -19,21 +19,26 @@ export const usePrivateChat = () => {
   };
 
   const buildSocketRequest = (message) => {
-    const { id } = getIds();
+    const { id, mentorId } = getIds();
     const request = {
       chatId: id,
       message,
       senderId: "",
+      receiverId: mentorId,
     };
     return request;
   };
 
   useEffect(() => {
-    socket.on(EVENTS.RECEIVE_MESSAGE, (data) => {
+    socket.on(EVENTS.MESSAGE_SENT, (data) => {
       console.log(data);
       setMessages((messages) => [...messages, data]);
     });
+
+    return () => {
+      socket.off(EVENTS.MESSAGE_SENT);
+    };
   }, []);
 
-  return { socket, messages, sendMessage, userId: user.user };
+  return { socket, messages, sendMessage, userId: user.userId };
 };

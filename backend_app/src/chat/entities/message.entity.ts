@@ -30,6 +30,6 @@ export class Message {
   @JoinColumn({ name: 'senderId' })
   sender: User;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn()
   createdAt: Date;
 }

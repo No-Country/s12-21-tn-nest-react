@@ -4,10 +4,12 @@ import chats from "../../../images/chat/chats.svg";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import SocketContext from "../../../context/SocketContext";
+import AuthContext from "../../../context/AuthContext";
 
 export const TopPrivateChat = () => {
   const navigate = useNavigate();
   const { chat } = useContext(SocketContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <>
@@ -17,7 +19,15 @@ export const TopPrivateChat = () => {
         </div>
         <div className="chat__with">
           <img src="" alt="" />
-          <p>{chat?.mentor.firstName ? chat.mentor?.firstName : ""}</p>
+          <p>
+            {user.userId == chat?.mentor.id
+              ? chat?.alumn?.firstName
+                ? chat?.alumn?.firstName
+                : ""
+              : chat?.mentor?.firstName
+              ? chat?.mentor?.firstName
+              : ""}
+          </p>
         </div>
         <div className="private__img-container">
           <img onClick={() => navigate("/")} src={close} alt="" />
