@@ -76,8 +76,8 @@ const MyMentorships = () => {
     const fetchData = async () => {
       try {
         let URLData = `/quotes/filter/all/${currentUser}`
-        const response = await urlApi.fetch(URLData);
-        const data = await response.json();
+        const response = await urlApi.get(URLData);
+        const data = await response.data;
         setMentorshipData(data);
         // Inicializa el objeto de estados de visualización
         const initialOpenInputsState = data.reduce((acc, mentorship) => {
@@ -92,9 +92,8 @@ const MyMentorships = () => {
         console.error('Error fetching mentorship data', error);
       }
     };
-    setAcceptButtonClicked(prevState => !prevState);
     fetchData();
-  }, [currentUser , acceptButtonClicked]);
+  }, [currentUser,acceptButtonClicked]);
 
   const handleAcceptClick = async (mentorshipId) => {
     try {
@@ -110,11 +109,11 @@ const MyMentorships = () => {
         },
       }));
       setHour('');
+      setAcceptButtonClicked(prevState => !prevState);
       fetchData();
     } catch (error) {
       console.error('Error updating mentorship hour: ', error);
     }
-    navigate(window.location.pathname, { replace: true });
   };
 
   const handleRejectClick = async (mentorshipId) => {
