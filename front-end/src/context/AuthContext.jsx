@@ -17,12 +17,9 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [rolName, setRolName] = useState(null);
-  const [rolId, setRolId] = useState(null);
   const [userId, setUserId] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [mentorId, setMentorId] = useState(null);
-  const [userData, setUserData] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
 
@@ -58,10 +55,9 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setUser(res.data);
         setUserId(res.data.userId);
+        await obtenerIdDelMentor(res.data.userId);
         setIsAuthenticated(true);
-  
-        const mentorIdsResponse = await obtenerIdDelMentor(res.data.userId);
-
+        Cookies.set("token", res.data.token, { expires: 7 });
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -72,6 +68,7 @@ export const AuthProvider = ({ children }) => {
   
 
   const signOut = () => {
+    Cookies.remove("token"); 
     setIsAuthenticated(false);
     setUser(null);
     setUserId(null);
@@ -90,15 +87,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const cookies = Cookies.get();
-      if (!cookies.token) {
+      const token = Cookies.get("token");
+      if (!token) {
         setIsAuthenticated(false);
         setUser(null);
         setIsLoading(false);
         return;
       }
       try {
-        const res = await verifyTokenRequest(cookies.token);
+        const res = await verifyTokenRequest(token);
         console.log(res);
 
         if (!res.data) {
@@ -109,7 +106,6 @@ export const AuthProvider = ({ children }) => {
 
         setIsAuthenticated(true);
         setUser(res.data);
-        setName(res.data.name);
         setIsLoading(false);
       } catch (err) {
         console.log(err);

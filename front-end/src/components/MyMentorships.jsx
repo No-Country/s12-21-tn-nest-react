@@ -8,6 +8,7 @@ import {
   Avatar,
   Box,
 } from '@mui/material';
+import Cookies from 'js-cookie';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -69,29 +70,28 @@ const MyMentorships = () => {
         return { bgColor: 'white', borderColor: 'white', textColor: 'black' };
     }
   };
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/quotes/filter/all/${currentUser}`);
+      const data = await response.json();
+      setMentorshipData(data);
+      // Inicializa el objeto de estados de visualización
+      const initialOpenInputsState = data.reduce((acc, mentorship) => {
+        acc[mentorship.id] = {
+          accept: false,
+          reject: false,
+        };
+        return acc;
+      }, {});
+      setOpenInputs(initialOpenInputsState);
+    } catch (error) {
+      console.error('Error fetching mentorship data', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/quotes/filter/all/${currentUser}`);
-        const data = await response.json();
-        setMentorshipData(data);
-        // Inicializa el objeto de estados de visualización
-        const initialOpenInputsState = data.reduce((acc, mentorship) => {
-          acc[mentorship.id] = {
-            accept: false,
-            reject: false,
-          };
-          return acc;
-        }, {});
-        setOpenInputs(initialOpenInputsState);
-      } catch (error) {
-        console.error('Error fetching mentorship data', error);
-      }
-    };
-
     fetchData();
-  }, [currentUser]);
+  }, []);
 
   const handleAcceptClick = async (mentorshipId) => {
     try {
@@ -111,7 +111,6 @@ const MyMentorships = () => {
     } catch (error) {
       console.error('Error updating mentorship hour: ', error);
     }
-    window.location.reload();
   };
 
   const handleRejectClick = async (mentorshipId) => {
