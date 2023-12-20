@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const corsOptions = {
     credentials: true,
-    origin: ['http://localhost:5173', 'https://mentorsphere.vercel.app/'],
+    origin: ['http://localhost:5173', 'https://mentorsphere.vercel.app'],
   };
 
   app.use(cors(corsOptions));
