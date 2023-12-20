@@ -37,9 +37,7 @@ const ContactMentor = () => {
     };
     try {
       let url = "quotes/create";
-      const response = await urlApi.post(url, requestData);
-      console.log("Respuesta.data del servidor:", response.data);
-      console.log("Respuesta del servidor:", response);
+      await urlApi.post(url, requestData);
     } catch (error) {
       if (
         error.response &&
