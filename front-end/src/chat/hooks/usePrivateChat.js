@@ -31,12 +31,16 @@ export const usePrivateChat = () => {
 
   useEffect(() => {
     socket.on(EVENTS.MESSAGE_SENT, (data) => {
-      console.log(data);
       setMessages((messages) => [...messages, data]);
+    });
+
+    socket.on(EVENTS.GET_ALL_MESSAGES, (data) => {
+      setMessages(data);
     });
 
     return () => {
       socket.off(EVENTS.MESSAGE_SENT);
+      socket.off(EVENTS.GET_ALL_MESSAGES);
     };
   }, []);
 

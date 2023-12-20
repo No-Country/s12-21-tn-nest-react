@@ -5,4 +5,5 @@ export const EVENTS = {
   LEAVE_CHAT: "leave-chat",
   SEND_MESSAGE: "message",
   MESSAGE_SENT: "messageSent",
+  GET_ALL_MESSAGES: "getAllMessages",
 };
