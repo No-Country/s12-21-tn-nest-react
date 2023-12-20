@@ -32,7 +32,7 @@ export default function Menu({ navLinksArray }) {
                 <>
                   {studentId && mentorId ? (
                     <>
-                      <Button color="inherit" component={NavLink} to="/home">
+                      <Button color="inherit" component={NavLink} to="/">
                         Home
                       </Button>
                       <Button color="inherit" component={NavLink} to="/mentores">
