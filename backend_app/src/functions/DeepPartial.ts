@@ -36,12 +36,16 @@ export const create_object_mentor = async (post: createMentor) => {
   return mentor;
 };
 
-export const create_object_quotes = async (post: createQuotes) => {
+export const create_object_quotes = async (
+  post: createQuotes,
+  hire: string,
+) => {
   const quote: DeepPartial<Quotes> = {
     mentor: { id: post.mentorId },
     alumn: { id: post.alumnId },
     appointmentDate: post['appointmentDate'],
     state: post['state'],
+    alumnoHireMentor: { id: hire },
   };
   return quote;
 };

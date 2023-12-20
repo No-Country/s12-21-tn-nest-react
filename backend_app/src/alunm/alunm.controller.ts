@@ -63,13 +63,14 @@ export class AlunmController {
     return this.alunmService.remove(id);
   }
 
-  @Post('/calificate')
+  @Post('calificate')
   async calificate(@Body() request: CalificationDto) {
-    return this.alunmService.calificateMentor(
+    const result = await this.alunmService.calificateMentor(
       request.id,
       request.calification,
       request.msg,
     );
+    return result;
   }
 
   @Patch('/restore/:id')
@@ -89,11 +90,7 @@ export class AlunmController {
   @Post('/hire-mentor')
   async hireMentor(@Body() request: hireMentorRequestDto) {
     try {
-      return this.alunmService.hireMentor(
-        request.alumnId,
-        request.mentorId,
-        request.categoryId,
-      );
+      return this.alunmService.hireMentor(request.alumnId, request.mentorId);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

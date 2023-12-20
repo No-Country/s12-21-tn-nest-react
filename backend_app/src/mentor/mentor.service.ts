@@ -130,13 +130,11 @@ export class MentorService {
       let mentors = await this.mentorRepository.find({
         relations: ['categories', 'speciality', 'userId'],
       });
-
       if (categoryName && categoryName.length > 0) {
         mentors = mentors.filter((mentor) =>
           mentor.categories.some((c) => categoryName.includes(c.name)),
         );
       }
-
       if (idSpeciality) {
         mentors = mentors.filter(
           (mentor) => mentor.speciality.id == idSpeciality,
@@ -211,10 +209,23 @@ export class MentorService {
   }
 
   async mentor_find(id: string) {
-    return await this.mentorRepository.findOne({
+    const data = await this.mentorRepository.findOne({
       where: { id: id },
-      relations: ['categories', 'speciality', 'userId'],
+      relations: ['categories', 'speciality', 'userId', 'AlumnHireMentors'],
     });
+    data.AlumnHireMentors.filter((e) => {
+      delete e.id;
+      delete e.alumnJoin;
+      delete e.createdAt;
+      delete e.mentorJoin;
+      delete e.date;
+      delete e.deletedAt;
+      delete e.mpago_payment;
+      delete e.paypal_payment;
+      delete e.stripe_payment;
+      delete e.updatedAt;
+    });
+    return data;
   }
 
   async delete_mentor_categories(id: string, idCategories: string) {
