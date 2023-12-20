@@ -36,7 +36,7 @@ const StudentProfile = () => {
   useEffect(() => {
     const fetchStudentInfo = async () => {
       try {
-        let url = `alumn/${studentId}`
+        let url = `/alumn/${studentId}`
         const response = await urlApi.get(url);
         setStudentInfo(response.data);
       } catch (error) {

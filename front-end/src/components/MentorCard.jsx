@@ -103,7 +103,7 @@ export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, pr
                     <Button variant='contained' color='success' onClick={handleShowDonativos}>
                         Donar
                     </Button>
-                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} />
+                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} mentorData={mentorData} mentorPrice={mentorPrice} />
                     <Button variant='contained' color='success' onClick={handleContactMentor}>
                         Contactar
                     </Button>
