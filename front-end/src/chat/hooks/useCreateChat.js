@@ -13,6 +13,8 @@ export const useCreateChat = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    if (!localSocket) return;
     localSocket.on(EVENTS.CHAT_CREATED, (data) => {
       localSocket.emit(EVENTS.JOIN_CHAT, {
         id: data.id,
@@ -24,6 +26,7 @@ export const useCreateChat = () => {
       navigate(`/chat/${data.id}`);
 
       localSocket.off(EVENTS.CHAT_CREATED);
+
     });
   }, []);
 
