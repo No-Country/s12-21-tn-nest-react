@@ -1,7 +1,6 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import { Typography, Rating, Box } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
+// import StarIcon from "@mui/icons-material/Star";
 import { useNavigate, useParams } from "react-router-dom";
 import { addScore } from "../db/auth";
 
@@ -14,7 +13,6 @@ const Score = () => {
   const [comment, setComment] = useState("");
   const [error, setError] = useState(false);
   const [idScore, setIdScore] = useState("");
-  const [exist, setExist] = useState(null);
 
   const labels = {
     1: "Useless",
@@ -36,25 +34,9 @@ const Score = () => {
     setError(!error);
   };
 
-  /*
-  const previousScore= async(idScore){
-    try{
-      const res = await scoreAdded(idScore);
-      if(res!=null){
-        setExist(res)
-      }
-    }catch(err){
-      console.log(err)
-    }
-  }*/
-
   const addingScore = async (idScore, comment, value) => {
     try {
-      //if(exist!=null){
-      const res = await addScore(idScore, value, comment);
-      // }else{
-      // console.log("Ya se habia dado una calificacion anteriormente")
-      //}
+      await addScore(idScore, value, comment);
     } catch (err) {
       console.log(err);
     }
@@ -63,13 +45,8 @@ const Score = () => {
   const submitScore = (e) => {
     e.preventDefault();
     if (value != null) {
-      console.log(
-        "idScore: " + idScore,
-        "value: " + value,
-        "Message: " + comment
-      );
       addingScore(idScore, comment, value);
-      navigate("/");
+      navigate("/success");
     } else {
       changeError();
     }

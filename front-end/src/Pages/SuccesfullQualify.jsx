@@ -1,4 +1,4 @@
-import { Container, Typography, Button, useMediaQuery } from "@mui/material";
+import { Container, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export const SuccesfullQualify = () => {

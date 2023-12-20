@@ -28,4 +28,7 @@ export const descriptionMentors = (nameMentor: string) => {
     MentorSphere`;
 };
 
-export const url = 'localhost:8080/api/';
+export const url = (id: string) => {
+  const url = `http://localhost:5173/score/${id}`;
+  return url;
+};

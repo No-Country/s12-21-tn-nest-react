@@ -63,13 +63,14 @@ export class AlunmController {
     return this.alunmService.remove(id);
   }
 
-  @Post('/calificate')
+  @Post('calificate')
   async calificate(@Body() request: CalificationDto) {
-    return this.alunmService.calificateMentor(
+    const result = await this.alunmService.calificateMentor(
       request.id,
       request.calification,
       request.msg,
     );
+    return result;
   }
 
   @Patch('/restore/:id')

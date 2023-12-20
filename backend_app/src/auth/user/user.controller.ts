@@ -23,7 +23,6 @@ export class UserController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto);
     return this.userService.createMentor(createUserDto);
   }
 

@@ -45,13 +45,9 @@ export class QuotesService {
       post.alumnId,
       post.mentorId,
     );
-    post['alumnoHireMentor'] = hirmentor;
     post['state'] = dato.id;
     const object = await create_object_quotes(post, hirmentor.id);
     if (dato) {
-      // email: string,
-      // description: string,
-      // link: string,
       const alumnoEmail = await this.alumnRepository.findOne({
         where: { id: post.alumnId },
         relations: {
@@ -68,7 +64,11 @@ export class QuotesService {
       const nombreMentor = `${mentorEmail.userId.firstName} ${mentorEmail.userId.lastName}`;
       const descriptionAlumn = alumnoDescription(nombreAlumno);
       const descriptionMentor = descriptionMentors(nombreMentor);
-      await qualify(alumnoEmail.user.email, descriptionAlumn, url);
+      await qualify(
+        alumnoEmail.user.email,
+        descriptionAlumn,
+        url(hirmentor.id),
+      );
       await qualifyMentor(mentorEmail.userId.email, descriptionMentor);
       const quotes = this.QuoteRepository.create(object);
       await this.QuoteRepository.save(quotes);
@@ -216,7 +216,6 @@ export class QuotesService {
         state: true,
       },
     });
-    console.log(quotes);
     const status = await this.StateRepository.findOne({
       where: { name: 'aceptado' },
     });

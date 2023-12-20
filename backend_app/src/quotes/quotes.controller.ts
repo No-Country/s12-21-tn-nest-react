@@ -6,14 +6,11 @@ import {
   Param,
   Patch,
   Post,
-  Query,
-  Res,
 } from '@nestjs/common';
 import { QuotesService } from './quotes.service';
 import { createQuotes } from './class/quotes.dto';
 import { refuser } from './class/quotesRefuser.dto';
 import { Accept } from './class/quotesAccept.dto';
-import { Response } from 'express';
 
 @Controller('quotes')
 export class QuotesController {
@@ -69,10 +66,5 @@ export class QuotesController {
     @Body() refused: refuser,
   ) {
     return this.repositoryService.quotes_refused(idQuotes, refused);
-  }
-
-  @Get('rating')
-  async get_rating(@Query('id') id: string, @Res() res: Response) {
-    res.redirect('https://legalhub-seven.vercel.app/ingreso');
   }
 }

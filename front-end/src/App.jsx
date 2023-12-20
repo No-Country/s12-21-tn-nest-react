@@ -5,7 +5,7 @@ import SignUp from "./SignUp/SignUp";
 import Login from "./Login/Login";
 import "./App.css";
 import { MentoresPage } from "./MentoresPage/MentoresPage";
-import { SuccesfullQualify } from './Pages/SuccesfullQualify'
+import { SuccesfullQualify } from "./Pages/SuccesfullQualify";
 import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
@@ -61,7 +61,7 @@ function App() {
                 <Route path="/studentForm" element={<StudentForm />} />
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
                 <Route path="/contactMentor" element={<ContactMentor />} />
-                <Route path="/success" element={<SuccesfullQualify />}  />
+                <Route path="/success" element={<SuccesfullQualify />} />
                 <Route path="/myMentorships" element={<MyMentorships />} />
                 <Route
                   path="/studentProfile/:id"
@@ -83,9 +83,6 @@ function App() {
                   //test perfil mentor
                 }
                 {<Route path="/score/:idScoreParams" element={<Score />} />}
-                {
-                  //<Route path="/score" element={<Score />} />
-                }
               </Routes>
             </div>
           </BrowserRouter>
