@@ -28,10 +28,20 @@ export const AuthProvider = ({ children }) => {
 
   const obtenerIdDelMentor = async (userId) => {
     try {
-      let url = `auth/filter/${userId}`;
+      let url = `/auth/filter/${userId}`;
       const response = await urlApi.get(url);
       console.log("response", response);
-      return response.data;
+      const mentorIds = response.data.mentor[0]?.id;
+      const studentIds = response.data.alumn[0]?.id;
+
+      if (mentorIds && studentIds) {
+        setMentorId(mentorIds);
+        setStudentId(studentIds);
+      } else if (mentorIds!= null & studentIds == null) {
+        setMentorId(mentorIds);
+      } else if (studentIds != null && mentorIds == null) {
+        setStudentId(studentIds);
+      }
     } catch (error) {
       console.error("Error fetching mentor ID:", error);
     }
@@ -51,19 +61,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
   
         const mentorIdsResponse = await obtenerIdDelMentor(res.data.userId);
-        const mentorIds = mentorIdsResponse.mentor[0]?.id;
-        const studentIds = mentorIdsResponse.alumn[0]?.id;
-  
-        if (mentorIds && studentIds) {
-          setMentorId(mentorIds);
-          setStudentId(studentIds);
-        } else if (mentorIds!= null & studentIds == null) {
-          setMentorId(mentorIds);
-          setStudentId(null);
-        } else if (studentIds != null && mentorIds == null) {
-          setMentorId(null);
-          setStudentId(studentIds);
-        }
+
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -138,6 +136,7 @@ export const AuthProvider = ({ children }) => {
         userId,
         mentorId,
         studentId,
+        obtenerIdDelMentor,
       }}
     >
       {children}

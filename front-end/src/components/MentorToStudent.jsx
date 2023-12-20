@@ -32,7 +32,7 @@ const customTheme = createTheme({
 
 const MentorToStudent = ({ location }) => {
   const navigate = useNavigate();
-  const { userId } = useAuth();
+  const { userId , obtenerIdDelMentor } = useAuth();
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [categoryIds, setCategoryIds] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -42,6 +42,7 @@ const MentorToStudent = ({ location }) => {
     studentCategories: [],
   })
   const { studentImage, studentCategories } = newStudent
+  console.log("userId" , userId);
 
   const fetchCategories = async () => {
     try {
@@ -71,29 +72,34 @@ const MentorToStudent = ({ location }) => {
   const submit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file', newStudent.studentImage, newStudent.studentImage.name);
-    formData.append('user', userId);
-    studentCategories.forEach(val => {
-      formData.append('categoriesId[]', val);
+    formData.append('file', newStudent.studentImage);
+    formData.append('userId', userId);
+    newStudent.studentCategories.forEach(val => {
+      return formData.append('categoriesId[]', val);
     });
+    console.log(formData)
     try {
-      let url = 'alumn'
+      let url = '/alumn/create/alumn'
       const response = await urlApi.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
       console.log('Respuesta.data del servidor:', response.data);
       console.log('Respuesta del servidor:', response);
-    } catch (error) {
+/*       signOut();
+ */     obtenerIdDelMentor(userId)
+        navigate('/');
+       } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         console.error('Validation Error:', error.response.data.message);
       } else {
         console.error('Error registering the student:', error);
       }
     }
-    navigate('/login');
   };
 
   const handleCategoryChange = (event) => {

@@ -16,8 +16,9 @@ export class AlunmCreateRequestDto {
 
 export class AlunmCreateResponseDto {
   @ApiProperty()
-  id: string;
-
+  @IsOptional()
+  userId?: string;
+  @IsNotEmpty()
   @ApiProperty()
-  userId: string;
+  categoriesId?: string[];
 }
