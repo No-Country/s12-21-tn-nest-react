@@ -153,20 +153,17 @@ export class AlumnService {
     }
   }
 
-  async hireMentor(idA: string, idM: string, idC: string) {
+  async hireMentor(idA: string, idM: string) {
     try {
-      const { alumn, mentor, category } = await this.prepareAlumnHireMentor(
-        idA,
-        idM,
-        idC,
-      );
-      return await this.saveMentorHire(alumn, mentor, category);
+      const { alumn, mentor } = await this.prepareAlumnHireMentor(idA, idM);
+      return await this.saveMentorHire(alumn, mentor);
     } catch (error) {
+      console.log(error);
       throw new Error('Error hiring mentor');
     }
   }
 
-  private async prepareAlumnHireMentor(idA, idM, idC) {
+  private async prepareAlumnHireMentor(idA, idM) {
     try {
       const alumn = await this.alumnRepository.findOne({ where: { id: idA } });
       if (!alumn) throw new Error('Alumn not found');
@@ -176,26 +173,24 @@ export class AlumnService {
         relations: ['categories'],
       });
       if (!mentor) throw new Error('Mentor not found');
-      const category = mentor.categories.find((c) => c.id === idC);
-      if (!category) throw new Error('Mentor does not have this category');
 
-      return { alumn, mentor, category };
+      return { alumn, mentor };
     } catch (error) {
       throw new Error('Error preparing alumn hire mentor');
     }
   }
 
-  private async saveMentorHire(alumn, mentor, category) {
+  public async saveMentorHire(alumn, mentor) {
     try {
       const alumnHireMentor = this.alumnHireMentorRepository.create({
         alumnJoin: alumn,
         mentorJoin: mentor,
-        categoryjoin: category,
         date: new Date(),
       });
-
-      return await this.alumnHireMentorRepository.save(alumnHireMentor);
+      await this.alumnHireMentorRepository.save(alumnHireMentor);
+      return alumnHireMentor;
     } catch (error) {
+      console.log(error);
       throw new Error('Error saving mentor hire');
     }
   }
@@ -207,21 +202,21 @@ export class AlumnService {
     if (!find) throw 'Hire not found';
 
     try {
-      find.finished = true;
+      //find.finished = true;
       return await this.alumnHireMentorRepository.save(find);
     } catch (error) {
       throw 'Error finishing mentor hire';
     }
   }
 
-  async calificateMentor(id: string, calification: number) {
+  async calificateMentor(id: string, calification: number, msg: string) {
     const find = await this.alumnHireMentorRepository.findOne({
       where: { id },
     });
-    if (!find || !find.finished)
-      throw new Error('Hire not found or Mentory not finished');
+    if (!find) throw new Error('Hire not found or Mentory not finished');
     try {
       find.calification = calification;
+      find.comment = msg;
       return await this.alumnHireMentorRepository.save(find);
     } catch (error) {
       throw new Error('Error calificating mentor hire');

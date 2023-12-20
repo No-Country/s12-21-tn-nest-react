@@ -15,8 +15,8 @@ import { CreatePaypalOrderDto } from './dto/create-paypal.dto';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiCreatedResponse,
   ApiForbiddenResponse,
-  ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
@@ -35,7 +35,7 @@ export class PaypalController {
   @ApiBody({
     type: CreatePaypalOrderDto,
   })
-  @ApiOkResponse({ type: CreateOkPaypalOrderResponseDto })
+  @ApiCreatedResponse({ type: CreateOkPaypalOrderResponseDto })
   create(@Body() createPaypalOrderDto: CreatePaypalOrderDto) {
     return this.paypalService.createOrder(createPaypalOrderDto);
   }
@@ -47,12 +47,13 @@ export class PaypalController {
 
   @Get('cancel')
   cancelOrder(@Query('token') token: string) {
-    return this.paypalService.captureUnpaidOrder(token);
+    return this.paypalService.getOrderStatus(token);
   }
 
   @ApiForbiddenResponse()
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  findOne(@Param('id') _id: string) {
     throw new HttpException(
       `#You can only generate an order and save a new payment`,
       HttpStatus.FORBIDDEN,

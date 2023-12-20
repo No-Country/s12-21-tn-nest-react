@@ -9,8 +9,4 @@ export class hireMentorRequestDto {
   @IsNotEmpty()
   @ApiProperty()
   mentorId: string;
-
-  @IsNotEmpty()
-  @ApiProperty()
-  categoryId: string;
 }

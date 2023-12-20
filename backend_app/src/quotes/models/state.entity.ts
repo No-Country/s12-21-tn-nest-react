@@ -1,11 +1,11 @@
-import { Mentor } from 'src/mentor/models/mentor.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Quotes } from './quotes.entity';
 @Entity({ name: 'state' })
 export class State {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
   name: string;
-  @ManyToMany(() => Mentor, (mentor) => mentor.stateMentor)
-  state: Mentor[];
+  @OneToMany(() => Quotes, (quotes) => quotes.state)
+  quotes: Quotes[];
 }

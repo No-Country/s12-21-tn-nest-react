@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { loginRequest, verifyTokenRequest } from "../db/auth";
 import Cookies from "js-cookie";
+import { urlApi } from "../../config/axios";
 
 export const AuthContext = createContext();
 
@@ -16,10 +17,25 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [name, setName] = useState(null);
+  const [rolName, setRolName] = useState(null);
+  const [rolId, setRolId] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [studentId, setStudentId] = useState(null);
+  const [mentorId, setMentorId] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
+
+  const obtenerIdDelMentor = async (userId) => {
+    try {
+      let url = `auth/filter/${userId}`;
+      const response = await urlApi.get(url);
+      console.log("response", response);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching mentor ID:", error);
+    }
+  };
 
   const toggleLoginClass = () => {
     setLoginActive(!loginActive);
@@ -28,16 +44,26 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (user) => {
     try {
       const res = await loginRequest(user);
-      console.log(res);
+      console.log(res.data);
       if (res && res.data) {
-        setIsAuthenticated(true);
         setUser(res.data);
-        //setName(res.data.name);
-        //setUserId(res.data.id);
-        /* 
-        // Obtén el ID del mentor asociado al usuario
-        const mentorIdResponse = await obtenerIdDelMentor(res.data.id);
-        setMentorId(mentorIdResponse.data.id); // Asigna el ID del mentor al estado */
+        setUserId(res.data.userId);
+        setIsAuthenticated(true);
+  
+        const mentorIdsResponse = await obtenerIdDelMentor(res.data.userId);
+        const mentorIds = mentorIdsResponse.mentor[0]?.id;
+        const studentIds = mentorIdsResponse.alumn[0]?.id;
+  
+        if (mentorIds && studentIds) {
+          setMentorId(mentorIds);
+          setStudentId(studentIds);
+        } else if (mentorIds!= null & studentIds == null) {
+          setMentorId(mentorIds);
+          setStudentId(null);
+        } else if (studentIds != null && mentorIds == null) {
+          setMentorId(null);
+          setStudentId(studentIds);
+        }
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -45,16 +71,15 @@ export const AuthProvider = ({ children }) => {
       setErrors(err.response.data);
     }
   };
+  
 
-  /*   const obtenerIdDelMentor = async (userId) => {
-    // Realiza una solicitud para obtener el ID del mentor asociado al usuario
-    try {
-      const response = await axios.get(`http://localhost:8080/api/mentor/getIdByUserId/${userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching mentor ID:', error);
-    }
-  }; */
+  const signOut = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    setUserId(null);
+    setMentorId(null);
+    setStudentId(null);
+  };
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -102,6 +127,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         signIn,
+        signOut,
         user,
         name,
         isAuthenticated,
@@ -110,6 +136,8 @@ export const AuthProvider = ({ children }) => {
         loginActive,
         toggleLoginClass,
         userId,
+        mentorId,
+        studentId,
       }}
     >
       {children}

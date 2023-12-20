@@ -14,34 +14,26 @@ export const MentorCardRenderer = ({ mentorsData }) => {
   }
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "column",
-          alignItems: "center",
-          marginTop: "6rem",
-        }}
-      >
-        <Grid container spacing={3} sx={{ gap: 8, justifyContent: "center" }}>
-          {currentMentors &&
-            currentMentors.map((mentor) => (
-              <MentorCard
-                key={mentor.id}
-                name={mentor?.userId?.firstName + " " + mentor.userId?.lastName}
-                speciality={mentor.speciality.name}
-                date={new Date(mentor.updatedAt).toLocaleDateString("es-ES", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-                aboutMe={mentor.aboutMe}
-                categories={mentor.categories}
-                price={mentor.price}
-                mentorImage={mentor.image}
-                id={mentor.userId?.id}
-              />
-            ))}
+    <Box sx={{marginLeft: '10px'}}>
+      <Box sx={{ display: 'flex', justifyContent: 'column', alignItems: 'center', marginTop: '6rem'}}>
+        <Grid container spacing={5} sx={{ justifyContent: 'space-around', alignItems: 'center', gap: '2.5rem' }} >
+          {currentMentors.map((mentor) => (
+            <MentorCard
+              key={mentor.id}
+              id={mentor.id}
+              name={mentor.userId.firstName + ' ' + mentor.userId.lastName}
+              speciality={mentor.speciality.name}
+              date={new Date(mentor.updatedAt).toLocaleDateString('es-ES', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+              aboutMe={mentor.aboutMe}
+              categories={mentor.categories}
+              price={mentor.price}
+              mentorImage={mentor.image}
+            />
+          ))}
         </Grid>
       </Box>
       <Box
@@ -80,6 +72,6 @@ export const MentorCardRenderer = ({ mentorsData }) => {
           }}
         />
       </Box>
-    </>
+    </Box>
   );
 };

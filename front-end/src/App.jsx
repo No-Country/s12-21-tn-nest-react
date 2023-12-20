@@ -3,13 +3,12 @@ import { AuthProvider } from "./context/AuthContext";
 import Home from "./Home/Home";
 import SignUp from "./SignUp/SignUp";
 import Login from "./Login/Login";
-import Header from "./components/Header";
 import "./App.css";
 import { MentoresPage } from "./MentoresPage/MentoresPage";
+import { SuccesfullQualify } from "./Pages/SuccesfullQualify";
 import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
-import MentorProfile from "./components/MentorProfile";
 import StudentProfile from "./components/StudentProfile";
 import UpdateMentorProfile from "./components/UpdateMentorProfile";
 import UpdateStudentProfile from "./components/UpdateStudentProfile";
@@ -23,6 +22,17 @@ import SchedulerComponent from "./components/SchedulerComponent";
 import { ChatHome } from "./chat/pages/ChatHome";
 import { PrivateChat } from "./chat/pages/PrivateChat";
 import { SocketProvider } from "./context/SocketContext";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import LoginIcon from "@mui/icons-material/Login";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import HomeIcon from "@mui/icons-material/Home";
+import SchoolIcon from "@mui/icons-material/School";
+import MentorProfile from "./components/MentorProfile";
+import ContactMentor from "./components/ContactMentor";
+import MyMentorships from "./components/MyMentorships";
+import StudentToMentor from "./components/StudentToMentor";
+import MentorToStudent from "./components/MentorToStudent";
+import Score from "./score/Score";
 
 const navLinksArray = [
   { title: "Home", path: "/", icon: <HomeIcon /> },
@@ -42,6 +52,19 @@ const navLinksArray = [
   },
   { title: "Calendar", path: "/calendar", icon: <HowToRegIcon /> },
   { title: "Chat", path: "/chat", icon: <HowToRegIcon /> },
+  { title: "Mentorias", path: "/myMentorships", icon: <SchoolIcon /> },
+  { title: "Login", path: "/login", icon: <LoginIcon /> },
+  { title: "Register", path: "/signup", icon: <HowToRegIcon /> },
+  {
+    title: "StudentProfile",
+    path: "/studentProfile/:id",
+    icon: <HowToRegIcon />,
+  },
+  {
+    title: "MentorProfile",
+    path: "/mentorProfile/:id",
+    icon: <HowToRegIcon />,
+  },
 ];
 
 function App() {
@@ -69,6 +92,11 @@ function App() {
                 <Route path="/mentorshipForm" element={<Mentorship />} />
                 <Route path="/studentForm" element={<StudentForm />} />
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
+                <Route path="/contactMentor" element={<ContactMentor />} />
+                <Route path="/success" element={<SuccesfullQualify />} />
+                <Route path="/myMentorships" element={<MyMentorships />} />
+                <Route path="/studentToMentor" element={<StudentToMentor />} />
+                <Route path="/mentorToStudent" element={<MentorToStudent />} />
                 <Route
                   path="/studentProfile/:id"
                   element={<StudentProfile />}
@@ -92,6 +120,14 @@ function App() {
                 >
                   <Route path=":id" element={<PrivateChat />} />
                 </Route>
+                {
+                  //<Route path="/calendar" element={<SchedulerComponent />} />
+                }
+                {
+                  //<Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />{" "}
+                  //test perfil mentor
+                }
+                {<Route path="/score/:idScoreParams" element={<Score />} />}
               </Routes>
             </div>
           </BrowserRouter>

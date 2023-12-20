@@ -16,7 +16,8 @@ import { Speciality } from './models/especializaciones';
 import { updateMentor } from './class/Mentor/updateMentor.dto';
 import * as bcrypt from 'bcryptjs';
 import { SALT_ROUNDS } from '../common/constants';
-import { UserService } from '../auth/user/user.service';
+import { UserService } from 'src/auth/user/user.service';
+import { State } from 'src/quotes/models/state.entity';
 @Injectable()
 export class MentorService {
   constructor(
@@ -26,6 +27,7 @@ export class MentorService {
     @InjectRepository(Speciality)
     private specialityRepository: Repository<Speciality>,
     private readonly userService: UserService,
+    @InjectRepository(State) private stateRepository: Repository<State>,
   ) {}
   async get_categories_all() {
     try {
@@ -104,7 +106,6 @@ export class MentorService {
         post.Categories,
       );
       const mentor_add = this.mentorRepository.create(object_mentor);
-
       if (file) {
         const upload = await uploadCloudinary(file);
         mentor_add['image'] = upload['url'];
@@ -127,19 +128,13 @@ export class MentorService {
   ) {
     try {
       let mentors = await this.mentorRepository.find({
-        relations: {
-          categories: true,
-          speciality: true,
-          userId: true,
-        },
+        relations: ['categories', 'speciality', 'userId'],
       });
-
       if (categoryName && categoryName.length > 0) {
         mentors = mentors.filter((mentor) =>
           mentor.categories.some((c) => categoryName.includes(c.name)),
         );
       }
-
       if (idSpeciality) {
         mentors = mentors.filter(
           (mentor) => mentor.speciality.id == idSpeciality,
@@ -155,7 +150,6 @@ export class MentorService {
           return mentors.sort((a, b) =>
             a.userId.firstName.localeCompare(b.userId.firstName),
           );
-          console.log(mentors);
         case 'descAlf':
           return mentors.sort((a, b) =>
             b.userId.firstName.localeCompare(a.userId.firstName),
@@ -215,14 +209,23 @@ export class MentorService {
   }
 
   async mentor_find(id: string) {
-    return await this.mentorRepository.findOne({
+    const data = await this.mentorRepository.findOne({
       where: { id: id },
-      relations: {
-        categories: true,
-        speciality: true,
-        userId: true,
-      },
+      relations: ['categories', 'speciality', 'userId', 'AlumnHireMentors'],
     });
+    data.AlumnHireMentors.filter((e) => {
+      delete e.id;
+      delete e.alumnJoin;
+      delete e.createdAt;
+      delete e.mentorJoin;
+      delete e.date;
+      delete e.deletedAt;
+      delete e.mpago_payment;
+      delete e.paypal_payment;
+      delete e.stripe_payment;
+      delete e.updatedAt;
+    });
+    return data;
   }
 
   async delete_mentor_categories(id: string, idCategories: string) {
@@ -257,7 +260,7 @@ export class MentorService {
     if (!id) {
       return {
         status: HttpStatus.NOT_FOUND,
-        mesage: 'id not found',
+        message: 'id not found',
       };
     }
 
@@ -331,9 +334,10 @@ export class MentorService {
       }
       if (newCategoriesToadd.length > 0) {
         searchMentor.categories.push(...newCategoriesToadd);
-        this.mentorRepository.save(searchMentor);
       }
     }
+
+    this.mentorRepository.save(searchMentor);
     return {
       status: HttpStatus.ACCEPTED,
       message: 'profile has been updated',

@@ -11,6 +11,7 @@ import { AlumnHireMentor } from './alumnHireMentor.entity';
 import { Category } from '../../mentor/models/categories.entity';
 import { User } from '../../auth/user/entities/user.entity';
 import { BaseEntity } from '../../common/base/entity';
+import { Quotes } from 'src/quotes/models/quotes.entity';
 
 @Entity({ name: 'alumn' })
 export class Alumn extends BaseEntity {
@@ -43,4 +44,6 @@ export class Alumn extends BaseEntity {
     name: 'user',
   })
   user: User;
+  @OneToMany(() => Quotes, (quotes) => quotes.alumn)
+  quotes: Quotes[];
 }

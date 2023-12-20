@@ -14,6 +14,7 @@ import { ErrorManager } from 'src/Config/error.manager';
 import { MentorService } from 'src/mentor/mentor.service';
 import { AlumnService } from 'src/alunm/alunm.service';
 import { send } from 'src/Config/nodeMailer';
+import { verify_ages } from '../functions/General';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -97,9 +98,7 @@ export class AuthService {
         role: verifyUser.role,
       };
     } catch (error) {
-      if (error) {
-        throw new ErrorManager().errorHandler(error);
-      }
+      console.log(error);
     }
   }
 
@@ -138,9 +137,10 @@ export class AuthService {
       if (categories.length == 0) {
         return {
           status: HttpStatus.NOT_FOUND,
-          message: 'enter the project categories',
+          message: 'enter the categories',
         };
       }
+
       const newUser = await this.userService.createMentor({
         firstName,
         lastName,
@@ -177,7 +177,24 @@ export class AuthService {
   async find_User(id: string) {
     const seachUser = await this.userRepository.findOne({
       where: { id },
+      relations: {
+        mentor: true,
+        alumn: true,
+      },
     });
+
+    delete seachUser.firstName;
+    delete seachUser.id;
+    delete seachUser.createdAt;
+    delete seachUser.updatedAt;
+    delete seachUser.deletedAt;
+    delete seachUser.lastName;
+    delete seachUser.email;
+    delete seachUser.phone;
+    delete seachUser.role['id'];
+    delete seachUser.role['updatedAt'];
+    delete seachUser.role['deletedAt'];
+
     return seachUser;
   }
 }
