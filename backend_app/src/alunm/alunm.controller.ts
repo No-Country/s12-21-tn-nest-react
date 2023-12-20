@@ -83,11 +83,7 @@ export class AlunmController {
   @Post('/hire-mentor')
   async hireMentor(@Body() request: hireMentorRequestDto) {
     try {
-      return this.alunmService.hireMentor(
-        request.alumnId,
-        request.mentorId,
-        request.categoryId,
-      );
+      return this.alunmService.hireMentor(request.alumnId, request.mentorId);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
