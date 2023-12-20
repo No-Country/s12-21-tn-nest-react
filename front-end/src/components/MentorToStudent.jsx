@@ -11,6 +11,7 @@ import { Typography } from '@mui/material';
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
 import { urlApi } from '../../config/axios';
+import { useAuth } from '../context/AuthContext';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 const customTheme = createTheme({
@@ -29,9 +30,9 @@ const customTheme = createTheme({
   },
 });
 
-const StudentForm = ({ location }) => {
+const MentorToStudent = ({ location }) => {
   const navigate = useNavigate();
-  const { newUser } = useLocation().state || {};
+  const { userId } = useAuth();
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [categoryIds, setCategoryIds] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -62,13 +63,6 @@ const StudentForm = ({ location }) => {
       });
     }
   };
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setNewStudent({
-      ...newStudent,
-      [name]: value,
-    });
-  };
 
   useEffect(() => {
     fetchCategories();
@@ -78,20 +72,12 @@ const StudentForm = ({ location }) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', newStudent.studentImage, newStudent.studentImage.name);
-
-    const { role, firstName, lastName, password, email, phone } = newUser;
-
-    formData.append('firstName', firstName);
-    formData.append('lastName', lastName);
-    formData.append('email', email);
-    formData.append('phone', phone);
-    formData.append('password', password);
-    formData.append('role', role);
+    formData.append('user', userId);
     studentCategories.forEach(val => {
-      formData.append('categories[]', val);
+      formData.append('categoriesId[]', val);
     });
     try {
-      let url = 'auth/register/student'
+      let url = 'alumn'
       const response = await urlApi.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -110,7 +96,6 @@ const StudentForm = ({ location }) => {
     navigate('/login');
   };
 
-
   const handleCategoryChange = (event) => {
     const selectedCategoryIds = event.target.value;
     setCategoryIds(selectedCategoryIds);
@@ -124,9 +109,8 @@ const StudentForm = ({ location }) => {
     <ThemeProvider theme={customTheme}>
       <Container component="section" sx={{ mt: 3 }}>
         <Typography component="h1" variant="h4" sx={{ color: "#25D366" }}>Mi Perfil de Estudiante</Typography>
-        <Container /* style={{ backgroundColor: '#FFFFFF', color: '#FFFFFF' }} */ maxWidth="sm" sx={{ mt: 5, pb: 5, borderRadius: "8px", backgroundColor: { sm: "#111B21" }, xs: "#0B141A", boxShadow: { sm: "0px 0px 5px 0px #FFF", xs: "none" } }}>
+        <Container maxWidth="sm" sx={{ mt: 5, pb: 5, borderRadius: "8px", backgroundColor: { sm: "#111B21" }, xs: "#0B141A", boxShadow: { sm: "0px 0px 5px 0px #FFF", xs: "none" } }}>
         <Grid sx={{ width: '100%', pt: 2 }}>
-          {/* <Typography component="h1" variant="h5">Mi Perfil de Estudiante</Typography> */}
           <Grid item sx={{ mt: 3, mb: 2 }}>
             <Button sx={{color: "#FFF"}}
               variant="contained"
@@ -142,14 +126,13 @@ const StudentForm = ({ location }) => {
             </Button>
             {selectedFile && (
               <div style={{ width: "200px", margin: "auto" }}>
-                <p>Archivo: {selectedFile.name}</p>
                 <Box
                   sx={{
                     margin: 'auto',
                     overflow: 'hidden',
                   }}
                 >
-                  <img src={URL.createObjectURL(selectedFile)} alt="Vista previa de la imagen" style={{ width: '100%', height: '100%' }} />
+                  <img src={URL.createObjectURL(selectedFile)} style={{ width: '100%', height: '100%' }} />
                 </Box>
               </div>
             )}
@@ -198,4 +181,4 @@ const StudentForm = ({ location }) => {
   );
 }
 
-export default StudentForm
+export default MentorToStudent

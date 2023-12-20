@@ -7,13 +7,14 @@ import { Category } from 'src/mentor/models/categories.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
 import { AlumnService } from './alunm.service';
 import { User } from 'src/auth/user/entities/user.entity';
+import { UserService } from 'src/auth/user/user.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Alumn, AlumnHireMentor, Category, Mentor, User]),
   ],
   controllers: [AlunmController],
-  providers: [AlumnService],
+  providers: [AlumnService, UserService],
   exports: [AlumnService],
 })
 export class AlunmModule {}

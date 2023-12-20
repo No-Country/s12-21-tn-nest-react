@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [mentorId, setMentorId] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
 
@@ -47,14 +48,21 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setUser(res.data);
         setUserId(res.data.userId);
-        setIsAuthenticated(true)
-
-        if (res.data.role.name == "mentor") {
-          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
-          setMentorId(mentorIdResponse.mentor[0].id);
-        } else {
-          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
-          setStudentId(mentorIdResponse.alumn[0].id);
+        setIsAuthenticated(true);
+  
+        const mentorIdsResponse = await obtenerIdDelMentor(res.data.userId);
+        const mentorIds = mentorIdsResponse.mentor[0]?.id;
+        const studentIds = mentorIdsResponse.alumn[0]?.id;
+  
+        if (mentorIds && studentIds) {
+          setMentorId(mentorIds);
+          setStudentId(studentIds);
+        } else if (mentorIds!= null & studentIds == null) {
+          setMentorId(mentorIds);
+          setStudentId(null);
+        } else if (studentIds != null && mentorIds == null) {
+          setMentorId(null);
+          setStudentId(studentIds);
         }
       } else {
         console.error("Respuesta inesperada", res);
@@ -62,6 +70,15 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       setErrors(err.response.data);
     }
+  };
+  
+
+  const signOut = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    setUserId(null);
+    setMentorId(null);
+    setStudentId(null);
   };
 
   useEffect(() => {
@@ -110,6 +127,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         signIn,
+        signOut,
         user,
         name,
         isAuthenticated,
