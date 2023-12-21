@@ -11,11 +11,11 @@ export const MentorCardRenderer = ({ mentorsData }) => {
     indexOfFirstMentor,
     indexOfLastMentor
   );
-
+    // console.log(mentorsData)
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
-
+  
   return (
     <Box sx={{ marginLeft: "10px" }}>
       <Box

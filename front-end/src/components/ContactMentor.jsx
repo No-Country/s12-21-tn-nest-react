@@ -24,7 +24,7 @@ const ContactMentor = () => {
       const isoFormattedDate = date.toISOString().split("T")[0];
       setFormattedDate(isoFormattedDate);
       console.log(formattedDate);
-      console.log("mentroId", mentorId);
+      console.log("mentorId", mentorId);
     }
   };
 
@@ -50,7 +50,7 @@ const ContactMentor = () => {
         console.error("Error:", error);
       }
     }
-    navigate("/");
+    navigate("/myMentorships");
   };
 
   return (

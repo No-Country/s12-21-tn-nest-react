@@ -122,7 +122,7 @@ export const MentorCard = ({
           >
             <Rating
               name="read-only"
-              value={mentorRaitings}
+              value={4}
               readOnly
               style={{ fontSize: "22px" }}
             />
@@ -174,20 +174,6 @@ export const MentorCard = ({
             paddingBottom: "1.5rem",
           }}
         >
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleShowDonativos}
-          >
-            Donar
-          </Button>
-          <PagosDonativos
-            open={showDonativos}
-            onClose={handleCloseDonativos}
-            name={name}
-            mentorData={mentorData}
-            mentorPrice={mentorPrice}
-          />
           <Button
             variant="contained"
             color="success"
