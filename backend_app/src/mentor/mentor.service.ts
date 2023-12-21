@@ -225,6 +225,13 @@ export class MentorService {
       delete e.stripe_payment;
       delete e.updatedAt;
     });
+    const initialValue = 0;
+    const result = data.AlumnHireMentors.reduce(
+      (acumulador, value) => acumulador + value.calification,
+      initialValue,
+    );
+    const resultadofinal = result / data.AlumnHireMentors.length;
+    data['promedio'] = resultadofinal;
     return data;
   }
 

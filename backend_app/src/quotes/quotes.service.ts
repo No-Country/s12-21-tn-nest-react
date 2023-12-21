@@ -64,6 +64,7 @@ export class QuotesService {
       const nombreMentor = `${mentorEmail.userId.firstName} ${mentorEmail.userId.lastName}`;
       const descriptionAlumn = alumnoDescription(nombreAlumno);
       const descriptionMentor = descriptionMentors(nombreMentor);
+      console.log(alumnoEmail.user.email);
       await qualify(
         alumnoEmail.user.email,
         descriptionAlumn,
