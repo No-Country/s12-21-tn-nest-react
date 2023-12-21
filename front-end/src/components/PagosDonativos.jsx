@@ -12,12 +12,13 @@ export const PagosDonativos = ({ open, onClose, emailAlumn, alumnHireID, nameMen
                 case 'mercadoPago':
                     const mercadoPagoData = {
                         external_reference: alumnHireID,
-                        value: priceMentor, //Este valor viene con "" desde el ejemplo
+                        value: priceMentor,
                         email: emailAlumn,
                         brand_name: nameMentor
                     };
                     try {
                         const responseMercadoPago = await urlApi.post('mpago', mercadoPagoData);
+                        
                         if (responseMercadoPago.data && responseMercadoPago.data.url) {
                             const mercadoPagoUrl = responseMercadoPago.data.url;
                             window.open(mercadoPagoUrl, '_blank');
@@ -33,13 +34,12 @@ export const PagosDonativos = ({ open, onClose, emailAlumn, alumnHireID, nameMen
                     const paypalData = {
                         reference_id: alumnHireID,
                         currency_code: 'USD',
-                        value: "220", //Este valor viene con "" desde el ejemplo
+                        value: "220",
                         brand_name: nameMentor
                     };
                     try {
                         const responsePayPal = await urlApi.post('paypal', paypalData);
-                        console.log( 'paypalData: ', paypalData)
-                        console.log("respuesta de paypal: ", responsePayPal)
+
                         if (responsePayPal.data && responsePayPal.data.url) {
                             const payPalUrl = responsePayPal.data.url;
                             window.open(payPalUrl, '_blank');
@@ -60,8 +60,6 @@ export const PagosDonativos = ({ open, onClose, emailAlumn, alumnHireID, nameMen
                     };
                     try {
                         const responseStripe = await urlApi.post('stripe', stripeData);
-                        console.log('Respuesta de Stripe: ', responseStripe.data);
-                        console.log('Datos a enviar con stripeData: ', stripeData)
                         // Se abre la URL de Stripe en una nueva ventana
                         if (responseStripe.data && responseStripe.data.url) {
                             const stripeUrl = responseStripe.data.url;
