@@ -56,14 +56,14 @@ export const AuthProvider = ({ children }) => {
       const res = await loginRequest(user);
       console.log(res.data);
       if (res && res.data) {
-        setUser(res.data);
-        setUserId(res.data.userId);
         setIsAuthenticated(true);
         Cookies.set("token", JSON.stringify(res.data.token), { expires: 365 });
         Cookies.set("isAuthLog", true);
         Cookies.set("userC", res.data);
         Cookies.set("idUser", res.data.userId);
-        const mentorIdsResponse = await obtenerIdDelMentor(res.data.userId);
+        setUser(res.data);
+        setUserId(Cookies.get("userId"));
+        await obtenerIdDelMentor(res.data.userId);
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -105,34 +105,6 @@ export const AuthProvider = ({ children }) => {
     }
     checkLogin();
   }, [isAuthenticated]);
-  /*
-      const cookies = Cookies.get("token");
-      if (!cookies.token) {
-        setIsAuthenticated(false);
-        setUser(null);
-        setIsLoading(false);
-        return;
-      }
-      try {
-        const res = await verifyTokenRequest(cookies.token);
-        console.log(res);
-
-        if (!res.data) {
-          setIsAuthenticated(false);
-          setIsLoading(false);
-          return;
-        }
-
-        setIsAuthenticated(true);
-        setUser(res.data);
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-        setIsAuthenticated(false);
-        setUser(null);
-        setIsLoading(false);
-      }
-    }*/
 
   return (
     <AuthContext.Provider
