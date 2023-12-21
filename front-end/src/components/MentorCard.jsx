@@ -26,6 +26,10 @@ export const MentorCard = ({
   mentorImage,
   mentorPrice,
   mentorData,
+<<<<<<< HEAD
+=======
+  mentorRaitings,
+>>>>>>> front-Juan
 }) => {
   const [showDonativos, setShowDonativos] = useState(false);
   const { userId, studentId } = useAuth();
@@ -121,7 +125,7 @@ export const MentorCard = ({
           >
             <Rating
               name="read-only"
-              value={mentorRaiting}
+              value={mentorRaitings}
               readOnly
               style={{ fontSize: "22px" }}
             />
