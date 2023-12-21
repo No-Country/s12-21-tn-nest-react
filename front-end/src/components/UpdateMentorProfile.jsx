@@ -50,6 +50,7 @@ const UpdateMentorProfile = () => {
     birthdate: mentorInfo.birthdate,
     speciality: mentorInfo.speciality || { id: '', name: '' },
     categories: mentorInfo.categories || [],
+    profileImg: mentorInfo.image,
   });
 
   const fetchSpecialities = async () => {
@@ -127,7 +128,7 @@ const UpdateMentorProfile = () => {
       <Container component="main" maxWidth="sm" sx={{ border: { sm: "2px solid #25D366", xs: "none" }, borderRadius: "1rem", py: 3, mt: 7 }}>
         <Grid container spacing={1}>
           <Grid item xs={12} sm={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <Avatar src={mentorInfo.image} sx={{ width: "100px", height: "100px", border:"2px solid #25D366" }} />
+            <Avatar src={editedInfo.image} sx={{ width: "100px", height: "100px", border:"2px solid #25D366" }} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField

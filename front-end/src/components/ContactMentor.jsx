@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { urlApi } from '../../config/axios';
+import React, { useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { urlApi } from "../../config/axios";
 
 const CalendarWrapper = ({ children }) => (
-  <div style={{ borderRadius: '8px', overflow: 'hidden' }}>
-    {children}
-  </div>
+  <div style={{ borderRadius: "8px", overflow: "hidden" }}>{children}</div>
 );
 
 const ContactMentor = () => {
@@ -16,56 +14,58 @@ const ContactMentor = () => {
   const location = useLocation();
   const mentorId = location.state?.id || "";
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [formattedDate, setFormattedDate] = useState('');
+  const [formattedDate, setFormattedDate] = useState("");
   const navigate = useNavigate();
   console.log("mentorId:", mentorId);
 
   const handleDateChange = (date) => {
     if (date >= new Date()) {
       setSelectedDate(date);
-      const isoFormattedDate = date.toISOString().split('T')[0];
+      const isoFormattedDate = date.toISOString().split("T")[0];
       setFormattedDate(isoFormattedDate);
       console.log(formattedDate);
-      console.log("mentroId",mentorId);
+      console.log("mentroId", mentorId);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const requestData = {
-      alumnId:String(studentId),
+      alumnId: String(studentId),
       mentorId: String(mentorId),
       appointmentDate: formattedDate,
     };
     try {
-      let url = 'quotes/create'
-      const response = await urlApi.post( url, requestData );
-      console.log('Respuesta.data del servidor:', response.data);
-      console.log('Respuesta del servidor:', response);
+      let url = "quotes/create";
+      await urlApi.post(url, requestData);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        console.error('Validation Error:', error.response.data.message);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        console.error("Validation Error:", error.response.data.message);
       } else {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     }
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <div
       style={{
-        color: '#FFF',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-        border: '2px solid #00FF00', 
+        color: "#FFF",
+        padding: "20px",
+        borderRadius: "8px",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+        textAlign: "center",
+        border: "2px solid #00FF00",
       }}
     >
-      <h2 style={{ color: '#FFA500' }}>Selecciona la fecha para tu cita</h2>
+      <h2 style={{ color: "#FFA500" }}>Selecciona la fecha para tu cita</h2>
 
-      <div style={{ margin: '10px auto 20px', maxWidth: '300px' }}>
+      <div style={{ margin: "10px auto 20px", maxWidth: "300px" }}>
         <CalendarWrapper>
           <Calendar
             onChange={handleDateChange}
@@ -75,11 +75,11 @@ const ContactMentor = () => {
         </CalendarWrapper>
       </div>
 
-      <div style={{ fontWeight: 'bold' }}>
-        <p style={{ color: '#00FF00' }}>Fecha seleccionada: {formattedDate}</p>
+      <div style={{ fontWeight: "bold" }}>
+        <p style={{ color: "#00FF00" }}>Fecha seleccionada: {formattedDate}</p>
       </div>
 
-      <button onClick={handleSubmit} style={{ marginTop: '10px' }}>
+      <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
         Enviar solicitud
       </button>
     </div>

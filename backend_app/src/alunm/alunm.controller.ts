@@ -13,16 +13,23 @@ import {
 } from '@nestjs/common';
 import { AlumnService } from './alunm.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AlunmCreateRequestDto } from './dtos/alunmCreateRequest.dto';
+import {
+  AlunmCreateRequestDto,
+  AlunmCreateResponseDto,
+} from './dtos/alunmCreateRequest.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { hireMentorRequestDto } from './dtos/hireMentor.dto';
 import { CalificationDto } from './dtos/calification.dto';
 import { AlunmUpdateRequestDto } from './dtos/alumnUpdate.dto';
+import { UserService } from 'src/auth/user/user.service';
 
 @Controller('alumn')
 @ApiTags('Alumn')
 export class AlunmController {
-  constructor(private alunmService: AlumnService) {}
+  constructor(
+    private alunmService: AlumnService,
+    private userService: UserService,
+  ) {}
 
   @Post('/')
   @UseInterceptors(FileInterceptor('file'))
@@ -31,9 +38,26 @@ export class AlunmController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     try {
+      const user = await this.userService.findOne(request.userId);
+      request.user = user;
+
       return this.alunmService.create(request, file);
     } catch (error) {
-      return new HttpException('Error creating alumn', 400);
+      return new HttpException(error, 400);
+    }
+  }
+
+  @Post('create/alumn')
+  @UseInterceptors(FileInterceptor('file'))
+  async create_alumn(
+    @Body() request: AlunmCreateResponseDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    try {
+      console.log(request);
+      return this.alunmService.create_alumn(request, file);
+    } catch (error) {
+      return new HttpException(error, 400);
     }
   }
 
@@ -57,13 +81,14 @@ export class AlunmController {
     return this.alunmService.remove(id);
   }
 
-  @Post('/calificate')
+  @Post('calificate')
   async calificate(@Body() request: CalificationDto) {
-    return this.alunmService.calificateMentor(
+    const result = await this.alunmService.calificateMentor(
       request.id,
       request.calification,
       request.msg,
     );
+    return result;
   }
 
   @Patch('/restore/:id')
@@ -83,11 +108,7 @@ export class AlunmController {
   @Post('/hire-mentor')
   async hireMentor(@Body() request: hireMentorRequestDto) {
     try {
-      return this.alunmService.hireMentor(
-        request.alumnId,
-        request.mentorId,
-        request.categoryId,
-      );
+      return this.alunmService.hireMentor(request.alumnId, request.mentorId);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

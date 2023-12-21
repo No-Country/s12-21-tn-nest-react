@@ -22,15 +22,26 @@ export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [mentorId, setMentorId] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   const [loginActive, setLoginActive] = useState(false);
 
   const obtenerIdDelMentor = async (userId) => {
     try {
-      let url = `auth/filter/${userId}`;
+      let url = `/auth/filter/${userId}`;
       const response = await urlApi.get(url);
       console.log("response", response);
-      return response.data;
+      const mentorIds = response.data.mentor[0]?.id;
+      const studentIds = response.data.alumn[0]?.id;
+
+      if (mentorIds && studentIds) {
+        setMentorId(mentorIds);
+        setStudentId(studentIds);
+      } else if (mentorIds!= null & studentIds == null) {
+        setMentorId(mentorIds);
+      } else if (studentIds != null && mentorIds == null) {
+        setStudentId(studentIds);
+      }
     } catch (error) {
       console.error("Error fetching mentor ID:", error);
     }
@@ -47,15 +58,10 @@ export const AuthProvider = ({ children }) => {
       if (res && res.data) {
         setUser(res.data);
         setUserId(res.data.userId);
-        setIsAuthenticated(true)
+        setIsAuthenticated(true);
+  
+        const mentorIdsResponse = await obtenerIdDelMentor(res.data.userId);
 
-        if (res.data.role.name == "mentor") {
-          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
-          setMentorId(mentorIdResponse.mentor[0].id);
-        } else {
-          const mentorIdResponse = await obtenerIdDelMentor(res.data.userId);
-          setStudentId(mentorIdResponse.alumn[0].id);
-        }
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -63,6 +69,7 @@ export const AuthProvider = ({ children }) => {
       setErrors(err.response.data);
     }
   };
+  
 
   const signOut = () => {
     setIsAuthenticated(false);
@@ -129,6 +136,7 @@ export const AuthProvider = ({ children }) => {
         userId,
         mentorId,
         studentId,
+        obtenerIdDelMentor,
       }}
     >
       {children}

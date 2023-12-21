@@ -188,7 +188,7 @@ const StudentForm = ({ location }) => {
               variant="contained"
               sx={{ mt: 3, mb: 2, color: "#FFF" }}
             >
-              Siguiente
+              Terminar Registro
             </Button>
           </Grid>
         </Grid>

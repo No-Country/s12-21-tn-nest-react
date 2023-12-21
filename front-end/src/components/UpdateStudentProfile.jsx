@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Box, Button, Chip, Container, Grid, OutlinedInput } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Avatar from '@mui/material/Avatar';
 import { urlApi } from '../../config/axios';
 import { useAuth } from '../context/AuthContext';
@@ -33,17 +34,30 @@ const UpdateStudentProfile = () => {
   const [specialities, setSpecialities] = useState([]); //opciones del select
   const [categories, setCategories] = useState([]);  //opciones del select
   const [loadingSpecialities, setLoadingSpecialities] = useState(true);
+  const [selectedFile, setSelectedFile] = React.useState(null);
 
   const [editedInfo, setEditedInfo] = useState({
-/*     categories: mentorInfo.categories.map((category) => category.name) || [],
- */    firstName: studentInfo.user.firstName || '',
+    profileImg: studentInfo.profileImg,
+    firstName: studentInfo.user.firstName || '',
     lastName: studentInfo.user.lastName || '',
     phone: studentInfo.user.phone || '',
-/*     speciality: studentInfo.speciality || { id: '', name: '' }, 
- */    categoriesId: studentInfo.categories || [],
+    categoriesId: studentInfo.categories || [],
     email: studentInfo.user.email || '',
   });
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      setSelectedFile(file);
+
+      // Set the new image URL in the editedInfo state
+      setEditedInfo((prevInfo) => ({
+        ...prevInfo,
+        profileImg: URL.createObjectURL(file),
+      }));
+    }
+  };
 
   const fetchSpecialities = async () => {
     try {
@@ -111,8 +125,23 @@ const UpdateStudentProfile = () => {
       <Container component="main" maxWidth="xs" sx={{ border: {sm:"2px solid #25D366",xs:"none"}, py: 3, borderRadius: "8px",mt:5 }}>
         {/* <Grid item xs={12} sm={6}> */}
         <Box sx={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-          <Avatar src={studentInfo.image} sx={{ width: "100px", height: "100px" }} />
+          <Avatar src={editedInfo.profileImg} sx={{ width: "100px", height: "100px" }} />
         </Box>
+        <Grid item sx={{ mt: 3, mb: 2 }}>
+          <Button
+            sx={{ color: "#FFF", mb: 1 }}
+            variant="contained"
+            component="label"
+            startIcon={<CloudUploadIcon />}
+          >
+            Subí tu foto!
+            <input
+              onChange={handleFileChange}
+              type="file"
+              hidden
+            />
+          </Button>
+        </Grid>
         {/* </Grid> */}
         <TextField
           label="Nombre"
@@ -135,26 +164,6 @@ const UpdateStudentProfile = () => {
           onChange={(e) => handleChange('phone', e.target.value)}
           margin="normal"
         />
-        {/* <FormControl sx={{ m: 1, minWidth: 200 }}>
-              <InputLabel id="mentorSpeciality-label">Especialidad</InputLabel>
-              <Select
-                  labelId="mentorSpeciality-label"
-                  id="demo-simple-select-autowidth"
-                  value={editedInfo.speciality.name}
-                  onChange={(e) => handleChange('speciality', {
-                    id: specialities.find((s) => s.name === e.target.value)?.id || '',
-                    name: e.target.value,
-                  })}
-                  name="mentorInfo.speciality.name"
-                  label="Especialidad"
-                >
-                  {specialities.map((specialityOption) => (
-                    <MenuItem key={specialityOption.id} value={specialityOption.name}>
-                      {specialityOption.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-            </FormControl> */}
         <div>
           <FormControl sx={{ /* m: 1, width: 300 */ width: "100%", my: 2 }}>
             <InputLabel id="demo-multiple-chip-label">Categorías</InputLabel>

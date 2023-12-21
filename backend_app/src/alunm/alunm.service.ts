@@ -1,5 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { AlunmCreateRequestDto } from './dtos/alunmCreateRequest.dto';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import {
+  AlunmCreateRequestDto,
+  AlunmCreateResponseDto,
+} from './dtos/alunmCreateRequest.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Alumn } from './models/alumn.entity';
 import { Repository } from 'typeorm';
@@ -9,6 +12,7 @@ import { Category } from 'src/mentor/models/categories.entity';
 import { Mentor } from 'src/mentor/models/mentor.entity';
 import { AlunmUpdateRequestDto } from './dtos/alumnUpdate.dto';
 import { User } from 'src/auth/user/entities/user.entity';
+import { create_object_alumn } from 'src/functions/DeepPartial';
 
 @Injectable()
 export class AlumnService {
@@ -21,7 +25,30 @@ export class AlumnService {
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
   ) {}
-
+  async create_alumn(
+    request: AlunmCreateResponseDto,
+    file: Express.Multer.File,
+  ) {
+    try {
+      const object_alumn = await create_object_alumn(request);
+      const categoriesSearch = await this.categoryRepository.findByIds(
+        request.categoriesId,
+      );
+      const alumn_add = this.alumnRepository.create(object_alumn);
+      if (file) {
+        const upload = await uploadCloudinary(file);
+        alumn_add['profileImg'] = upload['url'];
+      }
+      alumn_add.categories = categoriesSearch;
+      await this.alumnRepository.save(alumn_add);
+      return {
+        status: HttpStatus.CREATED,
+        message: 'alumn added successfully',
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async create(request: AlunmCreateRequestDto, file: Express.Multer.File) {
     try {
       let categories: Category[] = [];
@@ -47,15 +74,23 @@ export class AlumnService {
         profileImg,
         categories,
       });
+
       return await this.alumnRepository.save(alumn);
     } catch (error) {
-      throw 'Error creating alumn';
+      throw error;
     }
   }
 
   async findAll() {
     try {
-      return await this.alumnRepository.find();
+      return await this.alumnRepository.find({
+        relations: [
+          'categories',
+          'AlumnHireMentors',
+          'AlumnHireMentors.mentorJoin',
+          'AlumnHireMentors.mentorJoin.categories',
+        ],
+      });
     } catch (error) {
       throw 'Error finding alumns';
     }
@@ -79,7 +114,6 @@ export class AlumnService {
         relations: [
           'categories',
           'AlumnHireMentors',
-          'AlumnHireMentors.categoryjoin',
           'AlumnHireMentors.mentorJoin',
           'AlumnHireMentors.mentorJoin.categories',
         ],
@@ -153,21 +187,17 @@ export class AlumnService {
     }
   }
 
-  async hireMentor(idA: string, idM: string, idC: string) {
+  async hireMentor(idA: string, idM: string) {
     try {
-      const { alumn, mentor, category } = await this.prepareAlumnHireMentor(
-        idA,
-        idM,
-        idC,
-      );
-      return await this.saveMentorHire(alumn, mentor, category);
+      const { alumn, mentor } = await this.prepareAlumnHireMentor(idA, idM);
+      return await this.saveMentorHire(alumn, mentor);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Error('Error hiring mentor');
     }
   }
 
-  private async prepareAlumnHireMentor(idA, idM, idC) {
+  private async prepareAlumnHireMentor(idA, idM) {
     try {
       const alumn = await this.alumnRepository.findOne({ where: { id: idA } });
       if (!alumn) throw new Error('Alumn not found');
@@ -177,27 +207,24 @@ export class AlumnService {
         relations: ['categories'],
       });
       if (!mentor) throw new Error('Mentor not found');
-      const category = mentor.categories.find((c) => c.id === idC);
-      if (!category) throw new Error('Mentor does not have this category');
 
-      return { alumn, mentor, category };
+      return { alumn, mentor };
     } catch (error) {
       throw new Error('Error preparing alumn hire mentor');
     }
   }
 
-  private async saveMentorHire(alumn, mentor, category) {
+  public async saveMentorHire(alumn, mentor) {
     try {
       const alumnHireMentor = this.alumnHireMentorRepository.create({
         alumnJoin: alumn,
         mentorJoin: mentor,
-        categoryjoin: category,
         date: new Date(),
       });
-
-      return await this.alumnHireMentorRepository.save(alumnHireMentor);
+      await this.alumnHireMentorRepository.save(alumnHireMentor);
+      return alumnHireMentor;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Error('Error saving mentor hire');
     }
   }

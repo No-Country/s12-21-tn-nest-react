@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage }) => {
+export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, price, mentorImage, mentorPrice, mentorData }) => {
     const [showDonativos, setShowDonativos] = useState(false)
     const { userId, studentId } = useAuth();
     const navigate = useNavigate();
@@ -42,7 +42,7 @@ export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, pr
                 <Box style={{ position: 'relative', width: '100%' }}>
                     <CardMedia
                         component="img"
-                        height='100%'
+                        height='500px'
                         alt={`Imagen de ${name}`}
                         src={mentorImage}
                         sx={{
@@ -103,7 +103,7 @@ export const MentorCard = ({ id, name, speciality, date, aboutMe, categories, pr
                     <Button variant='contained' color='success' onClick={handleShowDonativos}>
                         Donar
                     </Button>
-                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} />
+                    <PagosDonativos open={showDonativos} onClose={handleCloseDonativos} name={name} mentorData={mentorData} mentorPrice={mentorPrice} />
                     <Button variant='contained' color='success' onClick={handleContactMentor}>
                         Contactar
                     </Button>

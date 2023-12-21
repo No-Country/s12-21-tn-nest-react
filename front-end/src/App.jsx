@@ -5,6 +5,7 @@ import SignUp from "./SignUp/SignUp";
 import Login from "./Login/Login";
 import "./App.css";
 import { MentoresPage } from "./MentoresPage/MentoresPage";
+import { SuccesfullQualify } from "./Pages/SuccesfullQualify";
 import MentorForm from "./components/MentorForm";
 import StudentForm from "./components/StudentForm";
 import Mentorship from "./components/Mentorship";
@@ -20,7 +21,8 @@ import SchoolIcon from "@mui/icons-material/School";
 import MentorProfile from "./components/MentorProfile";
 import ContactMentor from "./components/ContactMentor";
 import MyMentorships from "./components/MyMentorships";
-
+import StudentToMentor from "./components/StudentToMentor";
+import MentorToStudent from "./components/MentorToStudent";
 import Score from "./score/Score";
 
 const navLinksArray = [
@@ -60,7 +62,10 @@ function App() {
                 <Route path="/studentForm" element={<StudentForm />} />
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
                 <Route path="/contactMentor" element={<ContactMentor />} />
+                <Route path="/success" element={<SuccesfullQualify />} />
                 <Route path="/myMentorships" element={<MyMentorships />} />
+                <Route path="/studentToMentor" element={<StudentToMentor />} />
+                <Route path="/mentorToStudent" element={<MentorToStudent />} />
                 <Route
                   path="/studentProfile/:id"
                   element={<StudentProfile />}
@@ -76,10 +81,11 @@ function App() {
                 {
                   //<Route path="/calendar" element={<SchedulerComponent />} />
                 }
-                {<Route path="/score/:idScoreParams" element={<Score />} />}
                 {
-                  //<Route path="/score" element={<Score />} />
+                  //<Route path="/mentorProfileTest/:id" element={<MentorProfileTest />} />{" "}
+                  //test perfil mentor
                 }
+                {<Route path="/score/:idScoreParams" element={<Score />} />}
               </Routes>
             </div>
           </BrowserRouter>
