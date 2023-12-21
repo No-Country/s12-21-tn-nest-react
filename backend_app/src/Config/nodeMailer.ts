@@ -23,40 +23,51 @@ export const send = async (email: string) => {
     to: email,
     subject: 'MentorSphere',
     html: `<head>
-      <style>
-      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
-  
+    <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     .container {
       font-family: Poppins;
       display: flex;
       justify-content: center;
+      background-color: black;
+      width: 100%;
+      height: 30vh;
     }
-  
+
     .wrapper {
       max-width: 535px;
       width: 90%;
-      margin: 0 auto;
+      margin: 4rem auto;
     }
-  
+
     .title {
       font-size: 20px;
-      font-weight: 500;
+      font-weight: 700;
       text-align: center;
+      color: white;
     }
-  
+
     .text {
-      font-size: 18px;
+      margin-top: 1rem;
+      font-size: 16px;
       font-weight: 500;
-      color: #3e3c3d;
+      color: white;
       text-align: center;
     }
-  
+
     .button_wrapper {
       display: flex;
       justify-content: center;
       margin-top: 50px;
+      border: #25d366;
     }
-  
+
     .button {
       all: unset;
       width: 90%;
@@ -64,14 +75,18 @@ export const send = async (email: string) => {
       text-align: center;
       padding: 17px 0;
       color: #fff;
-      background: #3e3c3d;
+      background: #25d366;
       margin: 0 auto;
       border-radius: 10px;
       cursor: pointer;
       font-size: 16px;
       font-weight: 700;
+      transition: 0.4s;
+      &:hover {
+        background-color: #219c4e;
+      }
     }
-      </style>
+  </style>
       </head>
       <div class="container">
         <div class="wrapper">
@@ -97,40 +112,49 @@ export const qualify = async (
     to: email,
     subject: 'MentorSphere',
     html: `<head>
-      <style>
-      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
-  
+    <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     .container {
       font-family: Poppins;
       display: flex;
       justify-content: center;
+      background-color: black;
     }
-  
+
     .wrapper {
       max-width: 535px;
       width: 90%;
-      margin: 0 auto;
+      margin: 4rem auto;
     }
-  
+
     .title {
       font-size: 20px;
-      font-weight: 500;
+      font-weight: 700;
       text-align: center;
+      color: white;
     }
-  
+
     .text {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 500;
-      color: #3e3c3d;
+      color: white;
       text-align: center;
+      margin-top: 1rem;
     }
-  
+
     .button_wrapper {
       display: flex;
       justify-content: center;
       margin-top: 50px;
     }
-  
+
     .button {
       all: unset;
       width: 90%;
@@ -138,14 +162,18 @@ export const qualify = async (
       text-align: center;
       padding: 17px 0;
       color: #fff;
-      background: #3e3c3d;
+      background: #25d366;
       margin: 0 auto;
       border-radius: 10px;
       cursor: pointer;
       font-size: 16px;
       font-weight: 700;
+      transition: 0.6s;
+      &:hover {
+        background-color: #219c4e;
+      }
     }
-      </style>
+  </style>
       </head>
       <div class="container">
         <div class="wrapper">
