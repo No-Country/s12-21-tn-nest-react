@@ -7,6 +7,7 @@ import {
   Chip,
   Avatar,
   Box,
+  Button,
 } from "@mui/material";
 import Cookies from "js-cookie";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -15,6 +16,7 @@ import "react-calendar/dist/Calendar.css";
 import { useAuth } from "../context/AuthContext";
 import { urlApi } from "../../config/axios";
 import { Link, useNavigate } from "react-router-dom";
+import { PagosDonativos } from "./PagosDonativos";
 
 export const CalendarWrapper = ({ appointmentDate }) => {
   const formattedDate = new Date(appointmentDate);
@@ -33,7 +35,7 @@ export const CalendarWrapper = ({ appointmentDate }) => {
         showNavigation={false}
         tileContent={({ date }) =>
           date.toISOString().split("T")[0] ===
-          formattedDate.toISOString().split("T")[0] ? (
+            formattedDate.toISOString().split("T")[0] ? (
             <div
               style={{
                 backgroundColor: "green",
@@ -63,6 +65,16 @@ const MyMentorships = () => {
   // const [showInput, setShowInput] = useState({});
   const [openInputs, setOpenInputs] = useState({});
   const [acceptButtonClicked, setAcceptButtonClicked] = useState(false);
+
+  //Logica para pagos:
+  const [showDonativos, setShowDonativos] = useState(false);
+  const handleShowDonativos = () => {
+    setShowDonativos(true);
+  };
+
+  const handleCloseDonativos = () => {
+    setShowDonativos(false);
+  };
 
   const handleButtonClick = (mentorshipId, type) => {
     setOpenInputs((prevState) => ({
@@ -157,9 +169,8 @@ const MyMentorships = () => {
             style={{
               backgroundColor: "black",
               color: "white",
-              border: `1px solid ${
-                getColorByState(mentorship.state.name).borderColor
-              }`,
+              border: `1px solid ${getColorByState(mentorship.state.name).borderColor
+                }`,
               margin: "16px",
               display: "flex",
               flexDirection: "column",
@@ -371,19 +382,18 @@ const MyMentorships = () => {
             {/* Nuevo bloque para el botón de pagar */}
 
             {mentorship.state.name === "aceptado" && studentId !== null && (
-              <Link to={`/`} state={mentorship?.alumnoHireMentor?.id}>
-                <button
-                  style={{
-                    backgroundColor: "blue",
-                    color: "white",
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    marginLeft: "8px",
-                    cursor: "pointer",
-                  }}
-                >
+              <Link state={mentorship?.alumnoHireMentor?.id}>
+                <Button variant="contained" color="success" onClick={handleShowDonativos} sx={{ marginBottom: '2rem' }} >
                   Pagar
-                </button>
+                </Button>
+                <PagosDonativos
+                  open={showDonativos}
+                  onClose={handleCloseDonativos}
+                  alumnHireID={mentorship.alumnoHireMentor.id}
+                  emailAlumn={mentorship.alumn.user.email}
+                  nameMentor={mentorship.mentor.userId.firstName + ' ' + mentorship.mentor.userId.lastName}
+                  priceMentor={mentorship.mentor.price}
+                />
               </Link>
             )}
           </Card>

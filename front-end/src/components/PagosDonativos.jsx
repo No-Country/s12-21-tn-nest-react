@@ -3,25 +3,21 @@ import { Modal, Box, Typography, useMediaQuery } from '@mui/material';
 import { urlApi } from '../../config/axios';
 
 
-export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice }) => {
+export const PagosDonativos = ({ open, onClose, emailAlumn, alumnHireID, nameMentor, priceMentor }) => {
     const isMobile = useMediaQuery('(max-width:600px)');
-    console.log(mentorPrice)
-
 
     const redirectPaymentGateway = async (gateway) => {
         try {
             switch (gateway) {
                 case 'mercadoPago':
                     const mercadoPagoData = {
-                        external_reference: "9def4c21-e187-48f2-bfaa-9ddf42f18670", //Id alumnhire 20/dec
-                        value: "15.00",
-                        email: mentorData.email,
-                        brand_name: name
+                        external_reference: alumnHireID,
+                        value: priceMentor, //Este valor viene con "" desde el ejemplo
+                        email: emailAlumn,
+                        brand_name: nameMentor
                     };
                     try {
                         const responseMercadoPago = await urlApi.post('mpago', mercadoPagoData);
-                        console.log('Respuesta de Mercado Pago: ', responseMercadoPago.data);
-                        console.log('Datos a enviar con mercadopagoData: ', mercadoPagoData)
                         if (responseMercadoPago.data && responseMercadoPago.data.url) {
                             const mercadoPagoUrl = responseMercadoPago.data.url;
                             window.open(mercadoPagoUrl, '_blank');
@@ -35,14 +31,15 @@ export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice })
 
                 case 'payPal':
                     const paypalData = {
-                        reference_id: "9def4c21-e187-48f2-bfaa-9ddf42f18670", //Id alumnhire 20/dec
+                        reference_id: alumnHireID,
                         currency_code: 'USD',
-                        value: "15.00",
-                        brand_name: name
+                        value: "220", //Este valor viene con "" desde el ejemplo
+                        brand_name: nameMentor
                     };
                     try {
                         const responsePayPal = await urlApi.post('paypal', paypalData);
-
+                        console.log( 'paypalData: ', paypalData)
+                        console.log("respuesta de paypal: ", responsePayPal)
                         if (responsePayPal.data && responsePayPal.data.url) {
                             const payPalUrl = responsePayPal.data.url;
                             window.open(payPalUrl, '_blank');
@@ -56,10 +53,10 @@ export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice })
 
                 case 'stripe':
                     const stripeData = {
-                        reference_id: "9def4c21-e187-48f2-bfaa-9ddf42f18670", //Id alumnhire 20/dec
+                        reference_id: alumnHireID,
                         currency_code: "USD",
-                        amount: mentorPrice,
-                        brand_name: name
+                        amount: priceMentor,
+                        brand_name: nameMentor
                     };
                     try {
                         const responseStripe = await urlApi.post('stripe', stripeData);
@@ -103,7 +100,7 @@ export const PagosDonativos = ({ open, onClose, name, mentorData, mentorPrice })
                     }}
                 >
                     <Typography variant="h6" component="h2">
-                        Elige la opción de pago para {name}
+                        Elige la opción de pago para {nameMentor}
                     </Typography>
                     <Box
                         sx={{
