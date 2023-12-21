@@ -120,6 +120,7 @@ const UpdateStudentProfile = () => {
         ...editedInfo,
         categoriesId: categoryIds,
       });
+      navigate("/studentProfile");
     } catch (error) {
       console.error("Error updating mentor information:", error);
     }
@@ -230,7 +231,6 @@ const UpdateStudentProfile = () => {
           </FormControl>
         </div>
 
-        <Link to={`/studentProfile/${studentId}`}>
           <Button
             variant="contained"
             color="primary"
@@ -239,7 +239,6 @@ const UpdateStudentProfile = () => {
           >
             Guardar Cambios
           </Button>
-        </Link>
       </Container>
     </ThemeProvider>
   );
