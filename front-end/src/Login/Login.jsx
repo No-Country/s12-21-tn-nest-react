@@ -13,6 +13,7 @@ import {
   TextField,
   Container,
   Button,
+  Typography,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -79,11 +80,13 @@ const Login = () => {
           component="section"
           sx={{
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             minHeight: "70vh",
           }}
         >
+          <Typography variant="h4" sx={{ mb: 3, color: '#fff' }}>Iniciar Sesión</Typography>
           <Container
             maxWidth="xs"
             sx={{
