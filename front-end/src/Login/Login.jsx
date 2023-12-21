@@ -213,6 +213,19 @@ const Login = () => {
                 </div>
               </div>
             </form>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "#FFF",
+                textAlign: "center",
+                mt: 2,
+              }}
+            >
+              ¿No tienes una cuenta?{" "}
+              <Link to="/signup" style={{ color: "#25D366" }}>
+                ¡Regístrate aquí!
+              </Link>
+            </Typography>
           </Container>
         </Container>
       </ThemeProvider>
