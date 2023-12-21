@@ -225,12 +225,17 @@ export class MentorService {
       delete e.stripe_payment;
       delete e.updatedAt;
     });
-    const initialValue = 0;
-    const result = data.AlumnHireMentors.reduce(
-      (acumulador, value) => acumulador + value.calification,
-      initialValue,
-    );
-    const resultadofinal = result / data.AlumnHireMentors.length;
+    let suma = 0;
+    let contador = 0;
+
+    for (let index = 0; index < data.AlumnHireMentors.length; index++) {
+      const element = data.AlumnHireMentors[index];
+      if (element.calification) {
+        suma = suma + element.calification;
+        contador = contador + 1;
+      }
+    }
+    const resultadofinal = suma / contador;
     data['promedio'] = resultadofinal;
     return data;
   }
