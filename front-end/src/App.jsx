@@ -52,11 +52,8 @@ function App() {
           <BrowserRouter>
             <div className="main_app">
               {/* <Header /> */}
+              <Menu navLinksArray={navLinksArray} />
               <Routes>
-                <Route
-                  path="/*"
-                  element={<Menu navLinksArray={navLinksArray} />}
-                />
                 <Route path="/" element={<Home />} />
                 <Route path="/mentores" element={<MentoresPage />} />
                 <Route path="/signUp" element={<SignUp />} />
