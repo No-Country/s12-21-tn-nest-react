@@ -78,6 +78,10 @@ export const AuthProvider = ({ children }) => {
     setUserId(null);
     setMentorId(null);
     setStudentId(null);
+    Cookies.remove("token");
+    Cookies.remove("isAuthLog");
+    Cookies.remove("userC");
+    Cookies.remove("idUser");
   };
 
   useEffect(() => {
