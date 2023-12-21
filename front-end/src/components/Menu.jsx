@@ -22,9 +22,8 @@ export default function Menu({ navLinksArray }) {
   const navigate = useNavigate();
   console.log("isStudent", studentId, "isMentor", mentorId);
 
-  useEffect(() => {
-    localStorage.setItem("menuOpen", open);
-  }, [open]);
+  useEffect(() => {}, []);
+
   return (
     <Box
       component="header"
