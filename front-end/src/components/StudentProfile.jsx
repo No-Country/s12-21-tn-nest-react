@@ -46,7 +46,7 @@ const StudentProfile = () => {
     fetchStudentInfo();
     console.log("userId:",userId, "studentId", studentId);
 
-  }, []);
+  });
 
   return (
     <Container component="main" maxWidth="lg" sx={{ mt: 5 }}>
