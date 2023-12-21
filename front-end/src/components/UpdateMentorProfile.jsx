@@ -50,7 +50,6 @@ const UpdateMentorProfile = () => {
     birthdate: mentorInfo.birthdate,
     speciality: mentorInfo.speciality || { id: '', name: '' },
     categories: mentorInfo.categories || [],
-    file: mentorInfo.image,
   });
 
   const fetchSpecialities = async () => {
