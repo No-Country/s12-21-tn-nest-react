@@ -122,17 +122,7 @@ export const MentorCard = ({
           >
             <Rating
               name="read-only"
-              value={
-                mentorRaitings <= 1
-                  ? 1
-                  : mentorRaitings < 3
-                  ? 2
-                  : mentorRaitings < 4
-                  ? 3
-                  : mentorRaitings < 5
-                  ? 4
-                  : 5
-              }
+              value={mentorRaitings}
               readOnly
               style={{ fontSize: "22px" }}
             />
