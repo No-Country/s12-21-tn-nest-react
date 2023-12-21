@@ -135,7 +135,7 @@ const StudentProfile = () => {
               </CardContent>
               <Box sx={{ width: "100%", textAlign: "center" }}>
                 <Link
-                  to={`/updateStudentProfile/${studentId}`}
+                  to={`/updateStudentProfile`}
                   state={{ studentInfo }}
                 >
                   <Button

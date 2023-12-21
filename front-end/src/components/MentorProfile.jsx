@@ -100,7 +100,7 @@ const MentorProfile = () => {
                 </CardContent>
 
                 <Box sx={{ width: "100%", textAlign: "center" }}>
-                  <Link to={`/updateMentorProfile/${mentorId}`} state={{ mentorInfo }}>
+                  <Link to={`/updateMentorProfile`} state={{ mentorInfo }}>
                     <Button
                       variant="contained"
                       sx={{ mt: 1, mb: 2, width: "50%", backgroundColor: "#25D366", color: "#FFF" }}

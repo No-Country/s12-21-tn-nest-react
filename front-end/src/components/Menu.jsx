@@ -73,14 +73,14 @@ export default function Menu({ navLinksArray }) {
                       <Button
                         color="inherit"
                         component={NavLink}
-                        to={`/mentorProfile/${mentorId}`}
+                        to={`/mentorProfile`}
                       >
                         Mentor Profile
                       </Button>
                       <Button
                         color="inherit"
                         component={NavLink}
-                        to={`/studentProfile/${studentId}`}
+                        to={`/studentProfile`}
                       >
                         Student Profile
                       </Button>
@@ -116,7 +116,7 @@ export default function Menu({ navLinksArray }) {
                       <Button
                         color="inherit"
                         component={NavLink}
-                        to={`/mentorProfile/${mentorId}`}
+                        to={`/mentorProfile`}
                       >
                         Mentor Profile
                       </Button>
@@ -159,7 +159,7 @@ export default function Menu({ navLinksArray }) {
                       <Button
                         color="inherit"
                         component={NavLink}
-                        to={`/studentProfile/${studentId}`}
+                        to={`/studentProfile`}
                       >
                         Student Profile
                       </Button>

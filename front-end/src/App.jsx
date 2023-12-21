@@ -34,12 +34,12 @@ const navLinksArray = [
   { title: "Register", path: "/signup", icon: <HowToRegIcon /> },
   {
     title: "StudentProfile",
-    path: "/studentProfile/:id",
+    path: "/studentProfile",
     icon: <HowToRegIcon />,
   },
   {
     title: "MentorProfile",
-    path: "/mentorProfile/:id",
+    path: "/mentorProfile",
     icon: <HowToRegIcon />,
   },
 ];
@@ -61,7 +61,7 @@ function App() {
                 <Route path="/mentorForm" element={<MentorForm />} />
                 <Route path="/mentorshipForm" element={<Mentorship />} />
                 <Route path="/studentForm" element={<StudentForm />} />
-                <Route path="/mentorProfile/:id" element={<MentorProfile />} />
+                <Route path="/mentorProfile" element={<MentorProfile />} />
                 <Route path="/contactMentor" element={<ContactMentor />} />
                 <Route path="/success" element={<SuccesfullQualify />} />
                 <Route
@@ -72,15 +72,15 @@ function App() {
                 <Route path="/studentToMentor" element={<StudentToMentor />} />
                 <Route path="/mentorToStudent" element={<MentorToStudent />} />
                 <Route
-                  path="/studentProfile/:id"
+                  path="/studentProfile"
                   element={<StudentProfile />}
                 />
                 <Route
-                  path="/updateMentorProfile/:id"
+                  path="/updateMentorProfile"
                   element={<UpdateMentorProfile />}
                 />
                 <Route
-                  path="/updateStudentProfile/:id"
+                  path="/updateStudentProfile"
                   element={<UpdateStudentProfile />}
                 />
                 {<Route path="/score/:idScoreParams" element={<Score />} />}
