@@ -250,7 +250,7 @@ const UpdateMentorProfile = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={12}>
-            <Link to={`/mentorProfile/${mentorInfo.id}`}>
+            <Link to={`/`}>
               <Button variant="contained" color="primary" onClick={handleSaveChanges} sx={{width:"100%" ,color:"#FFF"}}>
                 Guardar Cambios
               </Button>

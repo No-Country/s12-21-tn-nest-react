@@ -23,8 +23,7 @@ export default function Menu({ navLinksArray }) {
   console.log("isStudent", studentId, "isMentor", mentorId);
 
   useEffect(() => {
-    localStorage.setItem("menuOpen", open);
-  }, [open]);
+  }, []);
 
   return (
     <Box
