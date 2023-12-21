@@ -26,10 +26,7 @@ export const MentorCard = ({
   mentorImage,
   mentorPrice,
   mentorData,
-<<<<<<< HEAD
-=======
   mentorRaitings,
->>>>>>> front-Juan
 }) => {
   const [showDonativos, setShowDonativos] = useState(false);
   const { userId, studentId } = useAuth();
