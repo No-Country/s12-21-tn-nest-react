@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
       if (mentorIds && studentIds) {
         setMentorId(mentorIds);
         setStudentId(studentIds);
-      } else if (mentorIds!= null & studentIds == null) {
+      } else if ((mentorIds != null) & (studentIds == null)) {
         setMentorId(mentorIds);
       } else if (studentIds != null && mentorIds == null) {
         setStudentId(studentIds);
@@ -59,9 +59,11 @@ export const AuthProvider = ({ children }) => {
         setUser(res.data);
         setUserId(res.data.userId);
         setIsAuthenticated(true);
-  
+        Cookies.set("token", JSON.stringify(res.data.token), { expires: 365 });
+        Cookies.set("isAuthLog", true);
+        Cookies.set("userC", res.data);
+        Cookies.set("idUser", res.data.userId);
         const mentorIdsResponse = await obtenerIdDelMentor(res.data.userId);
-
       } else {
         console.error("Respuesta inesperada", res);
       }
@@ -69,7 +71,6 @@ export const AuthProvider = ({ children }) => {
       setErrors(err.response.data);
     }
   };
-  
 
   const signOut = () => {
     setIsAuthenticated(false);
@@ -90,7 +91,18 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const cookies = Cookies.get();
+      const isAuthLog = Cookies.get("isAuthLog");
+      if (isAuthLog) {
+        setIsAuthenticated(true);
+        obtenerIdDelMentor(Cookies.get("idUser"));
+        setUser(Cookies.get("userC"));
+        setUserId(Cookies.get("idUser"));
+      }
+    }
+    checkLogin();
+  }, [isAuthenticated]);
+  /*
+      const cookies = Cookies.get("token");
       if (!cookies.token) {
         setIsAuthenticated(false);
         setUser(null);
@@ -109,7 +121,6 @@ export const AuthProvider = ({ children }) => {
 
         setIsAuthenticated(true);
         setUser(res.data);
-        setName(res.data.name);
         setIsLoading(false);
       } catch (err) {
         console.log(err);
@@ -117,9 +128,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         setIsLoading(false);
       }
-    }
-    checkLogin();
-  }, []);
+    }*/
 
   return (
     <AuthContext.Provider

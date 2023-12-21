@@ -19,22 +19,22 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import "./Login.css";
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 const customTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#25D366',
+      main: "#25D366",
     },
     secondary: {
-      main: '#FFFFFF',
+      main: "#FFFFFF",
     },
     background: {
-      paper: '#111b21',
-      default: '#0B141A',
+      paper: "#111b21",
+      default: "#0B141A",
     },
   },
-})
+});
 
 const Login = () => {
   const navigate = useNavigate();
@@ -64,12 +64,36 @@ const Login = () => {
     signIn(data);
   });
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <>
       <ThemeProvider theme={customTheme}>
-        <Container component="section" sx={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "70vh" }}>
-          <Container maxWidth="xs" sx={{ border: { sm: "2px solid #25D366", xs: "none" }, borderRadius: "8px", py: 1, height: "100%", width: "100%" }}>
-
+        <Container
+          component="section"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "70vh",
+          }}
+        >
+          <Container
+            maxWidth="xs"
+            sx={{
+              border: { sm: "2px solid #25D366", xs: "none" },
+              borderRadius: "8px",
+              py: 1,
+              height: "100%",
+              width: "100%",
+            }}
+          >
             {loginErrors &&
               loginErrors.length > 0 &&
               loginErrors.map((error, i) => (
@@ -88,7 +112,10 @@ const Login = () => {
               <div className="login-box">
                 <Box
                   className="container-login__box"
-                  sx={{ /* textAlign: "center", margin: "1rem auto" */width:"100%" }}
+                  sx={{
+                    /* textAlign: "center", margin: "1rem auto" */ width:
+                      "100%",
+                  }}
                 >
                   {/* <AccountCircle sx={{ color: "white", mr: 1, my: 0.5 }} /> */}
                   <div
@@ -97,7 +124,8 @@ const Login = () => {
                       flexDirection: "column",
                     }}
                   >
-                    <TextField sx={{width: "100%", mt: 2 }}
+                    <TextField
+                      sx={{ width: "100%", mt: 2 }}
                       id="input-with-sx"
                       label="Email"
                       variant="standard"
@@ -106,22 +134,35 @@ const Login = () => {
                       required
                       {...register("email", { required: true })}
                       InputLabelProps={{
-                        style: { /* color: "white" */ },
+                        style: {
+                          /* color: "white" */
+                        },
                       }}
                       InputProps={{
-                        style: { /* color: "white", fontSize: "0.5em" */ },
+                        style: {
+                          /* color: "white", fontSize: "0.5em" */
+                        },
                       }}
                     />
                     {errors.email && (
-                      <p style={{ color: "#fa4444"/* , fontSize: "1.8rem" */ }}>
+                      <p
+                        style={{ color: "#fa4444" /* , fontSize: "1.8rem" */ }}
+                      >
                         Username is required
                       </p>
                     )}
                   </div>
                 </Box>
-                <FormControl sx={{ /* m: 0 */width: "100%", mt: 2 }} variant="outlined">
+                <FormControl
+                  sx={{ /* m: 0 */ width: "100%", mt: 2 }}
+                  variant="outlined"
+                >
                   <InputLabel
-                    sx={{ /* color: "white" */ }}
+                    sx={
+                      {
+                        /* color: "white" */
+                      }
+                    }
                     htmlFor="outlined-adornment-password"
                   >
                     Password
@@ -159,13 +200,16 @@ const Login = () => {
                     <i className="animation"></i>Ingresa
                     <i className="animation"></i>
                   </button> */}
-                  <Button type="submit" variant="contained" sx={{ color: "#FFF", width: "100%", my: 2 }}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ color: "#FFF", width: "100%", my: 2 }}
+                  >
                     Ingresa
                   </Button>
                 </div>
               </div>
             </form>
-
           </Container>
         </Container>
       </ThemeProvider>
