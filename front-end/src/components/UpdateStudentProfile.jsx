@@ -231,7 +231,7 @@ const UpdateStudentProfile = () => {
           </FormControl>
         </div>
 
-        <Link to={`/studentProfile/${studentInfo.id}`}>
+        <Link to={`/studentProfile/${studentId}`}>
           <Button
             variant="contained"
             color="primary"
