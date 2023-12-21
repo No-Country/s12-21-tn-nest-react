@@ -120,7 +120,7 @@ const UpdateStudentProfile = () => {
         ...editedInfo,
         categoriesId: categoryIds,
       });
-      navigate("/studentProfile");
+      navigate(`/studentProfile/${studentId}`);
     } catch (error) {
       console.error("Error updating mentor information:", error);
     }
