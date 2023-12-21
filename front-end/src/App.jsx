@@ -64,7 +64,7 @@ function App() {
                 <Route path="/mentorProfile/:id" element={<MentorProfile />} />
                 <Route path="/contactMentor" element={<ContactMentor />} />
                 <Route path="/success" element={<SuccesfullQualify />} />
-                <Route path="/api/paypal/accepted" element={<PayPalSuccessPage />} />
+                <Route path="/payments/accepted" element={<PayPalSuccessPage />} />
                 <Route path="/myMentorships" element={<MyMentorships />} />
                 <Route path="/studentToMentor" element={<StudentToMentor />} />
                 <Route path="/mentorToStudent" element={<MentorToStudent />} />

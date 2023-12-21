@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { urlApi } from "../../config/axios";
+import { Button } from "@mui/material";
 
 const CalendarWrapper = ({ children }) => (
   <div style={{ borderRadius: "8px", overflow: "hidden" }}>{children}</div>
@@ -30,6 +31,7 @@ const ContactMentor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setDisabledButton(true)
     const requestData = {
       alumnId: String(studentId),
       mentorId: String(mentorId),
@@ -52,6 +54,9 @@ const ContactMentor = () => {
     }
     navigate("/myMentorships");
   };
+
+   const [disabledButton, setDisabledButton] = useState(false)
+
 
   return (
     <div
@@ -80,9 +85,13 @@ const ContactMentor = () => {
         <p style={{ color: "#00FF00" }}>Fecha seleccionada: {formattedDate}</p>
       </div>
 
-      <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
+      <Button onClick={handleSubmit} disabled={disabledButton} variant="contained" color="success" sx={{margin: '.8rem'}}>
+        Enviar solitud
+      </Button>
+
+      {/* <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
         Enviar solicitud
-      </button>
+      </button> */}
     </div>
   );
 };

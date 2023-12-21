@@ -128,7 +128,23 @@ export class MentorService {
   ) {
     try {
       let mentors = await this.mentorRepository.find({
-        relations: ['categories', 'speciality', 'userId'],
+        relations: ['categories', 'speciality', 'userId','AlumnHireMentors'],
+      });
+
+      mentors.forEach((mentor) => {    
+        let suma = 0;
+        let contador = 0;
+    
+        for (let index = 0; index < mentor.AlumnHireMentors.length; index++) {
+          const element = mentor.AlumnHireMentors[index];
+          if (element.calification) {
+            suma = suma + element.calification;
+            contador = contador + 1;
+          }
+        }
+    
+        const resultadofinal = contador > 0 ? suma / contador : 0;
+        mentor['promedio'] = resultadofinal.toFixed(1);
       });
       if (categoryName && categoryName.length > 0) {
         mentors = mentors.filter((mentor) =>

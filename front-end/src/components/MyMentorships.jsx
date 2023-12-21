@@ -9,8 +9,6 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import Cookies from "js-cookie";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useAuth } from "../context/AuthContext";
@@ -23,10 +21,12 @@ export const CalendarWrapper = ({ appointmentDate }) => {
   return (
     <div
       style={{
-        borderRadius: "8px",
+        borderRadius: "10px",
         overflow: "hidden",
         marginBottom: "80px",
-        height: "280px",
+        height: "250px",
+        maxHeight: "90%",
+        width: "90%",
       }}
     >
       <Calendar
@@ -40,8 +40,8 @@ export const CalendarWrapper = ({ appointmentDate }) => {
               style={{
                 backgroundColor: "green",
                 borderRadius: "50%",
-                height: "12px",
-                width: "12px",
+                height: "10px",
+                width: "10px",
               }}
             ></div>
           ) : null
@@ -52,29 +52,20 @@ export const CalendarWrapper = ({ appointmentDate }) => {
 };
 
 const MyMentorships = () => {
-  // const navigate = useNavigate();
   const [mentorshipData, setMentorshipData] = useState([]);
-  // const [selectedDate, setSelectedDate] = useState(null);
-  // const [showAcceptInput, setShowAcceptInput] = useState(false);
-  // const [showRejectInput, setShowRejectInput] = useState(false);
-  // const [showPayButton, setShowPayButton] = useState(false);
   const [hour, setHour] = useState("");
   const [refused, setRefused] = useState("");
   const { studentId, mentorId } = useAuth();
   const currentUser = studentId ? studentId : mentorId;
-  // const [showInput, setShowInput] = useState({});
   const [openInputs, setOpenInputs] = useState({});
   const [acceptButtonClicked, setAcceptButtonClicked] = useState(false);
 
   //Logica para pagos:
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null); //Traer el ID de cada cita
   const [showDonativos, setShowDonativos] = useState(false);
-  const handleShowDonativos = () => {
-    setShowDonativos(true);
-  };
-
-  const handleCloseDonativos = () => {
-    setShowDonativos(false);
-  };
+  const handlePaymentClick = (mentorshipId) => {
+    setSelectedAppointmentId(mentorshipId)
+  }
 
   const handleButtonClick = (mentorshipId, type) => {
     setOpenInputs((prevState) => ({
@@ -175,7 +166,7 @@ const MyMentorships = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              height: "720px",
+              height: "700px",
               justifyContent: "space-between",
             }}
           >
@@ -186,14 +177,19 @@ const MyMentorships = () => {
                 borderRadius: "4px 4px 0 0",
                 width: "100%",
                 boxSizing: "border-box",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: 'center'
               }}
             >
               <Chip
-                label={mentorship.state.name}
+                label={mentorship.state.name.charAt(0).toUpperCase() + mentorship.state.name.slice(1)}
                 style={{
                   backgroundColor: getColorByState(mentorship.state.name)
                     .bgColor,
                   color: getColorByState(mentorship.state.name).textColor,
+                  fontWeight: "bold",
+                  fontSize: "16px",
                 }}
               />
             </Box>
@@ -382,19 +378,26 @@ const MyMentorships = () => {
             {/* Nuevo bloque para el botón de pagar */}
 
             {mentorship.state.name === "aceptado" && studentId !== null && (
-              <Link state={mentorship?.alumnoHireMentor?.id}>
-                <Button variant="contained" color="success" onClick={handleShowDonativos} sx={{ marginBottom: '2rem' }} >
+              <div>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => handlePaymentClick(mentorship.id)}
+                  sx={{ marginBottom: '2rem' }}
+                >
                   Pagar
                 </Button>
-                <PagosDonativos
-                  open={showDonativos}
-                  onClose={handleCloseDonativos}
-                  alumnHireID={mentorship.alumnoHireMentor.id}
-                  emailAlumn={mentorship.alumn.user.email}
-                  nameMentor={mentorship.mentor.userId.firstName + ' ' + mentorship.mentor.userId.lastName}
-                  priceMentor={mentorship.mentor.price}
-                />
-              </Link>
+                {selectedAppointmentId === mentorship.id && (
+                  <PagosDonativos
+                    open={selectedAppointmentId === mentorship.id}
+                    onClose={() => setSelectedAppointmentId(null)}
+                    alumnHireID={mentorship.alumnoHireMentor.id}
+                    emailAlumn={mentorship.alumn.user.email}
+                    nameMentor={`${mentorship.mentor.userId.firstName} ${mentorship.mentor.userId.lastName}`}
+                    priceMentor={mentorship.mentor.price}
+                  />
+                )}
+              </div>
             )}
           </Card>
         </Grid>

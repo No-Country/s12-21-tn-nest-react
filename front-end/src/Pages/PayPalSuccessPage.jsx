@@ -4,7 +4,7 @@ export const PayPalSuccessPage = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             window.close();
-        }, 2000);
+        }, 5000);
 
         return () => clearTimeout(timer);
     }, []);

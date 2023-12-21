@@ -11,7 +11,7 @@ export const MentoresPage = () => {
     const [selectedOrder, setSelectedOrder] = useState('');
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedSpeciality, setSelectedSpeciality] = useState('');
-
+    
     //Filtro de especialidad:
     const handleSpecialityChange = (selectedSpeciality) => {
         setSelectedSpeciality(selectedSpeciality);
