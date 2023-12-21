@@ -44,7 +44,6 @@ const UpdateStudentProfile = () => {
   const [selectedFile, setSelectedFile] = React.useState(null);
 
   const [editedInfo, setEditedInfo] = useState({
-    profileImg: studentInfo.profileImg,
     firstName: studentInfo.user.firstName || "",
     lastName: studentInfo.user.lastName || "",
     phone: studentInfo.user.phone || "",
