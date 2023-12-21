@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   Query,
-  Res
+  Res,
 } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { CreateStripeIntentDto } from './dto/create-stripe-intent.dto';
@@ -41,10 +41,13 @@ export class StripeController {
   }
 
   @Get('/success')
-  async findSuccess(@Query('session_id') id: string, @Res() res:Response): Promise<any> {
+  async findSuccess(
+    @Query('session_id') id: string,
+    @Res() res: Response,
+  ): Promise<any> {
     const result = await this.stripeService.catchPayment(id);
-    if(result.status == 'paid'){
-      res.redirect('https://mentorsphere.vercel.app/payments/accepted')
+    if (result.status == 'paid') {
+      res.redirect('https://mentorsphere.vercel.app/payments/accepted');
     }
   }
 

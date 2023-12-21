@@ -9,7 +9,7 @@ import {
   Query,
   HttpException,
   HttpStatus,
-  Res
+  Res,
 } from '@nestjs/common';
 import { PaypalService } from './paypal.service';
 import { CreatePaypalOrderDto } from './dto/create-paypal.dto';
@@ -45,8 +45,8 @@ export class PaypalController {
   @Get('accepted')
   async findAll(@Query('token') token: string, @Res() res: Response) {
     const result = await this.paypalService.captureOrder(token);
-    if(result.status == "COMPLETED"){
-      res.redirect('https://mentorsphere.vercel.app/payments/accepted')
+    if (result.status == 'COMPLETED') {
+      res.redirect('https://mentorsphere.vercel.app/payments/accepted');
     }
   }
 

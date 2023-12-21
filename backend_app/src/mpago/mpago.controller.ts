@@ -42,8 +42,8 @@ export class MpagoController {
   @Get('success')
   async success(@Query('payment_id') id: string, @Res() res: Response) {
     const result = await this.mpagoService.success(id);
-    if(result.status == "approved"){
-      res.redirect('https://mentorsphere.vercel.app/payments/accepted')
+    if (result.status == 'approved') {
+      res.redirect('https://mentorsphere.vercel.app/payments/accepted');
     }
   }
 
