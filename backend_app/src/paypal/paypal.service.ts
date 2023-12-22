@@ -134,7 +134,7 @@ export class PaypalService {
         });
         if (mentorship) {
           mentorship.paypal_payment = savedOrder.identifiers[0].id;
-          await await this.mentorshipRepository.save(mentorship);
+          await this.mentorshipRepository.save(mentorship);
         }
       }
     } catch (error) {
