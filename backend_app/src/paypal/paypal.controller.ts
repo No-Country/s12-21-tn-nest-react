@@ -9,7 +9,6 @@ import {
   Query,
   HttpException,
   HttpStatus,
-  Res,
 } from '@nestjs/common';
 import { PaypalService } from './paypal.service';
 import { CreatePaypalOrderDto } from './dto/create-paypal.dto';
@@ -22,7 +21,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateOkPaypalOrderResponseDto } from './dto/created_ok-response.dto';
-import { Response } from 'express';
 
 @ApiBearerAuth()
 @ApiTags('PayPal')
@@ -43,11 +41,8 @@ export class PaypalController {
   }
 
   @Get('accepted')
-  async findAll(@Query('token') token: string, @Res() res: Response) {
-    const result = await this.paypalService.captureOrder(token);
-    if (result.status == 'COMPLETED') {
-      res.redirect('https://mentorsphere.vercel.app/payments/accepted');
-    }
+  async findAll(@Query('token') token: string) {
+    return await this.paypalService.captureOrder(token);
   }
 
   @Get('cancel')

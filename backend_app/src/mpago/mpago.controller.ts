@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   Query,
-  Res,
 } from '@nestjs/common';
 import { MpagoService } from './mpago.service';
 import { CreateMpagoDto } from './dto/create-mpago.dto';
@@ -20,7 +19,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateOkMpagoOrderResponseDto } from './dto/created_ok-response.dto';
-import { Response } from 'express';
+
 @ApiBearerAuth()
 @ApiTags('MercadoPago')
 @Controller('mpago')
@@ -40,11 +39,8 @@ export class MpagoController {
   }
 
   @Get('success')
-  async success(@Query('payment_id') id: string, @Res() res: Response) {
-    const result = await this.mpagoService.success(id);
-    if (result.status == 'approved') {
-      res.redirect('https://mentorsphere.vercel.app/payments/accepted');
-    }
+  async success(@Query('payment_id') id: string) {
+    return await this.mpagoService.success(id);
   }
 
   @Get(':id')

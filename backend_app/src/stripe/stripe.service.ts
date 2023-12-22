@@ -47,8 +47,8 @@ export class StripeService {
           },
         ],
         mode: 'payment',
-        success_url: `${host}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${host}/api/stripe/cancel?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${host}?session_id={CHECKOUT_SESSION_ID}&plattform=stripe`,
+        cancel_url: `${host}?session_id={CHECKOUT_SESSION_ID}&plattform=stripe`,
         metadata: {
           mentorship: createStripeIntentDto.reference_id,
         },

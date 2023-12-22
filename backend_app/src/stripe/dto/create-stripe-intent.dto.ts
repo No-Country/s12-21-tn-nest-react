@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateStripeIntentDto {
   @ApiProperty({
@@ -27,7 +27,7 @@ export class CreateStripeIntentDto {
   })
   @IsNotEmpty({ message: 'Mentorship value is required' })
   @IsString()
-  amount: number;
+  amount: string;
 
   @ApiProperty({
     description: 'Mentorship name or mentor name',
