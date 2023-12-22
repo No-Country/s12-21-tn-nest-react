@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   Query,
-  Res,
 } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { CreateStripeIntentDto } from './dto/create-stripe-intent.dto';
@@ -20,7 +19,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateOkStripeIntentResponseDto } from './dto/created_ok-response.dto';
-import { Response } from 'express';
 
 @ApiBearerAuth()
 @ApiTags('Stripe')
@@ -41,14 +39,8 @@ export class StripeController {
   }
 
   @Get('/success')
-  async findSuccess(
-    @Query('session_id') id: string,
-    @Res() res: Response,
-  ): Promise<any> {
-    const result = await this.stripeService.catchPayment(id);
-    if (result.status == 'paid') {
-      res.redirect('https://mentorsphere.vercel.app/payments/accepted');
-    }
+  async findSuccess(@Query('session_id') id: string): Promise<any> {
+    return await this.stripeService.catchPayment(id);
   }
 
   @Get('/cancel')

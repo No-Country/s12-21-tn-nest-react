@@ -40,8 +40,8 @@ export class PaypalService {
           brand_name: createPaypalOrderDto.brand_name,
           landing_page: 'NO_PREFERENCE',
           user_action: 'PAY_NOW',
-          return_url: `${host}/api/paypal/accepted`,
-          cancel_url: `${host}/api/paypal/cancel`,
+          return_url: `${host}?plattform=paypal`,
+          cancel_url: `${host}?plattform=paypal`,
         },
       });
 
@@ -134,7 +134,7 @@ export class PaypalService {
         });
         if (mentorship) {
           mentorship.paypal_payment = savedOrder.identifiers[0].id;
-          await await this.mentorshipRepository.save(mentorship);
+          await this.mentorshipRepository.save(mentorship);
         }
       }
     } catch (error) {

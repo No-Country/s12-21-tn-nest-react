@@ -10,9 +10,9 @@ import { AlumnHireMentor } from 'src/alunm/models/alumnHireMentor.entity';
 
 const host = process.env.HOST;
 const accessToken = process.env.MP_ACCESS_TOKEN;
-const success = `${host}/api/mpago/success`;
-const failure = `${host}/api/mpago/failure`;
-const pending = `${host}/api/mpago/pending`;
+const success = `${host}?plattform=mpago`;
+const failure = `${host}?plattform=mpago`;
+const pending = `${host}?plattform=mpago`;
 
 @Injectable()
 export class MpagoService {
