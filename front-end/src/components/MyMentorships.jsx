@@ -26,7 +26,6 @@ export const CalendarWrapper = ({ appointmentDate }) => {
         marginBottom: "80px",
         height: "250px",
         maxHeight: "90%",
-        width: "90%",
       }}
     >
       <Calendar

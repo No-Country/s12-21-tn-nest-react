@@ -116,13 +116,11 @@ const Mentorship = ({ location }) => {
 
     try {
       let url = 'Auth/register/mentor'
-      const response = await urlApi.post(url, formData, {
+      await urlApi.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       });
-      console.log('Respuesta.data del servidor:', response.data);
-      console.log('Respuesta del servidor:', response);
       navigate('/login');
     } catch (error) {
       console.error('Error al enviar la información al servidor:', error);
