@@ -29,7 +29,7 @@ export default function Menu({ navLinksArray }) {
     <Box
       component="header"
       sx={{ width: "100%", bgcolor: "#202C33" }}
-      data-aos="fade-down"
+      // data-aos="fade-down"
     >
       <Container>
         <AppBar
