@@ -26,24 +26,6 @@ import MentorToStudent from "./components/MentorToStudent";
 import Score from "./score/Score";
 import { PayPalSuccessPage } from "./Pages/PayPalSuccessPage";
 
-const navLinksArray = [
-  { title: "Home", path: "/", icon: <HomeIcon /> },
-  { title: "Mentores", path: "/mentores", icon: <GroupAddIcon /> },
-  { title: "Mentorias", path: "/myMentorships", icon: <SchoolIcon /> },
-  { title: "Login", path: "/login", icon: <LoginIcon /> },
-  { title: "Register", path: "/signup", icon: <HowToRegIcon /> },
-  {
-    title: "StudentProfile",
-    path: "/studentProfile",
-    icon: <HowToRegIcon />,
-  },
-  {
-    title: "MentorProfile",
-    path: "/mentorProfile",
-    icon: <HowToRegIcon />,
-  },
-];
-
 function App() {
   return (
     <>
@@ -52,7 +34,7 @@ function App() {
           <BrowserRouter>
             <div className="main_app">
               {/* <Header /> */}
-              <Menu navLinksArray={navLinksArray} />
+              <Menu/>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/mentores" element={<MentoresPage />} />
